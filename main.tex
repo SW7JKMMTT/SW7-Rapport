@@ -1,0 +1,50 @@
+\documentclass[twoside]{report}
+\emergencystretch 3em
+
+\input{preamble/setup.tex}
+\overfullrule=2cm
+\input{preamble/acronyms.tex}
+\begin{document}
+\pagestyle{empty} %disable headers and footers
+\pagenumbering{roman} %use roman page numbering in the frontmatter
+\input{frontpage.tex}
+\input{titlepage.tex}
+\cleardoublepage
+%\input{resume.tex}
+\cleardoublepage
+%\input{preface.tex}
+\cleardoublepage
+\pdfbookmark[0]{Contents}{label:indholdsfortegnelse}
+\pagestyle{fancy} %enable headers and footers again
+
+\setcounter{tocdepth}{1}
+\tableofcontents
+
+\pagebreak
+
+\pagenumbering{arabic}
+
+%%%%%%%%%%%%%%%%%%%
+%IMPORTS
+%\subimport{path}{name}
+
+%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%
+%Appendices
+\begingroup
+	\part{Bibliography}
+	\bibliographystyle{plainurl}
+	\renewcommand{\addcontentsline}[3]{}%
+	\renewcommand{\section}[2]{}%
+	\renewcommand{\chapter}[2]{}%
+	\bibliography{bibtex}
+	\label{biblo:mybiblio}
+\endgroup
+
+\appendix
+	\part{Appendices}
+
+%%%%%%%%%%%%%%%%%%%
+\end{document}

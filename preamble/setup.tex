@@ -1,0 +1,189 @@
+%!TEX root = ../main.tex
+
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[thin, type1]{roboto}
+\usepackage{inconsolata}
+\usepackage{parskip}
+\usepackage[english]{varioref}
+\usepackage{hyperref}
+\hypersetup{%
+	plainpages=false,%
+	bookmarksnumbered=true,%
+	colorlinks,%
+	citecolor=aaublue,%
+	filecolor=aaublue,%
+	linkcolor=aaublue,% you should probably change this to black before printing
+	urlcolor=aaublue,%
+	pdfstartview=FitH%
+}
+\usepackage[english]{cleveref}
+\usepackage{import}
+\usepackage{booktabs}
+\crefname{appchap}{appendix}{appendices}
+\Crefname{appchap}{Appendix}{Appendices}
+\newcommand{\myref}[1]{\vref{#1}}
+\newcommand{\Myref}[1]{\Vref{#1}}
+
+%Titles and captions 
+\usepackage{titlesec, blindtext, color}
+\titleformat{\part}[display]{
+\fontsize{38pt}{8pt}\filcenter\sffamily\selectfont\thispagestyle{empty}}
+{\textcolor{part}{Part \thepart \vspace{6pt}\linebreak {\rule{120pt}{1pt}} \linebreak}}
+{0pt}
+{}
+\titleformat{\chapter}[hang]{\Huge\sffamily\mdseries\vspace{-40pt}}{\textcolor{numbers}{\thechapter\hsp{|}\hsp}}{0pt}{\Huge\sffamily\mdseries}[\vspace{-20pt}]
+
+\titleformat{\section}
+{\normalfont\Large\sffamily}
+{\color{numbers}\thesection}{1em}{}
+
+\titleformat{\subsection}
+{\normalfont\large\sffamily}
+{\color{numbers}\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}
+{\normalfont\normalsize\sffamily}
+{\color{numbers}\thesubsubsection}{1em}{}
+
+\usepackage[
+  left=28mm,% left margin on an odd page
+  right=41mm,% right margin on an odd page
+  ]{geometry}
+
+\usepackage{caption}
+\captionsetup{%
+	font=footnotesize,% set font size to footnotesize
+	labelfont=bf % bold label (e.g., Figure 3.2) font
+}
+
+%Tikz related
+\usepackage{tikz}
+\usetikzlibrary{
+	shapes,
+	shapes.symbols,
+	arrows,
+	positioning,
+	backgrounds,
+	matrix,
+	patterns,
+	calc,
+    fit,
+	math
+}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.12}
+
+%Easy Diagrams
+\usepackage{smartdiagram}
+\smartdiagramset{
+	set color list={smartdiagram2,smartdiagram1,smartdiagram3,smartdiagram4,smartdiagram5,smartdiagram6},
+ sequence item border color=none,
+	sequence item font size=\small\sffamily, 
+}
+%Curfile stuff
+\usepackage{currfile}
+\makeatletter
+\def\relativepath{\import@path}
+\makeatother
+
+%Headers and footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt} %remove the horizontal line in the header
+\fancyhead[RE]{\color{aaublue}\small\nouppercase\leftmark}
+\fancyhead[LO]{\color{aaublue}\small\nouppercase\rightmark}
+\fancyhead[LE,RO]{\thepage} %page number on all pages
+\raggedbottom
+
+%Colors
+\usepackage{xcolor}
+\definecolor{aaublue}{gray}{0}
+\definecolor{bluekeywords}{gray}{0}
+\definecolor{greencomments}{gray}{0.5}
+\definecolor{redstrings}{gray}{0.3}
+\definecolor{codebg}{HTML}{EFEFEF}
+\definecolor{codefg}{HTML}{000000}
+\definecolor{part}{HTML}{34495E}
+\definecolor{numbers}{HTML}{34495E}
+\definecolor{smartdiagram1}{HTML}{1ABC9C}
+\definecolor{smartdiagram2}{HTML}{2ECC71}
+\definecolor{smartdiagram3}{HTML}{3498db}
+\definecolor{smartdiagram4}{HTML}{9b59b6}
+\definecolor{smartdiagram5}{HTML}{E74C3C}
+\definecolor{smartdiagram6}{HTML}{F1C40F}
+\definecolor{smartdiagram7}{HTML}{E67E22}
+\definecolor{diagramDark}{HTML}{19B5FE}
+\definecolor{diagramLight}{HTML}{6BB9F0}
+
+\definecolor{tableGoodLight}{HTML}{87D37C}
+\definecolor{tableGoodDark}{HTML}{26A65B}
+\definecolor{tableBadLight}{HTML}{EC644B}
+\definecolor{tableBadDark}{HTML}{EF4836}
+%Listing & Minted
+\usepackage{listings}
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\footnotesize\ttfamily,        % the size of the fonts that are used for the code
+  breakatwhitespace=true,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{greencomments},    % comment style
+  deletekeywords={},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=false,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,                    % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\bfseries\color{bluekeywords},       % keyword style
+  morekeywords={},            % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{gray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\bfseries\color{redstrings},     % string literal style
+  tabsize=2,                       % sets default tabsize to 2 spaces
+  columns=fullflexible,
+  postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}}
+}
+
+\usepackage{minted}
+\newminted[java2]{java}{frame=leftline, framesep=2mm, linenos, fontsize=\footnotesize, baselinestretch=1.1, autogobble}
+\newminted[xmlblock]{xml}{frame=leftline, framesep=2mm, linenos, fontsize=\footnotesize, baselinestretch=1.1, autogobble}
+\newminted[bashblock]{shell}{frame=leftline, framesep=2mm, linenos, fontsize=\footnotesize, baselinestretch=1.1, autogobble, breaklines, breakanywhere}
+\newmintedfile{java}{frame=leftline, framesep=2mm, linenos, fontsize=\footnotesize, baselinestretch=1.1}
+\usemintedstyle{tango}
+\usepackage{tcolorbox}
+
+%Acronyms and Fixmes
+\usepackage{acronym}
+\usepackage{fixme}
+\fxsetup{
+    layout={footnote, marginclue, index},
+    innerlayout={inline, index}
+	theme=color,
+}
+%External files
+\usepackage{xspace}
+\input{preamble/fixme.tex}
+\input{preamble/commands.tex}
+
+\usepackage{outlines}
+
+\usepackage{mdframed}
+\mdfsetup{%
+topline=false,
+rightline=false,
+leftline=false,
+bottomline=false
+}
+
+%Tables with fixed widths
+\usepackage{tabu}
+
+%Cells spanning multiple rows
+\usepackage{multirow}

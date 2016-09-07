@@ -1,0 +1,52 @@
+\newcommand{\taskhead}[1]{%
+	This section describes the work on task #1.\xspace
+}
+
+\newcommand{\taskheadcont}[1]{%
+  This section describes the continued work on task #1.\xspace
+}
+
+\newcommand{\taskfoot}[1]{%
+	During the work we created #1.\xspace
+}
+
+\newcommand{\giraf}[1]{\texttt{#1}\xspace}
+\newcommand{\android}[1]{\texttt{#1}\xspace}
+
+\newcommand{\method}[1]{%
+	\textbf{#1}\xspace
+}
+
+\newcommand{\name}[1]{%
+	\textit{#1}\xspace
+}
+
+\newcommand{\rendpoint}[1]{\texttt{#1}\xspace}
+
+\newcommand{\hsp}{\hspace{20pt}}
+
+\makeatletter
+\newtcbox{\code}{on line, fontupper=\small\ttfamily, boxrule=0.5pt, arc=2pt, coltext=codefg, colback=codebg, colframe=codebg, boxsep=0pt, shrink tight, extrude by=2pt}
+\makeatother
+
+\def\checkmark{\tikz\fill[scale=0.4, color=smartdiagram2](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
+
+%Make \Chaptername return print the name of the chapter
+\let\Chaptermark\chaptermark
+\def\chaptermark#1{\def\Chaptername{#1}\Chaptermark{#1}}
+\let\Sectionmark\sectionmark
+\def\sectionmark#1{\def\Sectionname{#1}\Sectionmark{#1}}
+\let\Subsectionmark\subsectionmark
+\def\subsectionmark#1{\def\Subsectionname{#1}\Subsectionmark{#1}}
+\let\Subsubsectionmark\subsubsectionmark
+\def\subsubsectionmark#1{\def\Subsubsectionname{#1}\Subsubsectionmark{#1}}
+
+%defT will print T#1 and set a label to T:<ChapterName>:<#1>
+%Be aware that this means that any task can only refer to the task within its own chapter
+\newcounter{exno}
+\crefformat{exno}{#1}
+\newcommand{\defT}[1]{\refstepcounter{exno}\label{T:\Chaptername:#1}T#1}
+
+\newcommand{\T}[1]{%
+	\hyperref[T:\Chaptername:#1]{T#1}\xspace
+}
