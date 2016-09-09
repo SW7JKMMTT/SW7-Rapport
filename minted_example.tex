@@ -1,0 +1,24 @@
+%!TEX root = main.tex
+
+\begin{listing}
+    \begin{java2}
+        if(pictogram.getSoundData() != null) {
+            fileOutputStream.write(pictogram.getSoundData());
+        }
+    \end{java2}
+    \caption{Added null check.}
+    \label{lst:null_check_sound_stream}
+\end{listing}
+
+\begin{listing}
+    \begin{bashblock}
+        ...
+        04-21 17:09:23.336 1141-1141/dk.aau.cs.giraf.pictoreader I/TextToSpeech: Connected to ComponentInfo{com.google.android.tts/com.google.android.tts.service.GoogleTTSService}
+        04-21 17:09:23.336 1141-1141/dk.aau.cs.giraf.pictoreader I/TextToSpeech: onServiceConnected but waiting
+        04-21 17:09:24.929 1141-1389/dk.aau.cs.giraf.pictoreader I/GAV3: Thread[GAThread,5,main]: No campaign data found.
+        04-21 17:09:29.578 1141-1141/dk.aau.cs.giraf.pictoreader I/TextToSpeech: onServiceConnected waiting end
+        ...
+    \end{bashblock}
+    \caption{Output from the Tab 2 tablet when loading.}
+    \label{lst:p5110_output}
+\end{listing}
