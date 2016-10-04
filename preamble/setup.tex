@@ -25,7 +25,7 @@
 \newcommand{\myref}[1]{\vref{#1}}
 \newcommand{\Myref}[1]{\Vref{#1}}
 
-%Titles and captions 
+%Titles and captions
 \usepackage{titlesec, blindtext, color}
 \titleformat{\part}[display]{
 \fontsize{38pt}{8pt}\filcenter\sffamily\selectfont\thispagestyle{empty}}
@@ -79,7 +79,7 @@
 \smartdiagramset{
 	set color list={smartdiagram2,smartdiagram1,smartdiagram3,smartdiagram4,smartdiagram5,smartdiagram6},
  sequence item border color=none,
-	sequence item font size=\small\sffamily, 
+	sequence item font size=\small\sffamily,
 }
 %Curfile stuff
 \usepackage{currfile}
@@ -122,6 +122,7 @@
 \definecolor{tableBadLight}{HTML}{EC644B}
 \definecolor{tableBadDark}{HTML}{EF4836}
 %Listing & Minted
+\usepackage{shellesc}
 \usepackage{listings}
 \lstset{ %
   backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
