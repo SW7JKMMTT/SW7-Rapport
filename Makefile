@@ -1,6 +1,6 @@
 LATEX=lualatex
 
-LATEXOPT=--shell-escape
+LATEXOPT=--shell-escape --synctex=1
 NONSTOP=--interaction=nonstopmode
 
 LATEXMK=latexmk
