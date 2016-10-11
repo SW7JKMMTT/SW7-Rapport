@@ -4,3 +4,31 @@
   year = {1998},
   howpublished = {\url{http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=CONSLEG:1998L0069:19981228:EN:PDF}}
 }
+
+@MISC{ALDL,
+  author = {ws6transam},
+  title = {ALDL},
+  year = {1998},
+  howpublished = {\url{http://www.ws6transam.org/ALDL.html}}
+}
+
+@MISC{CaliforniaEPA,
+  author = {California Environmental Protection Agency},
+  title = {On-Board Diagnostic Facts},
+  year = {2015},
+  howpublished = {\url{https://www.arb.ca.gov/msprog/obdprog/obdfaq.htm}}
+}
+
+@MISC{AustralianRegulation,
+  author = {Australian Government},
+  title = {European Union Directive},
+  year = {2008},
+  howpublished = {\url{https://www.legislation.gov.au/Details/F2008C00323}}
+}
+
+@MISC{OBDSecurity,
+  author = {Karl Koscher; Alexei Czeskis; Franziska Roesner; Shwetak Patel; Tadayoshi Kohno; Stephen Checoway; Damon McCoy; Brian Kantor; Danny Anderson; Hovav Shacham; Stefen Savage},
+  title = {European Union Directive},
+  year = {2010},
+  howpublished = {\url{http://ieeexplore.ieee.org/document/5504804/?reload=true&arnumber=5504804}}
+}
