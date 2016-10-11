@@ -1,0 +1,59 @@
+@MISC{top20fleetmanagement,
+  author = {Andrew Marder},
+  title = {Top Fleet Management Software Products},
+  month = {September},
+  year = {2016},
+  url = {http://www.capterra.com/fleet-management-software/#infographic},
+  lastchecked = {02-10-2016},
+}
+
+@MISC{tomtom,
+  author = {TomTom Telematics BV},
+  title = {THE NEXT GENERATION OF FLEET MANAGEMENT},
+  url = {https://telematics.tomtom.com/en_us/webfleet/landingpages/capterra/},
+  lastchecked = {02-10-2016},
+}
+
+@MISC{teletracnavman,
+  author = {TELETRAC NAVMAN},
+  title = {FLEET MANAGEMENT, GPS TRACKING AND BUSINESS INTELLIGENCE},
+  url = {http://www.teletracnavman.com/lp/ppc/fleet-management},
+  lastchecked = {02-10-2016},
+}
+
+@MISC{geotab,
+  author = {Geotab Inc.},
+  title = {An Open Fleet Management Platform You Can Build On},
+  url = {https://www.geotab.com/},
+  lastchecked = {02-10-2016},
+}
+
+@MISC{efleets,
+  author = {Enterprise Fleet Management},
+  title = {Fleet management},
+  url = {http://www.efleets.com/},
+  lastchecked = {02-10-2016},
+}
+
+@MISC{vinitysoft,
+  author = {Vinity Soft inc.},
+  title = {Track, Analyze \& Improve Fleet Operations},
+  url = {http://www.vinitysoft.com/fleet-management-software-4-0/},
+  lastchecked = {02-10-2016},
+}
+
+@MISC{fleetio,
+  author = {Rarestep, Inc.},
+  title = {Automate your fleet operations},
+  url = {https://www.fleetio.com/},
+  lastchecked = {02-10-2016},
+}
+
+@MISC{wiki_obd,
+  author = {``Heron''},
+  title = {OBD-II PIDs},
+  month = {August},
+  year = {2016},
+  url = {https://en.wikipedia.org/wiki/OBD-II_PIDs},
+  lastchecked = {03-10-2016},
+}
