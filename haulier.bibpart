@@ -1,0 +1,18 @@
+@MISC{haulierSleepLaw,
+  author = {Rigspolitiet},
+  title = {Køre- og hviletidsreglerne},
+  day = {2},
+  month = {August},
+  year = {2016},
+  url = {https://www.politi.dk/da/borgerservice/Fardsel/tunge_koeretoejer/koere_og_hviletidsreglerne/koere_og_hviletidsreglerne.htm},
+  lastchecked = {11-10-2016},
+}
+
+@article{TheLaw,
+    author = {Rigsadvokaten},
+    title = {Sanktionspåstande mv. i færdselssager},
+    year = {2013},
+    month = {January},
+    url = {http://www.anklagemyndigheden.dk/nyheder/Documents/RM%204-2000-rettet-januar-2013.pdf},
+    pages = {138--162},
+}
