@@ -16,7 +16,7 @@ phutil_register_library_map(array(
   'function' => array(),
   'xmap' => array(
     'BetterTextLinter' => 'ArcanistLinter',
-    'ChktexLinter' => 'ArcanistLinter',
+    'ChktexLinter' => 'ArcanistExternalLinter',
     'LatexTestEngine' => 'ArcanistUnitTestEngine',
   ),
 ));

@@ -1,6 +1,6 @@
 <?php
 
-final class ChktexLinter extends ArcanistLinter
+final class ChktexLinter extends ArcanistExternalLinter
 {
 	public function getInfoName()
 	{
@@ -12,22 +12,29 @@ final class ChktexLinter extends ArcanistLinter
 		return 'chktex';
 	}
 
-	public function getLinterConfigurationOptions()
+	public function getInfoDescription()
 	{
-
-		$options = parent::getLinterConfigurationOptions();
-
-		return $options;
+		return pht('Use Chktex to check your LaTeX');
 	}
 
-	public function setLinterConfigurationValue($key, $value)
+	public function getDefaultBinary()
 	{
-		switch ($key) {
-			/* case 'pmd': */
-			/*     $this->pmdEnabled = $value; */
-			/*     return; */
-		}
-		parent::setLinterConfigurationValue($key, $value);
+		return 'chktex';
+	}
+
+	public function getInstallInstructions()
+	{
+		return pht('Install chktex you fuck');
+	}
+
+	public function shouldExpectCommandErrors()
+	{
+		/* return true; */
+	}
+
+	protected function canCustomizeLintSeverities()
+	{
+		return true;
 	}
 
 	public function getLinterName()
@@ -35,15 +42,13 @@ final class ChktexLinter extends ArcanistLinter
 		return 'ChktexLinter';
 	}
 
-    public function lintPath($path)
-    {
-		$lint_command = 'chktex -v0 ' . $path;
+	protected function getMandatoryFlags() {
+		return array(
+			'-v0'
+		);
+	}
 
-		$final_lint_command = $lint_command;
-		echo "Linting Project...\n";
-		echo "Executing: $final_lint_command \n";
-		list($stdout, $stderr) = execx($final_lint_command);
-
+	protected function parseLinterOutput($path, $err, $stdout, $stderr) {
 		$messages = array();
 		foreach(preg_split("/((\r?\n)|(\r\n?))/", $stdout) as $line) {
 			if(preg_match("/([^:]+):([0-9]+):([0-9]+):([0-9]+):(.*)/", $line, $matches)) {
@@ -59,12 +64,9 @@ final class ChktexLinter extends ArcanistLinter
 
 				$message->setSeverity(ArcanistLintSeverity::SEVERITY_WARNING);
 
-				$messages[$message->getPath() . ':' . $message->getLine() . ':' . $message->getChar() . ':' . $message->getName() . ':' . $message->getDescription()] = $message;
+				$messages[] = $message;
 			}
 		}
-
-		foreach ($messages as $message) {
-			$this->addLintMessage($message);
-		}
+		return  $messages;
 	}
 }
