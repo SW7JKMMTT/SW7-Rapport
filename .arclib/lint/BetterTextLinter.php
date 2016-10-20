@@ -124,7 +124,8 @@ final class BetterTextLinter extends ArcanistLinter {
       return;
     }
 
-    $this->lintCharset($path);
+	if($this->enableCharset)
+		$this->lintCharset($path);
 
     if ($this->didStopAllLinters()) {
       return;

@@ -15,6 +15,9 @@ final class LatexTestEngine extends ArcanistUnitTestEngine {
 		$working_copy = $this->getWorkingCopy();
 		$this->project_root = $working_copy->getProjectRoot();
 
+        $cwd = getcwd();
+        chdir($this->project_root);
+
 		$start = microtime(true);
 
 		//Remake bibtex
@@ -26,6 +29,8 @@ final class LatexTestEngine extends ArcanistUnitTestEngine {
 		list($err, $stdout, $stderr) = exec_manual("make test");
 
 		$spent = microtime(true) - $start;
+
+        chdir($cwd);
 
 		$res = new ArcanistUnitTestResult();
 		$res->setName("Latexmk");

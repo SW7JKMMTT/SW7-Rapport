@@ -12,11 +12,13 @@ phutil_register_library_map(array(
     'BetterTextLinter' => 'lint/BetterTextLinter.php',
     'ChktexLinter' => 'lint/ChktexLinter.php',
     'LatexTestEngine' => 'unit/LatexTestEngine.php',
+    'ProseLinter' => 'lint/ProseLinter.php',
   ),
   'function' => array(),
   'xmap' => array(
     'BetterTextLinter' => 'ArcanistLinter',
     'ChktexLinter' => 'ArcanistExternalLinter',
     'LatexTestEngine' => 'ArcanistUnitTestEngine',
+    'ProseLinter' => 'ArcanistLinter',
   ),
 ));

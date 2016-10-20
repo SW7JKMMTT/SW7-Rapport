@@ -10,7 +10,7 @@
         "bettertext": {
             "type": "better-text",
             "text.max-line-length": 121,
-            "text.charset": true,
+            "text.charset": false,
             "include": "(\\.tex$|\\.bibpart$)"
         },
         "prose": {
