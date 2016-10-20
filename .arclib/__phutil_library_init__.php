@@ -1,3 +1,3 @@
 <?php
 
-phutil_register_library('libarcandroid', __FILE__);
+phutil_register_library('libarctex', __FILE__);

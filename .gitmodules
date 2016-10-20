@@ -1,0 +1,3 @@
+[submodule "arc-proselint"]
+	path = arc-proselint
+	url = https://github.com/google/arc-proselint.git

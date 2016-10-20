@@ -1,21 +1,30 @@
 {
-	"linters": {
-		"chmod": {
-			"type": "chmod"
-		},
-		"chktex": {
-			"type": "chktex",
-			"include": "(\\.tex$)"
-		},
-		"text": {
-			"type": "text",
-			"text.max-line-length": 121
-		},
-		"filename": {
-			"type": "filename"
-		},
-		"spelling": {
-			"type": "spelling"
-		}
-	}
+    "linters": {
+        "chmod": {
+            "type": "chmod"
+        },
+        "chktex": {
+            "type": "chktex",
+            "include": "(\\.tex$)"
+        },
+        "bettertext": {
+            "type": "better-text",
+            "text.max-line-length": 121,
+            "text.charset": true,
+            "include": "(\\.tex$|\\.bibpart$)"
+        },
+        "prose": {
+            "type": "prose",
+            "include": "(\\.(md|tex)$)"
+        },
+        "filename": {
+            "type": "filename"
+        },
+        "spelling": {
+            "type": "spelling"
+        },
+        "mergeconflict": {
+            "type": "merge-conflict"
+        }
+    }
 }

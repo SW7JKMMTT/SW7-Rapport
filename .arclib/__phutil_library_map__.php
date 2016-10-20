@@ -9,12 +9,14 @@
 phutil_register_library_map(array(
   '__library_version__' => 2,
   'class' => array(
+    'BetterTextLinter' => 'lint/BetterTextLinter.php',
     'ChktexLinter' => 'lint/ChktexLinter.php',
     'LatexTestEngine' => 'unit/LatexTestEngine.php',
   ),
   'function' => array(),
   'xmap' => array(
+    'BetterTextLinter' => 'ArcanistLinter',
     'ChktexLinter' => 'ArcanistLinter',
-    'LatexTestEngine' => 'LatexTestEngine',
+    'LatexTestEngine' => 'ArcanistUnitTestEngine',
   ),
 ));
