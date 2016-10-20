@@ -1,0 +1,21 @@
+{
+	"linters": {
+		"chmod": {
+			"type": "chmod"
+		},
+		"chktex": {
+			"type": "chktex",
+			"include": "(\\.tex$)"
+		},
+		"text": {
+			"type": "text",
+			"text.max-line-length": 121
+		},
+		"filename": {
+			"type": "filename"
+		},
+		"spelling": {
+			"type": "spelling"
+		}
+	}
+}
