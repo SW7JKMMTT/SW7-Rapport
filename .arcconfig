@@ -1,5 +1,5 @@
 {
-  "phabricator.uri" : "http://web.giraf.cs.aau.dk",
+  "phabricator.uri" : "http://review.slashwin.dk",
   "unit.engine": "LatexTestEngine",
   "phutil_libraries": [
 	".arclib"
