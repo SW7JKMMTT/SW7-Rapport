@@ -47,6 +47,6 @@ lint:
 	chktex -v0 $(shell find . -type f -name "*.tex")
 
 test: clean bibtex.bib
-	latexmk -pdf -pdflatex="echo X | lualatex --draftmode --shell-escape --interaction=errorstopmode %O %S && touch %D" $(MAIN)
+	latexmk -pdf -pdflatex="echo X | lualatex --draftmode --shell-escape --interaction=errorstopmode %O %S\; touch %D" $(MAIN)
 
 .PHONY: clean force once debug lint continuous test all
