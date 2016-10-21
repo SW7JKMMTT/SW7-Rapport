@@ -32,3 +32,12 @@
   year = {2010},
   howpublished = {\url{http://ieeexplore.ieee.org/document/5504804/?reload=true&arnumber=5504804}}
 }
+
+@MISC{MoreCarsInFamilies,
+  author = {Johan Juul-Jensen and Jacob Hvidberg},
+  publisher = {Nykredit},
+  title = {Stor stigning i familier med flere biler},
+  year = {2015},
+  lastchecked = {20-10-2016},
+  howpublished = {\url{https://www.nykredit.dk/staticcontent/files/analyse_-_stor_stigning_i_familier_flere_biler.pdf}}
+}
