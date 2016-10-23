@@ -2,7 +2,9 @@
 
 \usepackage[english]{babel}
 \usepackage[T1]{fontenc}
-\usepackage[thin, type1]{roboto}
+%TODO: There's something wrong here. Roboto causes fvextra to fail
+%Maybe find another font?
+%\usepackage[thin, type1]{roboto}
 \usepackage{inconsolata}
 \usepackage{parskip}
 \usepackage[english]{varioref}
@@ -27,7 +29,7 @@
 
 %Titles and captions
 \usepackage{titlesec, blindtext, color}
-\titleformat{\part}[display]{
+\titleformat{\part}[display]{%
 \fontsize{38pt}{8pt}\filcenter\sffamily\selectfont\thispagestyle{empty}}
 {\textcolor{part}{Part \thepart \vspace{6pt}\linebreak {\rule{120pt}{1pt}} \linebreak}}
 {0pt}
@@ -47,9 +49,9 @@
 {\color{numbers}\thesubsubsection}{1em}{}
 
 \usepackage[
-  left=28mm,% left margin on an odd page
-  right=41mm,% right margin on an odd page
-  ]{geometry}
+    left=28mm,% left margin on an odd page
+    right=41mm,% right margin on an odd page
+]{geometry}
 
 \usepackage{caption}
 \captionsetup{%
@@ -57,9 +59,12 @@
     labelfont=bf % bold label (e.g., Figure 3.2) font
 }
 
+%Line numbers
+\usepackage[modulo]{lineno}
+
 %Tikz related
 \usepackage{tikz}
-\usetikzlibrary{
+\usetikzlibrary{%
     shapes,
     shapes.symbols,
     arrows,
@@ -76,9 +81,9 @@
 
 %Easy Diagrams
 \usepackage{smartdiagram}
-\smartdiagramset{
+\smartdiagramset{%
     set color list={smartdiagram2,smartdiagram1,smartdiagram3,smartdiagram4,smartdiagram5,smartdiagram6},
- sequence item border color=none,
+    sequence item border color=none,
     sequence item font size=\small\sffamily,
 }
 %Curfile stuff
@@ -124,7 +129,7 @@
 %Listing & Minted
 \usepackage{shellesc}
 \usepackage{listings}
-\lstset{ %
+\lstset{%
     backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
     basicstyle=\footnotesize\ttfamily,        % the size of the fonts that are used for the code
     breakatwhitespace=true,         % sets if automatic breaks should only happen at whitespace
@@ -163,7 +168,7 @@
 %Acronyms and Fixmes
 \usepackage{acronym}
 \usepackage{fixme}
-\fxsetup{
+\fxsetup{%
     layout={footnote, marginclue, index},
     innerlayout={inline, index}
     theme=color,
@@ -188,3 +193,5 @@
 
 %Cells spanning multiple rows
 \usepackage{multirow}
+
+\linenumbers
