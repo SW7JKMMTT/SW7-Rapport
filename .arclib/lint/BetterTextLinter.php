@@ -131,7 +131,9 @@ final class BetterTextLinter extends ArcanistLinter {
       return;
     }
 
-    $this->lintLineLength($path);
+	if(false){
+		$this->lintLineLength($path);
+	}
     $this->lintEOFNewline($path);
     $this->lintTrailingWhitespace($path);
 
