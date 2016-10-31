@@ -1,0 +1,37 @@
+@MISC{scaleDef1,
+  author = {Andrew Marder},
+  title = {Techtarget Definition},
+  year = {2013},
+  url = {http://searchdatacenter.techtarget.com/definition/scalability},
+}
+
+@MISC{scaleDef2,
+  author = {Franzé Jr.},
+  title = {Scalability},
+  month = {September},
+  year = {2010},
+  url = {https://franzejr.wordpress.com/2010/08/09/scalability/},
+}
+
+@MISC{WikiScale,
+  title = {Scalability},
+  month = {October},
+  year = {2016},
+  url = {https://en.wikipedia.org/wiki/Scalability},
+  lastchecked = {20-10-2016},
+}
+
+@MISC{scaleDef3,
+  author = {André B. Bondi},
+  title = {Characteristics of Scalability and Their Impact on Performance},
+  year = {2000},
+  url = {http://dl.acm.org/citation.cfm?doid=350391.350432},
+}
+
+@MISC{HoriVertScale,
+  author = {Oracle},
+  title = {Understanding Horizontal and Vertical Scalability in Messaging Server},
+  year = {2010},
+  url = {https://docs.oracle.com/cd/E19566-01/819-4439/acrih/index.html},
+  lastchecked = {20-10-2016},
+}
