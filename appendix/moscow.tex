@@ -1,0 +1,158 @@
+%!TEX root = ../main.tex
+\section{OBD PID codes}
+\begin{longtable}{|l|c|p{10cm}|}
+    \hline
+    \multicolumn{3}{|c|}{\textbf{Must have}}                                \\ \hline
+    \textbf{PID} & \textbf{Bytes returned} & \textbf{Description}           \\ \hline
+    %Standard information
+    00 & 4  & PIDs supported [01 - 20]                                      \\ \hline
+    20 & 4  & PIDs supported [21 - 40]                                      \\ \hline
+    40 & 4  & PIDs supported [41 - 60]                                      \\ \hline
+    60 & 4  & PIDs supported [61 - 80]                                      \\ \hline
+    0C & 2  & Engine RPM                                                    \\ \hline
+    0D & 1  & Vehicle speed                                                 \\ \hline
+    1C & 1  & OBD standards this vehicle conforms to                        \\ \hline
+    1F & 2  & Run time since engine start                                   \\ \hline
+    2F & 1  & Fuel Tank Level Input                                         \\ \hline
+    51 & 1  & Fuel Type                                                     \\ \hline
+    52 & 1  & Ethanol fuel \%                                               \\ \hline
+    5B & 1  & Hybrid battery pack remaining life                            \\ \hline
+    5C & 1  & Engine oil temperature                                        \\ \hline
+    5F & 1  & Emission requirements to which vehicle is designed            \\ \hline
+    61 & 1  & Driver's demand engine - percent torque                       \\ \hline
+    62 & 1  & Actual engine - percent torque                                \\ \hline
+    63 & 2  & Engine reference torque                                       \\ \hline
+    64 & 5  & Engine percent torque data                                    \\ \hline
+    7F & 13 & Engine run time                                               \\ \hline
+    83 & 5  & NOx sensor                                                    \\ \hline
+    %Fuel optimizing
+    03 & 2  & Fuel system status                                            \\ \hline
+    04 & 1  & Calculated engine load                                        \\ \hline
+    0A & 1  & Fuel pressure (gauge pressure)                                \\ \hline
+    11 & 1  & Throttle position                                             \\ \hline
+    5A & 1  & Relative accelerator pedal position                           \\ \hline
+    5E & 2  & Engine fuel rate                                              \\ \hline
+    67 & 3  & Engine coolant temperature                                    \\ \hline
+    \multicolumn{3}{|c|}{\textbf{Should have}}                              \\ \hline
+    80 & 4  & PIDs supported [81 - A0]                                      \\ \hline
+    %Maintaince information
+    02 & 2  & Freeze DTC                                                    \\ \hline
+    21 & 2  & Distance traveled with malfunction indicator lamp (MIL) on    \\ \hline
+    30 & 1  & Warm-ups since codes cleared                                  \\ \hline
+    31 & 2  & Distance traveled since codes cleared                         \\ \hline
+    41 & 4  & Monitor status this drive cycle                               \\ \hline
+    4D & 2  & Time run with MIL on                                          \\ \hline
+    4E & 2  & Time since trouble codes cleared                              \\ \hline
+    6F & 3  & Turbocharger compressor inlet pressure                        \\ \hline
+    74 & 5  & Turbocharger RPM                                              \\ \hline
+    \multicolumn{3}{|c|}{\textbf{Could have}}                               \\ \hline
+    01 & 4  & Monitor status since DTCs cleared.
+    (Includes malfunction indicator lamp (MIL) status and number of DTCs.)  \\ \hline
+    05 & 1  & Engine coolant temperature                                    \\ \hline
+    06 & 1  & Short term fuel trim—Bank 1                                   \\ \hline
+    07 & 1  & Long term fuel trim—Bank 1                                    \\ \hline
+    08 & 1  & Short term fuel trim—Bank 2                                   \\ \hline
+    09 & 1  & Long term fuel trim—Bank 2                                    \\ \hline
+    0B & 1  & Intake manifold absolute pressure                             \\ \hline
+    0E & 1  & Timing advance                                                \\ \hline
+    0F & 1  & Intake air temperature                                        \\ \hline
+    10 & 2  & MAF air flow rate                                             \\ \hline
+    12 & 1  & Commanded secondary air status                                \\ \hline
+    13 & 1  & Oxygen sensors present (in 2 banks)                           \\ \hline
+    14 & 2  & Oxygen Sensor 1                                               \\ \hline
+    15 & 2  & Oxygen Sensor 2                                               \\ \hline
+    16 & 2  & Oxygen Sensor 3                                               \\ \hline
+    17 & 2  & Oxygen Sensor 4                                               \\ \hline
+    18 & 2  & Oxygen Sensor 5                                               \\ \hline
+    19 & 2  & Oxygen Sensor 6                                               \\ \hline
+    1A & 2  & Oxygen Sensor 7                                               \\ \hline
+    1B & 2  & Oxygen Sensor 8                                               \\ \hline
+    1D & 1  & Oxygen sensors present (in 4 banks)                           \\ \hline
+    1E & 1  & Auxiliary input status                                        \\ \hline
+    22 & 2  & Fuel Rail Pressure (relative to manifold vacuum)              \\ \hline
+    23 & 2  & Fuel Rail Gauge Pressure
+    (diesel, or gasoline direct injection)                                  \\ \hline
+    24 & 4  & Oxygen Sensor 1                                               \\ \hline
+    25 & 4  & Oxygen Sensor 2                                               \\ \hline
+    26 & 4  & Oxygen Sensor 3                                               \\ \hline
+    27 & 4  & Oxygen Sensor 4                                               \\ \hline
+    28 & 4  & Oxygen Sensor 5                                               \\ \hline
+    29 & 4  & Oxygen Sensor 6                                               \\ \hline
+    2A & 4  & Oxygen Sensor 7                                               \\ \hline
+    2B & 4  & Oxygen Sensor 8                                               \\ \hline
+    2C & 1  & Commanded EGR                                                 \\ \hline
+    2D & 1  & EGR Error                                                     \\ \hline
+    32 & 2  & Evap. System Vapor Pressure                                   \\ \hline
+    33 & 1  & Absolute Barometric Pressure                                  \\ \hline
+    34 & 4  & Oxygen Sensor 1                                               \\ \hline
+    35 & 4  & Oxygen Sensor 2                                               \\ \hline
+    36 & 4  & Oxygen Sensor 3                                               \\ \hline
+    37 & 4  & Oxygen Sensor 4                                               \\ \hline
+    38 & 4  & Oxygen Sensor 5                                               \\ \hline
+    39 & 4  & Oxygen Sensor 6                                               \\ \hline
+    3A & 4  & Oxygen Sensor 7                                               \\ \hline
+    3B & 4  & Oxygen Sensor 8                                               \\ \hline
+    3C & 2  & Catalyst Temperature: Bank 1, Sensor 1                        \\ \hline
+    3D & 2  & Catalyst Temperature: Bank 2, Sensor 1                        \\ \hline
+    3E & 2  & Catalyst Temperature: Bank 1, Sensor 2                        \\ \hline
+    3F & 2  & Catalyst Temperature: Bank 2, Sensor 2                        \\ \hline
+    42 & 2  & Control module voltage                                        \\ \hline
+    43 & 2  & Absolute load value                                           \\ \hline
+    44 & 2  & Fuel–Air commanded equivalence ratio                          \\ \hline
+    45 & 1  & Relative throttle position                                    \\ \hline
+    46 & 1  & Ambient air temperature                                       \\ \hline
+    47 & 1  & Absolute throttle position B                                  \\ \hline
+    48 & 1  & Absolute throttle position C                                  \\ \hline
+    49 & 1  & Accelerator pedal position D                                  \\ \hline
+    4A & 1  & Accelerator pedal position E                                  \\ \hline
+    4B & 1  & Accelerator pedal position F                                  \\ \hline
+    4C & 1  & Commanded throttle actuator                                   \\ \hline
+    4F & 4  & Maximum value for Fuel–Air equivalence ratio, oxygen sensor voltage,
+    oxygen sensor current, and intake manifold absolute pressure            \\ \hline
+    50 & 4  & Maximum value for air flow rate from mass air flow sensor     \\ \hline
+    53 & 2  & Absolute Evap system Vapor Pressure                           \\ \hline
+    54 & 2  & Evap system vapor pressure                                    \\ \hline
+    55 & 2  & Short term secondary oxygen sensor trim, A: bank 1, B: bank 3 \\ \hline
+    56 & 2  & Long term secondary oxygen sensor trim, A: bank 1, B: bank 3  \\ \hline
+    57 & 2  & Short term secondary oxygen sensor trim, A: bank 2, B: bank 4 \\ \hline
+    58 & 2  & Long term secondary oxygen sensor trim, A: bank 2, B: bank 4  \\ \hline
+    59 & 2  & Fuel rail absolute pressure                                   \\ \hline
+    5D & 2  & Fuel injection timing                                         \\ \hline
+    65 & 2  & Auxiliary input / output supported                            \\ \hline
+    66 & 5  & Mass air flow sensor                                          \\ \hline
+    68 & 7  & Intake air temperature sensor                                 \\ \hline
+    69 & 7  & Commanded EGR and EGR Error                                   \\ \hline
+    6A & 5  & Commanded Diesel intake air flow control and relative intake air flow position \\ \hline
+    6B & 5  & Exhaust gas recirculation temperature                         \\ \hline
+    6C & 5  & Commanded throttle actuator control and relative throttle position \\ \hline
+    6D & 6  & Fuel pressure control system                                  \\ \hline
+    6E & 5  & Injection pressure control system                             \\ \hline
+    70 & 9  & Boost pressure control                                        \\ \hline
+    71 & 5  & Variable Geometry turbo (VGT) control                         \\ \hline
+    72 & 5  & Wastegate control                                             \\ \hline
+    75 & 7  & Turbocharger temperature                                      \\ \hline
+    76 & 7  & Turbocharger temperature                                      \\ \hline
+    77 & 5  & Charge air cooler temperature (CACT)                          \\ \hline
+    78 & 9  & Exhaust Gas temperature (EGT) Bank 1                          \\ \hline
+    79 & 9  & Exhaust Gas temperature (EGT) Bank 2                          \\ \hline
+    7A & 7  & Diesel particulate filter (DPF)                               \\ \hline
+    7B & 7  & Diesel particulate filter (DPF)                               \\ \hline
+    7C & 9  & Diesel Particulate filter (DPF) temperature                   \\ \hline
+    7D & 1  & NOx NTE control area status                                   \\ \hline
+    7E & 1  & PM NTE control area status                                    \\ \hline
+    81 & 21 & Engine run time for Auxiliary Emissions Control Device(AECD)  \\ \hline
+    82 & 21 & Engine run time for Auxiliary Emissions Control Device(AECD)  \\ \hline
+    84 &    & Manifold surface temperature                                  \\ \hline
+    85 &    & NOx reagent system                                            \\ \hline
+    86 &    & Particulate matter (PM) sensor                                \\ \hline
+    87 &    & Intake manifold absolute pressure                             \\ \hline
+    \multicolumn{3}{|c|}{\textbf{Won't have}}                               \\ \hline
+    A0 & 4  & PIDs supported [A1 - C0]                                      \\ \hline
+    C0 & 4  & PIDs supported [C1 - E0]                                      \\ \hline
+    \caption{Full MoSCoW analysis of the different OBD parameters.}
+    \label{tab:full_moscow_pids}
+\end{longtable}
+
+%Forklaring af PIDs:
+%https://law.resource.org/pub/us/cfr/ibr/005/sae.j1979.2002.pdf
+%Starter fra side 61

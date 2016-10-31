@@ -1,0 +1,74 @@
+%!TEX root = ../../main.tex
+\section{OBD PID prioritisation}
+To prioritise all the different \ac{OBD} parameters, a MoSCoW analysis is performed.
+A MoSCoW analysis is a prioritisation technique which prioritise into four categories:
+``Must have'', ``Should have'', ``Could have'', and ``Won't have''.
+The prioritization of the parameters is based on the the goals set in \fxnote{ref to goals},
+e.g. if a goal is to be able to monitor the fuel economy of the vehicle,
+then the \ac{OBD} parameters concerning the fuel economy is prioritized high.
+\fxnote{Ret til at passe på et egentligt eksempel fra SOTA eller hvor kravene kommer til at stå.}
+All the OBD parameters are from Wikipedia\cite{wiki-obd}
+\fxnote{Håber jeg kan skaffe den orginale ISO standard, så vi ikke behøver Wikipedia.}.
+
+On \myref{tab:moscow_pids} the ``Must have'' and ``Should have'' of the MoSCoW analysis can be seen.
+Within each category there is no specific order, i.e. all within ``Must have'' have the same priority.
+The full MoSCoW analysis including ``Could have'' and ``Won't have'' can be seen on \myref{tab:full_moscow_pids}.
+
+``Must have'' contain parameters about the vehicle; Engine RPM, Vehicle speed etc., and parameters about the fuel consumption.
+``Should have'' contains maintenance information and parameters which is not important enough to be ``Must have''.
+``Could have'' contains the rest of the parameters.
+Since the system have to store and provide data to clients, as much data as possible should be available for the clients.
+Therefore the ``Won't have'' only contains the retrieval of pins not conforming to the OBD II standard\footnote{We don't have access to the original OBD PIDs list, only a list from 2002, which is heavily outdated.}
+\fxnote{Som det er nu, så har jeg kun adgang til OBD standarden fra 2002, hvilket gør at der mangle mange pins og derved kan det godt være at de pins i won't have faktisk bliver brugt til noget (producent specifikt).}.
+
+\begin{longtable}{|l|c|l|}
+    \hline
+    \multicolumn{3}{|c|}{\textbf{Must have}}                                \\ \hline
+    \textbf{PID} & \textbf{Bytes returned} & \textbf{Description}           \\ \hline
+    %Standard information
+    00 & 4  & PIDs supported [01 - 20]                                      \\ \hline
+    20 & 4  & PIDs supported [21 - 40]                                      \\ \hline
+    40 & 4  & PIDs supported [41 - 60]                                      \\ \hline
+    60 & 4  & PIDs supported [61 - 80]                                      \\ \hline
+    0C & 2  & Engine RPM                                                    \\ \hline
+    0D & 1  & Vehicle speed                                                 \\ \hline
+    1C & 1  & OBD standards this vehicle conforms to                        \\ \hline
+    1F & 2  & Run time since engine start                                   \\ \hline
+    2F & 1  & Fuel Tank Level Input                                         \\ \hline
+    51 & 1  & Fuel Type                                                     \\ \hline
+    52 & 1  & Ethanol fuel \%                                               \\ \hline
+    5B & 1  & Hybrid battery pack remaining life                            \\ \hline
+    5C & 1  & Engine oil temperature                                        \\ \hline
+    5F & 1  & Emission requirements to which vehicle is designed            \\ \hline
+    61 & 1  & Driver's demand engine - percent torque                       \\ \hline
+    62 & 1  & Actual engine - percent torque                                \\ \hline
+    63 & 2  & Engine reference torque                                       \\ \hline
+    64 & 5  & Engine percent torque data                                    \\ \hline
+    7F & 13 & Engine run time                                               \\ \hline
+    83 & 5  & NOx sensor                                                    \\ \hline
+    %Fuel optimizing
+    03 & 2  & Fuel system status                                            \\ \hline
+    04 & 1  & Calculated engine load                                        \\ \hline
+    0A & 1  & Fuel pressure (gauge pressure)                                \\ \hline
+    11 & 1  & Throttle position                                             \\ \hline
+    5A & 1  & Relative accelerator pedal position                           \\ \hline
+    5E & 2  & Engine fuel rate                                              \\ \hline
+    67 & 3  & Engine coolant temperature                                    \\ \hline
+    \multicolumn{3}{|c|}{\textbf{Should have}}                              \\ \hline
+    80 & 4  & PIDs supported [81 - A0]                                      \\ \hline
+    %Maintenance information
+    02 & 2  & Freeze DTC                                                    \\ \hline
+    21 & 2  & Distance traveled with malfunction indicator lamp (MIL) on    \\ \hline
+    30 & 1  & Warm-ups since codes cleared                                  \\ \hline
+    31 & 2  & Distance traveled since codes cleared                         \\ \hline
+    41 & 4  & Monitor status this drive cycle                               \\ \hline
+    4D & 2  & Time run with MIL on                                          \\ \hline
+    4E & 2  & Time since trouble codes cleared                              \\ \hline
+    6F & 3  & Turbocharger compressor inlet pressure                        \\ \hline
+    74 & 5  & Turbocharger RPM                                              \\ \hline
+    \caption{MoSCoW analysis of the different OBD parameters.}
+    \label{tab:moscow_pids}
+\end{longtable}
+
+The MoSCoW analysis will be used as requirements for which \ac{OBD} parameters the created system will support and store in the database.
+\fxnote{Lidt mere rød tråd her, når der engang kommer en rækkefølge på analysis delen.}
