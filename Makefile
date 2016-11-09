@@ -37,6 +37,9 @@ continuous: $(MAIN).tex .refresh $(SOURCES) $(FIGURES) bibtex.bib
 	$(LATEXMK) $(LATEXMKOPT) $(CONTINUOUS) \
 		-pdflatex="$(LATEX) $(LATEXOPT) $(NONSTOP) %O %S" $(MAIN)
 
+errors:
+	rubber-info $(MAIN)
+
 debug: once
 	rubber-info $(MAIN)
 
