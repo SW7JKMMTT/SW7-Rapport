@@ -1,0 +1,96 @@
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+\tikzstyle{bgbox}=[fill=green!20, rounded corners, draw=GoogleGreen, dashed]
+\begin{figure}
+    \center
+    \begin{tikzpicture}[auto, node distance=1.5cm,
+            stage/.style={rectangle, rounded corners, minimum width=1.5cm, minimum height=1cm,text centered, fill=diagramLight, draw, align=center},
+            sharp/.style={rectangle, minimum width=9.0cm, minimum height=1cm,text centered, fill=diagramLight, draw, align=center},
+            server/.style={rectangle, rounded corners, minimum width=1.5cm, minimum height=1cm,text centered, fill=diagramLight, rectangle split, rectangle split parts=2, draw},
+            flow/.style={draw, ->},
+            double_flow/.style={draw, <->},
+            create/.style={draw, ->},
+            use/.style={draw, dotted, ->}
+        ]
+
+        %Pre build
+        \node (interwebz) at (0,0) [sharp] {Interwebz};
+        \node (ghost) [draw=none, above=2cm of interwebz] {};
+
+        \node (prod_n) [stage, left=0.4cm of ghost] {Producer \\ client m};
+        \node (prod_dot) [stage, left=0.3cm of prod_n] {Producer \\ client ...};
+        \node (prod_1) [stage, left=0.3cm of prod_dot] {Producer \\ client 1};
+        
+        \node (cons_1) [stage, right=0.4cm of ghost] {Consumer \\ client 1};
+        \node (cons_dot) [stage, right=0.3cm of cons_1] {Consumer \\ client ...};
+        \node (cons_n) [stage, right=0.3cm of cons_dot] {Consumer \\ client n};
+
+        \node (server_dot) [server, below=2cm of interwebz] {Server ... \nodepart{second} Company ...};
+        \node (server_1) [server, left=0.3cm of server_dot] {Server 1 \nodepart{second} Company 1};
+        \node (server_n) [server, right=0.3cm of server_dot] {Server n \nodepart{second} Company n};
+        
+        %data provider background
+        \begin{pgfonlayer}{background}
+            % Compute a few helper coordinates
+            \path (prod_1.west |- prod_n.north)+(-0.3,+0.7) node (huh_a) {};
+            \path (prod_n.east |- prod_n.south)+(+0.3,-0.7) node (huh_b) {};
+            \path [bgbox] (huh_a) rectangle (huh_b);
+            \node [below = 0.5em of huh_a, anchor = west, inner sep = 0.5em]{Data provider};
+        \end{pgfonlayer}
+
+        %front-end background
+        \begin{pgfonlayer}{background}
+            % Compute a few helper coordinates
+            \path (cons_1.west |- cons_n.north)+(-0.3,+0.7) node (what_a) {};
+            \path (cons_n.east |- cons_n.south)+(+0.3,-0.7) node (what_b) {};
+            \path [bgbox] (what_a) rectangle (what_b);
+            \node [below = 0.5em of what_a, anchor = west, inner sep = 0.5em]{Front--end};
+        \end{pgfonlayer}
+
+        %back-end background
+        \begin{pgfonlayer}{background}
+            % Compute a few helper coordinates
+            \path (server_1.west |- server_n.north)+(-0.3,+0.7) node (harambe_a) {};
+            \path (server_n.east |- server_n.south)+(+0.3,-0.7) node (harambe_b) {};
+            \path [bgbox] (harambe_a) rectangle (harambe_b);
+            \node [below = 5.8em of harambe_a, anchor = west, inner sep = 0.5em]{Back--end};
+        \end{pgfonlayer}
+
+        %data provider ghost nodes
+        \node (ghost2) [draw=none, below=1.0cm and 0.0cm of prod_1] {};
+        \node (ghost3) [draw=none, below=0.7cm and 0.0cm of prod_dot] {};
+
+        \node (interwebs_edge1) [draw=none] at (-2.35,0.5) {};
+        \node (interwebs_edge2) [draw=none] at (-1.85,0.5) {};
+        \node (interwebs_edge3) [draw=none] at (-1.35,0.5) {};
+
+        %front-end ghost nodes
+        \node (ghost4) [draw=none, below=0.7cm and 0.0cm of cons_dot] {};
+        \node (ghost5) [draw=none, below=1.0cm and 0.0cm of cons_n] {};
+
+        \node (interwebs_edge4) [draw=none] at (1.42,0.5) {};
+        \node (interwebs_edge5) [draw=none] at (1.92,0.5) {};
+        \node (interwebs_edge6) [draw=none] at (2.42,0.5) {};
+
+        %back-end ghost nodes
+        \node (interwebs_edge7) [draw=none] at (-2.365,-0.5) {};
+        \node (interwebs_edge8) [draw=none] at (2.38,-0.5) {};
+
+        %draw producer
+        \draw [flow] (prod_1.south) -- (ghost2.center) -| (interwebs_edge1.center);
+        \draw [flow] (prod_dot.south) -- (ghost3.center) -| (interwebs_edge2.center);
+        \draw [flow] (prod_n.south) -- (interwebs_edge3.center);
+
+        %draw consumer
+        \draw [double_flow] (cons_1.south) -- (interwebs_edge4.center);
+        \draw [double_flow] (cons_n.south) -- (ghost5.center) -| (interwebs_edge6.center);
+        \draw [double_flow] (cons_dot.south) -- (ghost4.center) -| (interwebs_edge5.center);
+
+        %draw server
+        \draw [double_flow] (server_dot) -- (interwebz);
+        \draw [double_flow] (server_1) -- (interwebs_edge7.center);
+        \draw [double_flow] (server_n) -- (interwebs_edge8.center);
+    \end{tikzpicture}
+    \caption{A figure}
+    \label{fig:fig}
+\end{figure}

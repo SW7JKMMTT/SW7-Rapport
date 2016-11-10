@@ -65,8 +65,15 @@
 %Line numbers
 \usepackage[modulo]{lineno}
 
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
 %Tikz related
 \usepackage{tikz}
+\usepackage{tkz-graph}
+\usepackage{tikz-qtree}
+\usepackage{tikzscale}
 \usetikzlibrary{%
     shapes,
     shapes.symbols,
@@ -77,7 +84,11 @@
     patterns,
     calc,
     fit,
-    math
+    math,
+    shapes.multipart,
+    automata,
+    shadows,
+    decorations.pathreplacing
 }
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.12}
@@ -130,6 +141,8 @@
 \definecolor{tableGoodDark}{HTML}{26A65B}
 \definecolor{tableBadLight}{HTML}{EC644B}
 \definecolor{tableBadDark}{HTML}{EF4836}
+
+\definecolor{GoogleGreen}{HTML}{4CAF50}
 %Listing & Minted
 \usepackage{shellesc}
 \usepackage{listings}

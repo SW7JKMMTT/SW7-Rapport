@@ -1,0 +1,20 @@
+\begin{figure}
+    \center
+    \begin{tikzpicture}[auto, node distance=1.5cm,
+            stage/.style={rectangle, rounded corners, minimum width=1.5cm, minimum height=1cm,text centered, fill=diagramLight, draw, align=center},
+            sharp/.style={rectangle, minimum width=5.5cm, minimum height=1cm,text centered, fill=diagramLight, draw, align=center},
+            server/.style={rectangle, rounded corners, minimum width=1.5cm, minimum height=1cm,text centered, fill=diagramLight, rectangle split, rectangle split parts=2, draw},
+            flow/.style={draw, ->},
+            double_flow/.style={draw, <->},
+            create/.style={draw, ->},
+            use/.style={draw, dotted, ->}
+        ]
+
+        \node (server_com) at (0,0) [stage] {Server \\ communication};
+        \node (app) [stage, above=0.1cm of server_com] {App functionality/\\ system utility};
+        \node (ui_man) [stage, above=0.1cm of app] {UI management \\ Authentication \& \\ authorization};
+        \node (ui) [stage, above=0.1cm of ui_man] {UI};
+    \end{tikzpicture}
+    \caption{A figure}
+    \label{fig:fig_2}
+\end{figure}
