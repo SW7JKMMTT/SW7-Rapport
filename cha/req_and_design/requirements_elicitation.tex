@@ -1,0 +1,72 @@
+\section{Requirements Elicitation}\label{sec:requirements_elicitation}
+As mentioned in \cref{sec:problem_statement} we wish to develop a back--end service capable of providing vehicle relevant information to a client, for all the vehicles they own, in whatever format they wish.
+Before starting the design of the actual system we determine some requirements for the system.
+%%%% I havnt yet seen SOTA but i expect something about this to be in there %%%%
+In \fxnote{SOTA-ref} we looked into the general area of fleet management, a field which already has large companies providing a fleet management service.
+As such this section not only refers to requirements that are purely technical, but also requirements that sets our system apart from those of the companies.
+%%%%
+
+First let us look at what makes up the system as a whole.
+The system consists of three parts: a data provider, a back--end, and a front--end.
+Data providers are relatively simple as they simply forward the data to the back--end.
+The requirements for the front--end may differ depending on the user and as such without a company as stakeholder would be a lot of guesswork to produce
+This leads us to focus on the back--end, the connection between front--end and data provider.
+By focusing on the back--end we can also fit it for a $n..1..m$ structure.
+In this structure the n represents the data providers, the 1 the back--end and the m the front--end clients.
+This leads to us being able to have an arbitrary number of data providers and front--end clients communicate with the back--end.
+
+It is important to keep in mind that all three constituents of the system can be isolated and considered as their own individual systems.
+The data provider may be an app collecting and forwarding GPS and \ac{OBD} data to the back--end.
+The front--end could be a system which requests data from the back--end.
+The back--end could be a system that receives data from the data provider, normalises and stores the data, and forwards data when it is requested by the front--end.
+Also note that data providers are linked to a front--end as they represent vehicles in the fleet and fleet owner, however no direct communication between the two occur.
+
+\bigskip \noindent
+The objective for the back--end is simply put to normalise, store and forward data to the front--end.
+Vehicle relevant information can be acquired from \ac{OBD}, however this does not include geolocational data, as such an alternate way to provide geolocational data must be used.
+All data must be collected and subsequently stored, such that it can be utilized by the front--end in whatever way the user desires.
+Furthermore since vehicle and geolocational data will be retrieved from different sources, there must also be a method in place which links together information pertaining to the same vehicle.
+Data should also be stored in sessions, such that data can be provided for a single driving session if so desired.
+
+Developing a generic front--end that suits any company is not a realistic goal as no two companies are the same and may have different requirements to such a front--end.
+Providing the data required allows a company to customize the front--end to their specific need.
+This also means that the back--end must support providing data in a neutral format, as to not impose any restrictions onto the front--end development.
+Lastly \ac{OBD} is an evolving standard with the most recent addition being \ac{HDOBD}, as such the system should also be designed with this in mind; such that it can be further developed in order to support future \ac{OBD} standards, without the development causing issues for the rest of the system.
+
+\bigskip \noindent
+This in combination with the SOTA analysis leads to the following functional requirements for the back--end:
+\fxnote{convert to letters instead of bullet points}
+\begin{itemize}
+    \item Receive \ac{OBD} and GPS data from some data provider, such as an Android app.
+    \item Access management for front--end requests.
+    \item Normalise incoming data and offer the data in a platform neutral format. %Device scalability.
+    \item Support load scalability.%Be load scalable such that an arbitrary number of vehicles and clients can make use of the service without new clients negatively impacting performance.
+    \item Allow the front--end to request any data obtained from data providers.
+    \item Support both functional and generational scalability.
+\end{itemize}
+
+%    \item Be able to read data from OBD and GPS off a mobile device.
+%    \item Have a design which allows for easy scalability of the incoming data(OBD/HDOBD) and other possible extensions or future generations of OBD.
+%    \item Normalize incoming data from their various format to a single format, this includes possible extension data from EOBD.
+%    \item Provide data in various sensible formats such that a possible client isn't forced to use our idea of a ``proper'' format.
+%    \item Provide any obtainable data to a possible client.
+%    \item Acquire useful data from sources beyond OBD?? Fuel cost based on geolocation maybe?
+%    \item Have scalability in regard to those measures defined earlier
+%    \item next gen support, HDOBD most recent change to the OBD, more may come
+
+
+%No outside stakeholders so we use SOTA and problemstatement, we are technically the stakeholders.
+%We want to add new stuff so we provide data - data provided
+%We want scalability - this is required to provide our services to a larger amount of clients ant to expand in the future
+%Scalability is our key notion as our theoretical income is from clients using the system, for this to occur we want to support as many clients as possible
+
+%Meta
+    %what is req elicit, specify func reqs
+%Core
+    %System purpose?
+    %Data reqs and purpose
+    %Who is the user?
+    %How does it help the user? -- tbh this should be evident in the intro as it should tell us why fleet management is a thing and what its use is?
+    %So what it our job?
+%Ending
+    %The resulting requirements
