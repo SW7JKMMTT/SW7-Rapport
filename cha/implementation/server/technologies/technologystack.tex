@@ -1,0 +1,121 @@
+% chktex-file 08 chktex-file 13 chktex-file 17
+\subsection{Technology Stack}
+To start with a good foundation for our server, it is important that we choose an appropriate stack of technologies, such that we take advantage of well tested and supported frameworks and libraries.
+This approach enables us, as developers, to focus on parts unique to the system we are developing, i.e.~business logic.
+Moreover since the server is what connects to both ends of the system, i.e.~the producer clients, and the front--end clients, it is paramount that the outwards facing interfaces on the server are stable, thoroughly tested, and well documented.
+
+\subsubsection{The Programming Language}
+It is important for us to choose a programming language, in which we all are comfortable, and which will not be a hindrance for the system.
+This means that the programming language and the environment around it must allow for; scalability, reliable and good performance, as well as the ability to utilise libraries for web related tasks, e.g.~running a server and routing/handling incoming requests.
+
+Furthermore it is important that the development environment is available for multiple platforms, such that all group members can participate equally, since we use both macOS, Linux, and Windows.
+
+\bigskip
+To decide which language to use, we look at popular languages fitting the above mentioned requirement;
+these are Node.js\footnote{\url{https://nodejs.org/en/}} and Python with Django\footnote{\url{https://www.djangoproject.com/}} or Flask\footnote{\url{http://flask.pocoo.org/}}, which are both popular for developing web services.
+However both of these are dynamically typed languages, which can be good for rapid development but bad for the maintainability of a system\cite{kleinschmager2012static}.
+Moreover especially Node.js is not as mature and lack the same enterprise libraries and safeties which come with yet another language --- Java\footnote{\url{https://www.java.com/}}.
+
+Java is a mature and well documented language that have been tried and tested in numerous enterprise systems; and since 2001 Java has resided in the top two, but mostly top one, languages on the TIOBE index\cite{TiobeIndex}.
+It also enables us to develop a web service, by using a combination of the many high quality third party libraries built for such tasks.
+Moreover, Java is platform independent both in development and in production, so we are ensured that all group members can get involved in the development.
+Because of this, and because it also fits the above mentioned requirements, we choose to develop the server of our system in Java.
+
+\subsubsection{Java 8}
+After having chosen Java as the programming language we use to develop our server, the next step is to ensure that we use the concepts and libraries necessary to develop efficiently.
+In our case, this means that we can develop individual components which can be reused and replaced if new or other functionality is needed --- in other words, we want to build a system with low coupling and high cohesion.
+
+In the Java world, you can use JavaEE\footnote{\url{http://www.oracle.com/technetwork/java/javaee/overview/index.html}}, where EE stands for ``Enterprise Edition''.
+It contains a large number of frameworks and libraries for building large and complex enterprise applications.
+One of the compelling features of JavaEE is its implementation of easy context and dependency injection, which if used properly can ensure low coupling.
+
+However, as a part of the enterprise robustness of JavaEE, it is always a version behind the main Java language.
+This means that some of the new features of Java 8, such as lambda expressions in streams and switch cases over strings, are not available if we choose JavaEE.
+
+Because of this, and because of some added features and overall improvements to the ease of use, we instead choose to work with Spring\footnote{\url{https://spring.io/}}.
+Spring is a framework on top of Java, which enables the use of features similar to those in JavaEE.
+Moreover many other third party frameworks and libraries have great integration with Spring, which will ease the initial setup of the different technologies.
+
+\subsubsection{Communication}
+As the server in our system needs to communicate with other parts of the system over the internet, we need a unified way of passing information around.
+The two de facto standards for this type of communication are SOAP and REST.
+
+We present a short summary of the two technologies:
+\begin{description}
+    \item[SOAP] (Simple Object Access Protocol)\cite{SOAP_spec}\hfill\\
+        By passing XML data over HTTP (and in some cases HTTPS or SMTP), SOAP enables computers to communicate.
+        SOAP requires a specific packaging of data in a so called \textit{SOAP Envelope} which contains a header and a body.
+        Mainly SOAP focusses on making procedures available to other systems via the internet.
+    \item[REST] (Representational State Transfer)\cite{RESTful_best_practices}\hfill\\
+        Services implementing a REST interface are often described as RESTful services.
+        Instead of enforcing a predefined data structure as SOAP does, REST utilises the HTTP methods, e.g.~GET, POST, PUT, and DELETE.
+        Moreover requests to and responses from a RESTful service can be in any format, but often XML or JSON is used,
+        and where SOAP serves procedures, REST focusses on serving resources.
+
+        State is not conserved on the server, which means that RESTful services are easily scalable --- two sequential requests may be on two different servers.
+        Furthermore the flow through the application is driven by the requests the user makes, and any state is only kept on the client.
+\end{description}
+
+We choose to implement the server as a RESTful service, because we deem that it fits our needs the most.
+Additionally all group members have experience with developing RESTful services, and the available libraries for developing a RESTful service in Java are well documented and mature.
+
+\bigskip
+In the Java world there exists a concept called Javax which embodies various extensions to the Java standard.
+One component of Javax is the JAX--RS specification\footnote{\url{https://jax-rs-spec.java.net/}}, which describes a RESTful service in Java.
+Our RESTful server will be based upon the RESTEasy\footnote{\url{http://resteasy.jboss.org/}} implementation of version 2.0 of the aforementioned JAX--RS specification.
+
+RESTEasy is developed by JBoss, owned by Red Hat, and is a well documented set of frameworks for integrating REST into a Java server application or service.\fxnote{Måske tilføj noget med hvordan vi bruger det, dog i et senere afsnit!}
+It allows us to easily develop a RESTful service while being closely integrated into Spring.
+Moreover RESTEasy handles the HTTP communication, and does it asynchronously, which can greatly improve performance and scalability,
+since multiple inbound requests can be handled simultaneously.
+
+\subsubsection{Deployment}
+To be able to deliver our service we need what is called an application server, i.e.~something which can run our code and serve it to the outside world in a production environment.
+
+Due to our earlier choice of RESTEasy, we will be using the WildFly\footnote{\url{http://wildfly.org/}} application server, because it is also developed by JBoss.
+This ensures that our different technologies can work in conjunction right from the start;
+which in turn means that we can implement a working prototype, and focus on our business logic instead of tedious configuration of the systems underlying technologies.
+
+\subsubsection{Data Persistence}
+Lastly we need to decide on a way of persisting data, i.e.~storing the data we gather.
+In choosing the data persistence technologies these two criteria are the most significant for a database system:
+\begin{eletterate}
+    \item The ability to store a variable amount of data, i.e.~elements in the database does not have a fixed schema, and properties can be added or removed at any time.
+    \item Being able to easily scale the system horizontally.
+    \item Making geospartial queries, i.e.~queries which finds data with locational delimiters.
+\end{eletterate}
+
+\bigskip
+There exists numerous categories of database systems or paradigms, but the most prevalent are SQL and NoSQL.
+Furthermore there exists NewSQL databases, which are relational but with the scalability of NoSQL;
+however, as this is a relatively new concept the support and integration into our Java environment is lackluster, so we will ignore these specific NewSQL database systems.
+
+SQL databases are relational and data is stored in a number of tables, some examples of popular SQL databases are MySQL\footnote{\url{https://www.mysql.com/}}, PostgreSQL\footnote{\url{https://www.postgresql.org/}}, and IBM DB2\footnote{\url{http://www.ibm.com/analytics/us/en/technology/db2/}}.\cite{DB_RANKINGS}
+
+A key property of SQL databases is that they use transactions which are ACID--compliant\cite{Haerder:1983:PTD:289.291}, making them ideal for use in environments where it is critical transactions only have expected or recoverable effects, e.g.~the financial world.
+
+Relational databases are rigid by design, meaning that for example adding a new property to all existing data requires a migration of the database.
+Moreover all entries in a table in a SQL database have the same fields for data, regardless of the actual value, this can result in a database, where a lot of the storage is unused.
+To avoid this relational databases uses relations to refer to other tables and specific records, this means that data is spread over many parts of the database and gathering information requires joining two or more tables.
+A side effect of this is that relational databases are significantly harder to scale horizontally than their counter parts --- NoSQL databases.
+
+\bigskip
+NoSQL databases is a term used to describe a myriad of different database back--ends.
+Some of these are; key--value stores, document stores, and graph based systems.
+Common for the majority of NoSQL databases is that they value simplicity of design, scalability and speed over consistency.
+This means that one significant shortcoming of NoSQL databases is that they do not use ACID--compliant transactions.
+However many NoSQL databases are ACID--like, i.e.~read and write operations can be configured to show consistency.
+
+Document stores are an expansion to Key--Value based stores, where the value is replaced by a document of some sorts, e.g.~XML or JSON formatted documents.
+An advantage of document stores is that any two documents do not need to follow the same ``schema'', i.e.~documents can have a different amount and kind of properties.
+This makes expanding the system significantly easier, since adding a new property, e.g.~fuel consumption, is as easy as introducing it into the server application.
+
+\bigskip
+We choose to use a NoSQL database system, because we deem it best fits our two requirements presented earlier.
+The most popular NoSQL database is MongoDB\footnote{\url{https://www.mongodb.com/}} and is also a document store.\cite{DB_RANKINGS}
+Because of this we choose to use MongoDB as the document store to use for our data persistence.
+Furthermore MongoDB has good support for geospartial queries, which mean that we easily can make queries in relation to the location of vehicles.
+
+\bigskip
+To integrate MongoDB into our server, we choose to use Hibernate OGM\footnote{\url{http://hibernate.org/ogm/}}, which is a Java Persistence API implementation for NoSQL solutions.
+Hibernate is developed by JBoss and works nicely with Spring, while making it possible to change our data persistence in the future, with minimal effort.

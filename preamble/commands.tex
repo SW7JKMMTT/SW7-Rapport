@@ -1,3 +1,4 @@
+% chktex-file 01 chktex-file 09 chktex-file 10 chktex-file 17
 \newcommand{\giraf}[1]{\texttt{#1}\xspace}
 \newcommand{\android}[1]{\texttt{#1}\xspace}
 
@@ -39,3 +40,11 @@
 \def\subsectionmark#1{\def\Subsectionname{#1}\Subsectionmark{#1}}
 \let\Subsubsectionmark\subsubsectionmark
 \def\subsubsectionmark#1{\def\Subsubsectionname{#1}\Subsubsectionmark{#1}}
+
+\newenvironment{enumberate}{\begin{enumerate}[label=\itshape \arabic*\upshape)]}{\end{enumerate}}
+\newenvironment{enumberate*}{\begin{enumerate*}[label=\itshape \arabic*\upshape)]}{\end{enumerate*}}
+\newenvironment{eletterate}{\begin{enumerate}[label=\itshape \alph*\upshape)]}{\end{enumerate}}
+\newenvironment{eletterate*}{\begin{enumerate*}[label=\itshape \alph*\upshape)]}{\end{enumerate*}}
+
+% 1st param: font style of label, 2nd param: text of longest label
+\newenvironment{dankscription}[2]{\begin{description}[labelindent=\parindent, labelwidth=\widthof{#1#2}, align=parright, font=\normalfont#1]}{\end{description}}

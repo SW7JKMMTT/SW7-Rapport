@@ -1,0 +1,61 @@
+@MISC{DB_RANKINGS,
+  author = {solid IT gmbh},
+  publisher = {db--engines.com},
+  title = {DB--Engines Ranking},
+  year = {2016},
+  lastchecked = {9-11-2016},
+  howpublished = {\url{http://db-engines.com/en/ranking}}
+}
+
+@MISC{RESTful_best_practices,
+  author = {Todd Fredrich},
+  publisher = {Pearson eCollege},
+  title = {RESTful Service Best Practices: Recommendations for Creating Web Services},
+  month = {August 2,},
+  year = {2013},
+  howpublished = {\url{https://github.com/tfredrich/RestApiTutorial.com/raw/master/media/RESTful%20Best%20Practices-v1_2.pdf}}
+}
+
+@MISC{SOAP_spec,
+  author = {W3C},
+  title = {SOAP Version 1.2 Part 1: Messaging Framework (Second Edition)},
+  year = {2007},
+  lastchecked = {16-11-2016},
+  howpublished = {\url{https://www.w3.org/TR/2007/REC-soap12-part1-20070427/}}
+}
+
+@MISC{TiobeIndex,
+  author = {TIOBE software BV},
+  title = {TIOBE Index},
+  year = {2016},
+  lastchecked = {11-11-2016},
+  howpublished = {\url{http://www.tiobe.com/tiobe-index/}}
+}
+
+@article{Haerder:1983:PTD:289.291,
+ author = {Haerder, Theo and Reuter, Andreas},
+ title = {Principles of Transaction-oriented Database Recovery},
+ journal = {ACM Comput. Surv.},
+ issue_date = {December 1983},
+ volume = {15},
+ number = {4},
+ month = dec,
+ year = {1983},
+ issn = {0360-0300},
+ pages = {287--317},
+ numpages = {31},
+ url = {http://doi.acm.org/10.1145/289.291},
+ doi = {10.1145/289.291},
+ acmid = {291},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+}
+
+@inproceedings{kleinschmager2012static,
+  title={Do static type systems improve the maintainability of software systems? An empirical study},
+  author={Kleinschmager, Sebastian and Robbes, Romain and Stefik, Andreas and Hanenberg, Stefan and Tanter, Eric},
+  booktitle={Program Comprehension (ICPC), 2012 IEEE 20th International Conference on},
+  pages={153--162},
+  year={2012},
+  organization={IEEE}
+}
