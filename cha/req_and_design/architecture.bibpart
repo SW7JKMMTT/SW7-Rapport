@@ -1,0 +1,14 @@
+@book{software_engineering,
+  author = {Ian Sommerville},
+  title = {Software Engineering},
+  publisher = {Pearson},
+  year = 2015,
+  edition = 10,
+  isbn = {978-129-209-6131}
+}
+
+@MISC{netflix,
+  author = {netflix},
+  title = {netflix techblog},
+  howpublished = {\url{http://techblog.netflix.com/}}
+}

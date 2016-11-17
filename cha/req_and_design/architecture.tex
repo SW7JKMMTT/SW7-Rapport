@@ -1,0 +1,92 @@
+%Disp
+%Meta stuff for archi design
+    %Client server - very generally ending on a note of how it represents our architect
+    %Internal architecture, server - our layered API stuff
+    %Relating to requirements, how does the architecture fit our reqs? -- leads to scalability discussion of architecture
+        %This discussion may contain elements of load scalability, moving data normalization to android app, modular design, rest.
+
+%Client Server
+
+%Each vehicle with phone = data provider
+%Back-end collects data from multiple providers
+%Back-end Provides data for x amounts of front-end's which a company may use
+
+%We provide the Back-end
+%We can assume that an android exists that can provide data(supervisor said so)
+%May provide a proof of concept for Fron-end but that is not our purpose
+
+%We provide DATA for business logic, the companies themselves will have to outsource another company to develop a front-end for them
+%We provide PoC for front-end, theoretical business could have a baseline front-end but still provide data such that a company can outsource building them a specific application that suits their need using out data, that way the system they need developed is smaller, which is our business salespoint.
+
+%Ours is client server, we then provide the database part of a layered system
+%Our data collecntion part is essentialyl a reverse client-server architecture where multiple clients provide data to the server.
+
+\section{Architecural Design}\label{sec:architectural_design}
+As per the requirements elicitation, \cref{sec:requirements_elicitation}, the system we develop must be able to receive data from multiple devices, normalize and collect data and then provide a view of the normalised data to a number of clients.
+In order to allow this, first an appropriate architecture should be established as to avoid restructuring the system later on, if something does not fit the architecture.
+
+\subsection{Client--Server}
+A way to describe the system we want to develop, would be to say that we want to provide a service which a number of clients make use of, which also fits with how Ian Sommerville describes the client--server pattern in \cite{software_engineering},
+``[...] the Client--Server pattern is organized as a set of services and associated servers, and clients that access and use the services.''
+
+As with any design choice the client--server architecture comes with both advantages and disadvantages, Ian Sommervile describes both advantages and disadvantages in \cite[p. 181]{software_engineering}.
+The client--server architecture allows servers to be distributed across a network, something quite advantageous when considering load scalability.
+It allows us to control the flow of data to each server by controlling which servers specific clients communicate with.
+Another advantage of the client--server architecture is that clients may use some functionality provided by the server and as such have no need to implement those functions.
+These advantages are a result of the key benefit in the client--server architecture, separation and independence, allowing clients and servers to be changed without affecting each other as communication is handled through an abstraction layer, for our case such a layer may be an API.
+
+As mentioned the client--server architecture comes with both advantages and disadvantages.
+Ian Sommerville mentions disadvantages as management in regard to servers owned by different organizations, performance due to network and security in regard to how vulnerable the system is to denial--of--service attacks.
+As for management issues in regard to servers a way to handle this is to implement some form of access management such that requests are designated appropriately.
+As for denial--of--service attacks there is no way to completely secure oneself from these attacks, although some preventive meassures in regard to load balancing and request limits can be used.
+
+\fxnote{tikz}
+\bigskip \noindent
+A key point for the client--server architecture is its inherintly distributed structure, a structure we also require if we are to be able to have multiple front--end clients and data providers.
+The client--server is also a well defined and broadly used architecture by large--scale web services such as Netflix who have adapted it to suit their specific needs and work with their tenchnology stack which can be seen on their techblog \cite{netflix}.
+For our particular system we have two types of distinct clients communicating with the server.
+\begin{description}
+    \item [Producer] which are the clients providing data, these are located in the vehicle and transmit both \ac{OBD} and GPS data to the server.
+    \item [Consumer] which are the clients making use of the data provided by the producer, this is the system that a company would use, these request data from the server.
+\end{description}
+
+\subsection{Internal Architecture}
+While the client--server pattern is used for the system as a whole; producer, server, and consumer; each of these three component may have their own internal architecture.
+Moving forward we assume that a producer exists, as forwarding GPS and \ac{OBD} data to a server is trivial.
+Ignoring this does remove some load scalability options which will be covered later in the implementation section \fxnote{opdater når denne section eksistere}.
+
+\subsubsection{Server}
+For the server component we use a layered architecture consisting of three layers.
+\begin{description}
+    \item [Core], this layer contains both data model and business logic, an UML diagram for this layer is shown in \fxnote{ref to impl sec where this is done}.
+    \item [Persistence], this layer contains \aclp{DAO}.
+    \acsp{DAO} determine how an object may be accessed and what data operations are allowed on the data, protecting the database details.
+    \item [Service], this layer contains the code which handles requests.
+    The service layer is the layer which the clients communicate with when they wish to make requests to the application.
+    It contains endpoints for each available request, if the request from a client is legitimate, the endpoint makes use of the \acsp{DAO} to manipulate or retrieve data.
+\end{description}
+As mentioned this helps hide server details that neither client needs to know about.
+The only layer that clients interact with directly is the service layer, having the layers be separate also helps in case the model needs altering for some reason, as only the core would have to be refined.
+The layered architecture also brings in the concept of functional scalability, as all data is present, only the service layer would be altered in order to provide the clients with new functionalities, given that the data is available in the system.
+How this further helps scalability is described in more detail in the implementation section \fxnote{opdater når denne section eksistere}.
+
+%\subsubsection{Client--Producer}
+%Depends on user interaction wished for/wanted --- if low to none then pipe and filter layer is sensible
+%If high wished, then a layered/MVC Pattern may be wanted
+\subsubsection{Client--Consumer}
+As for the consumer client, the architecture can really be anything the developer wishes.
+The data provided by the system we are developing makes it such that any company can have a system built that suits their exact needs; this also means that the architecture for said system will be whatever they need.
+As an example a consumer client could use a layered architecture.
+A generic layered architecure might have the four following layers, as described by Ian Sommerville in \cite{software_engineering}:
+\begin{itemize}
+    \item User Interface.
+    \item User interface management, Authentication and authorization.
+    \item Core business logic/application functionality, System utilities.
+    \item System support (OS, database, etc.)
+\end{itemize}
+For this example the fourth layer, system support, could either simply be a layer that handles communication with the server we provide, or there could be a fifth layer that does that, and then stores data locally to reduce the number of requests.
+For the consumer essentially any arbitrary architecture could be chosen, and the chose would depend on the specific need and use case the client has.
+
+\subsection{Requirements fulfillment(working title)}
+
+%A test section written by the one and only Jesper Jensen should follow here.
