@@ -35,3 +35,12 @@
   url = {https://docs.oracle.com/cd/E19566-01/819-4439/acrih/index.html},
   lastchecked = {20-10-2016},
 }
+
+@book{coupling,
+  title = {Objektorienteret analyse \& design},
+  author = {Lars Mathiassen and Andreas Munk-Madsen and Nielsen, {Peter Axel} and Jan Stage},
+  year = {2001},
+  isbn = {8777511530},
+  publisher = {Marko},
+  edition = {3},
+}

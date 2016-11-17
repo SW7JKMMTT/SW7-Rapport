@@ -10,9 +10,9 @@ The following list presents some of the use cases discussed, as well the aspects
     Another aspect here is customer service, through \ac{OBD} the drivers can be evaluated in regard to breaking patterns, speed etc.
     \item [Military (Logistics division)] \hfill \\
     In the military a variety of vehicles are used, each with unique aspects to them as most of the vehicles differ from civil vehicles in some fashion.
-    Furthermore vehicles in the military are often away from the base days at a time, at which point having information about the vehicles status and position becomes even more convenient than normal.
+    Furthermore vehicles in the military are often away from the base days at a time\footnote{Citation needed; information gathered from personal experience}, at which point having information about the vehicles status and position becomes convenient in monitoring situations.
 
-    When training there are also regulations depending on what type of vehicle that must be followed, the information from \ac{OBD} would help to reveal if the regulations are upheld.
+    When training there are also regulations, for instance driving and resting times requirements, depending on what type of vehicle that must be followed, the information from \ac{OBD} would help to reveal if the regulations are upheld.
 
     Working with military vehicles would impose an additional requirement to consider the security of \ac{OBD}, both in order to encrypt the data, but also security measures in order to avoid the potential hijacking of a vehicle through the \ac{OBD}.
     \item [Lorry Drivers] \hfill \\
@@ -33,8 +33,10 @@ However, vehicles used for eight hour shifts are usually in the garage when not 
 As for both military vehicles and cargo trucks this is not necessarily true as they often are gone for months at a time.
 
 Although, due to the variety of military vehicle, cargo trucks are chosen at the focus of this paper.
+We make this choice since information about regular cargo trucks are easier to gain access to compared with information regarding military vehicles.
+Furthermore the military is a single client, if they change their requirements or don't want a system in the end, it could deem the whole system useless.
 Decisions made henceforth will be made accordingly to the focus being on cargo trucks; this should lead to an architecture with a shared basis expanded to consider cargo truck specific aspects.
-The intention is that the expanded part is easily modifiable in order to target other types of vehicles and their unique attributes.
+It should be easy to extend the system to in order to target other types of vehicles and their unique attributes.
 
 The driver of a truck is called a ``hauler'' and is often employed by a haulage contractor, which is a company that administer the trips by the hauler and owns the trucks.
 In Denmark a hauler is required to follow special regulations concerning driving and resting times\cite{haulierSleepLaw}.
