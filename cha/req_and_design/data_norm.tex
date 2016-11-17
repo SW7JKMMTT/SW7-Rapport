@@ -1,0 +1,51 @@
+%!TEX root = ../../main.tex
+\section{Data normalisation}
+As seen in \cite{sec:architectural_design} the data from the vehicles is provided by a generic data provider.
+This generic data provider can be a arbitrary piece of equipment, for instance a smartphone. 
+Since it is different types of vehicles the data is extracted from, the data format can differ.
+Therefore the data needs to be normalised before the back--end can properly use the data.
+The process of normalising the data is to unify the format, which could differ in units, have a lack of some data or the data could be corrupted.
+An advantage of normalising the data is that it does not matter where the data is from when it have been normalised, since the data have a unified format.
+
+The way the system is split up, as seen in \cite{sec:architectural_design}, there are two options of normalising the data: centralised or distributed.
+
+\begin{description}
+    \item[Centralised] \hfill \\
+    A centralised normalisation of the data means that the data is normalised at a central point, in our case on the back--end.
+    The data provider sends the raw data and before the back--end can use the data it has to normalise it.
+    If we were to choose this centralised model, it would mean that no matter if there are 100 vehicles or 100.000 vehicles, 
+    the back--end is responsible of normalising all the sent data.
+    
+    \item[Distributed] \hfill \\
+    With a distributed normalisation, the data is normalised at different places, in our case at the data provider. 
+    This means that when the back--end receives the data it has been normalized and is ready to be stored.
+\end{description}
+\bigskip
+
+Both ways of normalising the data is possible to do in our system.
+A disadvantage of a centralised normalisation is a extra workload on the back--end.
+The extra workload will probably not be a problem with a small amount of vehicles sending data.
+In the case of many vehicles, for instance 100.000, sending simultaneously, the back--end could have problems with handling all of the data,
+and its other tasks, thus creating a bottleneck in the system.
+This bottleneck will impair the load scalability of the system, which is defined in \myref{subsec:scalability_def},
+since it can have negative effect on how many data-providers and clients that can communicate with the back--end.
+
+This problem does not occur with a distributed normalisation, since the data provider in each vehicle deals with the normalisation.
+The data provider in the vehicle only deals with relaying the data from the vehicle, 
+so we expect that a data provider will have no issues with also normalising the data from the vehicle it belongs to.
+
+Another advantage of a distributed system is that the interface of the back--end can be kept clean.
+The server interface will not need to have a lot of edge cases, 
+these will be kept at the individual vehicle that needs them, 
+thus giving the system, in regard to normalising the data, a more logical structure.
+Keeping the edge cases at the vehicles and keeping the back--end interface clean improves also the device scalability, 
+as mentioned in \myref{subsec:scalability_def}.
+In a centralised system, the edge cases can risk creating conflicts, but that is eliminated in a distributed system,
+thus improving the device scalability and making it easier to extend support for different types of vehicles.
+
+\bigskip
+
+From the arguments stated above we choose to distribute the data normalization between the data provider and back--end.
+Since the data provider already is in the vehicles, 
+we believe it gives a better distribution of the computational requirements of the whole system.
+Furthermore since we opt for scalability in this paper, the improvement of the device scalability is valued high.
