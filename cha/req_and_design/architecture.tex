@@ -37,18 +37,18 @@ These advantages are a result of the key benefit in the client--server architect
 
 As mentioned the client--server architecture comes with both advantages and disadvantages.
 Ian Sommerville mentions disadvantages as management in regard to servers owned by different organizations, performance due to network and security in regard to how vulnerable the system is to denial--of--service attacks.
-As for management issues in regard to servers a way to handle this is to implement some form of access management such that requests are designated appropriately.
+As for management issues in regard to servers, a way to handle this is to implement some form of access management such that requests are designated appropriately.
 As for denial--of--service attacks there is no way to completely secure oneself from these attacks, although some preventive meassures in regard to load balancing and request limits can be used.
 
-\fxnote{tikz}
 \bigskip \noindent
 A key point for the client--server architecture is its inherintly distributed structure, a structure we also require if we are to be able to have multiple front--end clients and data providers.
 The client--server is also a well defined and broadly used architecture by large--scale web services such as Netflix who have adapted it to suit their specific needs and work with their tenchnology stack which can be seen on their techblog \cite{netflix}.
-For our particular system we have two types of distinct clients communicating with the server.
+For our particular system we have two types of distinct clients communicating with the server, as represented on \cref{fig:client_server_architecture}.
 \begin{description}
     \item [Producer] which are the clients providing data, these are located in the vehicle and transmit both \ac{OBD} and GPS data to the server.
     \item [Consumer] which are the clients making use of the data provided by the producer, this is the system that a company would use, these request data from the server.
 \end{description}
+\subimport{}{interwebz_architecture.tex}
 
 \subsection{Internal Architecture}
 While the client--server pattern is used for the system as a whole; producer, server, and consumer; each of these three component may have their own internal architecture.
@@ -76,7 +76,7 @@ How this further helps scalability is described in more detail in the implementa
 \subsubsection{Client--Consumer}
 As for the consumer client, the architecture can really be anything the developer wishes.
 The data provided by the system we are developing makes it such that any company can have a system built that suits their exact needs; this also means that the architecture for said system will be whatever they need.
-As an example a consumer client could use a layered architecture.
+As an example a consumer client could use a layered architecture as shown on \cref{fig:consumer_client}.
 A generic layered architecure might have the four following layers, as described by Ian Sommerville in \cite{software_engineering}:
 \begin{itemize}
     \item User Interface.
@@ -84,8 +84,10 @@ A generic layered architecure might have the four following layers, as described
     \item Core business logic/application functionality, System utilities.
     \item System support (OS, database, etc.)
 \end{itemize}
-For this example the fourth layer, system support, could either simply be a layer that handles communication with the server we provide, or there could be a fifth layer that does that, and then stores data locally to reduce the number of requests.
-For the consumer essentially any arbitrary architecture could be chosen, and the chose would depend on the specific need and use case the client has.
+\subimport{}{consumer_client_fig.tex}
+For a consumer client to communicate with the server, the fourth layer may be a dedicated layer to do so as represented on \cref{fig:consumer_client}.
+Alternatively there could be a fifth layer that does that, and then stores data locally to reduce the number of requests.
+For the consumer, essentially any arbitrary architecture could be chosen as long as it supports communicating with the server; the choice would depend on the specific use case and needs of the client.
 
 \subsection{Requirements fulfillment(working title)}
 
