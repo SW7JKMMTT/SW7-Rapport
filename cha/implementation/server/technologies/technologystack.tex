@@ -1,10 +1,10 @@
 % chktex-file 08 chktex-file 13 chktex-file 17
-\subsection{Technology Stack}
+\section{Technology Stack}
 To start with a good foundation for our server, it is important that we choose an appropriate stack of technologies, such that we take advantage of well tested and supported frameworks and libraries.
 This approach enables us, as developers, to focus on parts unique to the system we are developing, i.e.~business logic.
 Moreover since the server is what connects to both ends of the system, i.e.~the producer clients, and the front--end clients, it is paramount that the outwards facing interfaces on the server are stable, thoroughly tested, and well documented.
 
-\subsubsection{The Programming Language}
+\subsection{The Programming Language}
 It is important for us to choose a programming language, in which we all are comfortable, and which will not be a hindrance for the system.
 This means that the programming language and the environment around it must allow for; scalability, reliable and good performance, as well as the ability to utilise libraries for web related tasks, e.g.~running a server and routing/handling incoming requests.
 
@@ -21,7 +21,7 @@ It also enables us to develop a web service, by using a combination of the many 
 Moreover, Java is platform independent both in development and in production, so we are ensured that all group members can get involved in the development.
 Because of this, and because it also fits the above mentioned requirements, we choose to develop the server of our system in Java.
 
-\subsubsection{Java 8}
+\subsection{Java 8}
 After having chosen Java as the programming language we use to develop our server, the next step is to ensure that we use the concepts and libraries necessary to develop efficiently.
 In our case, this means that we can develop individual components which can be reused and replaced if new or other functionality is needed --- in other words, we want to build a system with low coupling and high cohesion.
 
@@ -36,7 +36,7 @@ Because of this, and because of some added features and overall improvements to 
 Spring is a framework on top of Java, which enables the use of features similar to those in JavaEE.
 Moreover many other third party frameworks and libraries have great integration with Spring, which will ease the initial setup of the different technologies.
 
-\subsubsection{Communication}
+\subsection{Communication}
 As the server in our system needs to communicate with other parts of the system over the internet, we need a unified way of passing information around.
 The two de facto standards for this type of communication are SOAP and REST.
 
@@ -69,14 +69,14 @@ It allows us to easily develop a RESTful service while being closely integrated 
 Moreover RESTEasy handles the HTTP communication, and does it asynchronously, which can greatly improve performance and scalability,
 since multiple inbound requests can be handled simultaneously.
 
-\subsubsection{Deployment}
+\subsection{Deployment}
 To be able to deliver our service we need what is called an application server, i.e.~something which can run our code and serve it to the outside world in a production environment.
 
 Due to our earlier choice of RESTEasy, we will be using the WildFly\footnote{\url{http://wildfly.org/}} application server, because it is also developed by JBoss.
 This ensures that our different technologies can work in conjunction right from the start;
 which in turn means that we can implement a working prototype, and focus on our business logic instead of tedious configuration of the systems underlying technologies.
 
-\subsubsection{Data Persistence}
+\subsection{Data Persistence}
 Lastly we need to decide on a way of persisting data, i.e.~storing the data we gather.
 In choosing the data persistence technologies these two criteria are the most significant for a database system:
 \begin{eletterate}

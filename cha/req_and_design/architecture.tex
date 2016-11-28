@@ -21,11 +21,11 @@
 %Ours is client server, we then provide the database part of a layered system
 %Our data collecntion part is essentialyl a reverse client-server architecture where multiple clients provide data to the server.
 
-\section{Architectural Design}\label{sec:architectural_design}
-As per the requirements elicitation, \cref{sec:requirements_elicitation}, the system we develop must be able to receive data from multiple devices, normalize and collect data and then provide a view of the normalised data to a number of clients.
+\chapter{Architectural Design}\label{cha:architectural_design}
+As per the requirements elicitation, \cref{cha:requirements_elicitation}, the system we develop must be able to receive data from multiple devices, normalize and collect data and then provide a view of the normalised data to a number of clients.
 In order to allow this, first an appropriate architecture that should be established as to avoid restructuring the system later on.
 
-\subsection{Client--Server}
+\section{Client--Server}
 The most general way to describe the system we want to develop, would be that we want to provide a service which a number of clients make use of.
 This very general description happens to fit with how Ian Sommerville describes the client--server pattern in \cite{software_engineering},
 ``[...] the Client--Server pattern is organized as a set of services and associated servers, and clients that access and use the services.''
@@ -41,7 +41,7 @@ Ian Sommerville mentions disadvantages as management in regard to servers owned 
 As for management issues in regard to servers, a way to handle this is to implement some form of access management such that requests are designated appropriately.
 As for denial--of--service attacks there is no way to completely secure oneself from these attacks, although some preventive meassures in regard to load balancing and request limits can be used.
 
-\bigskip \noindent
+\bigskip
 A key point for the client--server architecture is its inherintly distributed structure, a structure we also require if we are to be able to have multiple front--end clients and data providers.
 The client--server is also a well defined and broadly used architecture by large--scale web services such as Netflix who have adapted it to suit their specific needs and work with their tenchnology stack which can be seen on their techblog \cite{netflix}.
 For our particular system we have two types of distinct clients communicating with the server, as represented on \cref{fig:client_server_architecture}.
@@ -52,14 +52,14 @@ For our particular system we have two types of distinct clients communicating wi
 \subimport{}{interwebz_architecture.tex}
 \fxnote{figure needs fixing}
 
-\subsection{Internal Architecture}
+\section{Internal Architecture}
 While the client--server pattern is used for the system as a whole; producer, server, and consumer; each of these three components may have their own internal architecture.
 Designing and implementing all three constituents of the system would require signifcant work, more so than we have time for as such we choose to not implement the data provider, although its effect on the system as a whole is still considered.
 The data provider can be emulated without any issues as it simply needs to forward data.
 A single component does not know the structure of the other components, they simply know of their existence, as such emulating the provider rather than developing it does not affect the back--end or front--end directly.
 Choosing to emulate does remove some options for load scalability, these are covered in \cref{sec:data_normalisation}.
 
-\subsubsection{Server}
+\subsection{Server}
 For the server component we use a layered architecture consisting of three layers.
 \begin{description}
     \item [Core], this layer contains both data model and business logic, an UML diagram for this layer is shown in \fxnote{ref to impl sec where this is done}.
@@ -77,7 +77,7 @@ How this further helps scalability is described in more detail in the implementa
 %\subsubsection{Client--Producer}
 %Depends on user interaction wished for/wanted --- if low to none then pipe and filter layer is sensible
 %If high wished, then a layered/MVC Pattern may be wanted
-\subsubsection{Client--Consumer}
+\subsection{Client--Consumer}
 The data provided by the system we are developing makes it such that any company can have a system built that suits their exact needs; this also means that the architecture for said system will be whatever they need.
 As an example a consumer client could use a layered architecture as shown on \cref{fig:consumer_client}.\fxnote{Kasper:Design figure to you implementation and rewrite this accordingly}
 A generic layered architecure might have the four following layers, as described by Ian Sommerville in \cite{software_engineering}:
@@ -92,6 +92,6 @@ For a consumer client to communicate with the server, the fourth layer may be a 
 Alternatively there could be a fifth layer that does that, and then stores data locally to reduce the number of requests.
 For the consumer, essentially any arbitrary architecture could be chosen as long as it supports communicating with the server; the choice would depend on the specific use case and needs of the client, \cref{fig:consumer_client} is merely an example for how we have developed our proof of concept front--end.
 
-\subsection{Requirements fulfillment(working title)}
+\section{Requirements fulfillment(working title)}
 
 %A test section written by the one and only Jesper Jensen should follow here.

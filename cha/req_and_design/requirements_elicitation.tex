@@ -1,4 +1,4 @@
-\section{Requirements Elicitation}\label{sec:requirements_elicitation}
+\chapter{Requirements Elicitation}\label{cha:requirements_elicitation}
 As mentioned in \cref{sec:problem_statement} we wish to develop a back--end service capable of providing vehicle relevant information to a client, for all the vehicles they own, in whatever format they wish.
 Before starting the design of the actual system we derive some requirements for the system.
 
@@ -18,7 +18,7 @@ The front--end could be a system which requests data from the back--end.
 The back--end could be a system that receives data from the data provider, normalises and stores the data, and forwards data when it is requested by the front--end.
 Also note that data providers are linked to a front--end as they represent vehicles in the fleet and fleet owner, however no direct communication between the two occur.
 
-\bigskip \noindent
+\bigskip
 The objective for the back--end is simply put to normalise, store and forward data to the front--end.
 Vehicle relevant information can be acquired from \ac{OBD}, however this does not include geolocational data, as such an alternate way to provide geolocational data must be used.
 All data must be collected and subsequently stored, such that it can be utilized by the front--end in whatever way the user desires.
@@ -30,7 +30,7 @@ Providing the data required allows a company to customize the front--end to thei
 This also means that the back--end must support providing data in a standardised platform neutral format, as to not impose any restrictions onto the front--end development.
 Lastly \ac{OBD} is an evolving standard with the most recent addition being \ac{HDOBD}, as such the system should also be designed with this in mind; such that it can be further developed in order to support future \ac{OBD} standards, without the development causing issues for the rest of the system.
 
-\bigskip \noindent
+\bigskip
 This  leads to the following functional requirements for the back--end:
 \fxnote{convert to letters instead of bullet points}
 \begin{itemize}
