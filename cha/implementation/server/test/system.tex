@@ -1,0 +1,37 @@
+\subsection{System and Load Testing}
+\begin{itemize}
+    \item What is this shit even? \checkmark
+    \item What is our strategy, what outcome do we want?
+    \item Show me some numbers and graphs, beautiful graphics
+    \item Interpret these beautiful graphs and numbers for me, i dont know math.
+    \item How do the results reflect on our requirements?
+\end{itemize}
+
+To test our server application as a whole, we use \textit{Apache JMeter}\footnote{\url{http://jmeter.apache.org/}} which is a open source application designed for testing web services among others.
+This tools allows us to simulate a typical workflow of using our REST API, while gathering various data about the performance and result of specific requests to the server.
+Because \textit{JMeter} can be used to simulate the workflow, we are testing both the performance and the functional behaviour of the server.
+Meaning that this test also is a system test -- And by increasing the amount of requests we send to the server in any given test, we can shift focus towards load testing.
+Moreover \textit{JMeter}, can also distribute tests such that multiple computers can be used to load test the server.
+By utilising this feature we can assure that the machine executing the test is not the bottleneck, and the outcome of any test will reflect the performance of the server.
+
+\subsubsection{Test Plans}
+Our first test plan aims to react all functional behaviour which is involved in a producer clients typical workflow.
+This workflow can be summarized by the following points:
+\begin{enumberate}
+    \item Setup $n$ new test users.
+    \begin{enumberate}
+        \item Get authorization token for existing super user.
+        \item Create $n$ new users and get authorization token for each.
+    \end{enumberate}
+    \item Create $m$ vehicles and save their ids.
+    \item Create $x$ routes with random vehicle and random user.
+    \item Each route has its own thread with creates $y$ waypoints, with a minimum delay of 1 second between each.
+\end{enumberate}
+\fxnote{Perhaps diagram instead?}
+
+It should be noted that this test plan only submits data to the server, and advanced queries are not performed.
+This means that the result only represents the server's ability to receive data.
+
+\bigskip
+To analyse the server's performance while executing queries, both simple and complex, and fetching data, we set up a test plan which does just that.
+
