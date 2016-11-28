@@ -23,10 +23,11 @@
 
 \section{Architectural Design}\label{sec:architectural_design}
 As per the requirements elicitation, \cref{sec:requirements_elicitation}, the system we develop must be able to receive data from multiple devices, normalize and collect data and then provide a view of the normalised data to a number of clients.
-In order to allow this, first an appropriate architecture should be established as to avoid restructuring the system later on, if something does not fit the architecture.
+In order to allow this, first an appropriate architecture that should be established as to avoid restructuring the system later on.
 
 \subsection{Client--Server}
-A way to describe the system we want to develop, would be to say that we want to provide a service which a number of clients make use of, which also fits with how Ian Sommerville describes the client--server pattern in \cite{software_engineering},
+The most general way to describe the system we want to develop, would be that we want to provide a service which a number of clients make use of.
+This very general description happens to fit with how Ian Sommerville describes the client--server pattern in \cite{software_engineering},
 ``[...] the Client--Server pattern is organized as a set of services and associated servers, and clients that access and use the services.''
 
 As with any design choice the client--server architecture comes with both advantages and disadvantages, Ian Sommervile describes both advantages and disadvantages in \cite[p. 181]{software_engineering}.
@@ -49,11 +50,14 @@ For our particular system we have two types of distinct clients communicating wi
     \item [Consumer] which are the clients making use of the data provided by the producer, this is the system that a company would use, these request data from the server.
 \end{description}
 \subimport{}{interwebz_architecture.tex}
+\fxnote{figure needs fixing}
 
 \subsection{Internal Architecture}
-While the client--server pattern is used for the system as a whole; producer, server, and consumer; each of these three component may have their own internal architecture.
-Moving forward we assume that a producer exists, as forwarding GPS and \ac{OBD} data to a server is trivial.
-Ignoring this does remove some load scalability options which will be covered later in the implementation section \fxnote{opdater når denne section eksistere}.
+While the client--server pattern is used for the system as a whole; producer, server, and consumer; each of these three components may have their own internal architecture.
+Designing and implementing all three constituents of the system would require signifcant work, more so than we have time for as such we choose to not implement the data provider, although its effect on the system as a whole is still considered.
+The data provider can be emulated without any issues as it simply needs to forward data.
+A single component does not know the structure of the other components, they simply know of their existence, as such emulating the provider rather than developing it does not affect the back--end or front--end directly.
+Choosing to emulate does remove some options for load scalability, these are covered in \cref{sec:data_normalisation}.
 
 \subsubsection{Server}
 For the server component we use a layered architecture consisting of three layers.
@@ -74,9 +78,8 @@ How this further helps scalability is described in more detail in the implementa
 %Depends on user interaction wished for/wanted --- if low to none then pipe and filter layer is sensible
 %If high wished, then a layered/MVC Pattern may be wanted
 \subsubsection{Client--Consumer}
-As for the consumer client, the architecture can really be anything the developer wishes.
 The data provided by the system we are developing makes it such that any company can have a system built that suits their exact needs; this also means that the architecture for said system will be whatever they need.
-As an example a consumer client could use a layered architecture as shown on \cref{fig:consumer_client}.
+As an example a consumer client could use a layered architecture as shown on \cref{fig:consumer_client}.\fxnote{Kasper:Design figure to you implementation and rewrite this accordingly}
 A generic layered architecure might have the four following layers, as described by Ian Sommerville in \cite{software_engineering}:
 \begin{itemize}
     \item User Interface.
@@ -87,7 +90,7 @@ A generic layered architecure might have the four following layers, as described
 \subimport{}{consumer_client_fig.tex}
 For a consumer client to communicate with the server, the fourth layer may be a dedicated layer to do so as represented on \cref{fig:consumer_client}.
 Alternatively there could be a fifth layer that does that, and then stores data locally to reduce the number of requests.
-For the consumer, essentially any arbitrary architecture could be chosen as long as it supports communicating with the server; the choice would depend on the specific use case and needs of the client.
+For the consumer, essentially any arbitrary architecture could be chosen as long as it supports communicating with the server; the choice would depend on the specific use case and needs of the client, \cref{fig:consumer_client} is merely an example for how we have developed our proof of concept front--end.
 
 \subsection{Requirements fulfillment(working title)}
 
