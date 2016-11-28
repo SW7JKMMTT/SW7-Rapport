@@ -1,16 +1,13 @@
 \section{Requirements Elicitation}\label{sec:requirements_elicitation}
 As mentioned in \cref{sec:problem_statement} we wish to develop a back--end service capable of providing vehicle relevant information to a client, for all the vehicles they own, in whatever format they wish.
-Before starting the design of the actual system we determine some requirements for the system.
-%%%% I havnt yet seen SOTA but i expect something about this to be in there %%%%
-In \fxnote{SOTA-ref} we looked into the general area of fleet management, a field which already has large companies providing a fleet management service.
-As such this section not only refers to requirements that are purely technical, but also requirements that sets our system apart from those of the companies.
-%%%%
+Before starting the design of the actual system we derive some requirements for the system.
 
-First let us look at what makes up the system as a whole.
+First let us look at what makes up the system as a whole. \fxnote{Explain this better with rich pictures}
 The system consists of three parts: a data provider, a back--end, and a front--end.
 Data providers are relatively simple as they simply forward the data to the back--end.
-The requirements for the front--end may differ depending on the user and as such without a company as stakeholder would be a lot of guesswork to produce
-This leads us to focus on the back--end, the connection between front--end and data provider.
+The requirements for the front--end may differ significantly depending on the user and as such without a company as stakeholder would be a lot of guesswork to produce.
+The data provider and back--end also depend somewhat on the user, but if all available data is collected, all data will be available to the front--end, whereas the front--end is very user specific and developing every possible UI and possible feature.
+This leads us to focus on the back--end, the connection between front--end and data provider. \fxnote{argument not strong, any ideas? keep in mind architecture isnt yet decided(2 lines ahead)}
 By focusing on the back--end we can also fit it for a $n..1..m$ structure.
 In this structure the n represents the data providers, the 1 the back--end and the m the front--end clients.
 This leads to us being able to have an arbitrary number of data providers and front--end clients communicate with the back--end.
@@ -30,11 +27,11 @@ Data should also be stored in sessions, such that data can be provided for a sin
 
 Developing a generic front--end that suits any company is not a realistic goal as no two companies are the same and may have different requirements to such a front--end.
 Providing the data required allows a company to customize the front--end to their specific need.
-This also means that the back--end must support providing data in a neutral format, as to not impose any restrictions onto the front--end development.
+This also means that the back--end must support providing data in a standardised platform neutral format, as to not impose any restrictions onto the front--end development.
 Lastly \ac{OBD} is an evolving standard with the most recent addition being \ac{HDOBD}, as such the system should also be designed with this in mind; such that it can be further developed in order to support future \ac{OBD} standards, without the development causing issues for the rest of the system.
 
 \bigskip \noindent
-This in combination with the SOTA analysis leads to the following functional requirements for the back--end:
+This  leads to the following functional requirements for the back--end:
 \fxnote{convert to letters instead of bullet points}
 \begin{itemize}
     \item Receive \ac{OBD} and GPS data from some data provider, such as an Android app.
