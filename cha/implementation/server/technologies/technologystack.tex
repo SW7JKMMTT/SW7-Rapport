@@ -41,7 +41,7 @@ A concept which is familiar to any enterprise Java programmer is that of \ac{POJ
 A \acp{POJO} is a Java object that follows no framework convention, such as implementing a specific interface, or extending framework classes.
 Objects that aren't \acp{POJO} are said to be \acp{SJO}.
 \acp{POJO} lower coupling, by lowering the dependency on the underlying framework, and moving the responsibility of wiring the services from the usercode to the framework.
-Typically implementing a \ac{POJO} means annotating the various methods and classes with certain Java annotations, which the framework interprets to figure out what it's supposed to wire up to the class. \cite{spring_pojo}
+Typically implementing a \ac{POJO} means annotating the various methods and classes with certain Java annotations, which the framework interprets to figure out what it's supposed to wire up to the class.\cite{spring_pojo}
 
 A Bean is a type of \ac{POJO}, but with additional restrictions.
 Beans have to be serializable, implement getters and setters with the property name prefixed with either \code{get} or \code{set}, respectively, and have a noarg constructor.
@@ -184,7 +184,24 @@ The power of Hibernate comes from it's ability to persist \acp{POJO} transparent
 Hibernate exposes its power via either it's native Hibernate API, or a more generic \ac{JPA} implementation.
 The native Hibernate interface has the advantage of being specific to Hibernate, and therefore it provides more direct and nuanced access to the Hibernate persistence engine.
 That is also the biggest shortcoming of the native interface.
-Being specific to Hibernate means that an application using it is deeply dependant on the way Hibernate functions, and its specific implementations.
+Being specific to Hibernate means that an application using it is deeply dependent on the way Hibernate functions, and its specific implementations.
 Enter the \ac{JPA}, which provides a generic, high level, and well supported interface for persisting objects, mainly based around annotations of the persistence \code{entities}.
 Hibernate has support for the \ac{JPA}, and even allows mixing it with the native api, allowing developers to mix in specific hibernate features when needed.
 An additional nicety of using the \ac{JPA} is that spring has support for configuring \ac{JPA} providers, like hibernate, through the normal \code{Bean Factory}.
+
+\subsubsection{Flyway}
+Flyway is a lightweight database migration tool.
+What that means is that is applies database migration scripts in sequence, remembering the current point in the sequence between runs.
+That relatively simple functionality is hugely useful for incrementally keeping a database up to date with a changing codebase.
+Since a bare bones migration tool only keeps track of where it currently is, it's crucial that the old scripts don't change, as that would give an inconsistent version of the database if the scripts was reapplied.
+Flyway helps guard against such problem by storing a checksum for the script, which it checks for every deployment, that way it's immediately obvious if an already deployed script has been changed.
+Should a migration script fail flyway will stop the migration and fail the deployment, prompting the developer to fix the problem manually.
+Such a problem should be avoided, since it takes the production server down until the problem is fixed.
+
+The migration scripts are found at preconfigured paths in the classpath of the java archive.
+Upon deployment flyway will scan the directories for files in the format \code{V(version)\_\_(description).sql}, which it will apply to the database.
+The version in front determines in what order the scripts will be applied.
+Once again it is of utmost importance that the list of scripts is only appended to, if a script is inserted anywhere but the end, flyway will fail the deployment, since the state of the database can not be guaranteed.
+
+A migration script is an SQL script, which will migrate the \ac{DDL} and the data forwards, to a new schema.
+It is important that the data inside the database is migrated correctly to the new \ac{DDL}, since otherwise customers might lose their data.
