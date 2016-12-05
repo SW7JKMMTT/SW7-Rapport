@@ -36,7 +36,24 @@ Because of this, and because of some added features and overall improvements to 
 Spring is a framework on top of Java, which enables the use of features similar to those in JavaEE.
 Moreover many other third party frameworks and libraries have great integration with Spring, which will ease the initial setup of the different technologies.
 
-\subsection{Communication}
+\subsubsection{POJOs \& Beans}
+A concept which is familiar to any enterprise Java programmer is that of \ac{POJO}.
+A \acp{POJO} is a Java object that follows no framework convention, such as implementing a specific interface, or extending framework classes.
+Objects that aren't \acp{POJO} are said to be \acp{SJO}.
+\acp{POJO} lower coupling, by lowering the dependency on the underlying framework, and moving the responsibility of wiring the services from the usercode to the framework.
+Typically implementing a \ac{POJO} means annotating the various methods and classes with certain Java annotations, which the framework interprets to figure out what it's supposed to wire up to the class. \cite{spring_pojo}
+
+A Bean is a type of \ac{POJO}, but with additional restrictions.
+Beans have to be serializable, implement getters and setters with the property name prefixed with either \code{get} or \code{set}, respectively, and have a noarg constructor.
+Because of the restrictions, a framework like spring can instantiate the class and set the properties without any knowledge of definition.
+Requiring a no-arg constructor does impose an issue.
+Namely, it means that the object can be instantiated in an invalid state, which requires the programmer to knows which properties he must set to configure the object.
+Strictly speaking a Bean is not a \ac{POJO}, since it has to implement the serializable interface, but since the interface has no methods, the bean is still said to be a \ac{POJO}.
+Spring allows for the no-arg constructor of a bean to have an access level more strict than private.
+We will use that to hide the constructor when it's use would result in a wrongly configured object.
+
+
+\subsubsection{Communication}
 As the server in our system needs to communicate with other parts of the system over the internet, we need a unified way of passing information around.
 The two de facto standards for this type of communication are SOAP and REST.
 
@@ -119,3 +136,18 @@ Furthermore MongoDB has good support for geospartial queries, which mean that we
 \bigskip
 To integrate MongoDB into our server, we choose to use Hibernate OGM\footnote{\url{http://hibernate.org/ogm/}}, which is a Java Persistence API implementation for NoSQL solutions.
 Hibernate is developed by JBoss and works nicely with Spring, while making it possible to change our data persistence in the future, with minimal effort.
+
+\subsubsection{Data Persistence Provider}
+Hibernate is another project operated by Red Hat.
+It was originally just a \ac{ORM}, but has since expanded into Hibernate OGM\@.
+This means that the Hibernate interface is much more mature and stable than the implementation.
+Since OGM aims to be a drop in replacement for the Hibernate interface, and all that it provides, We will be able to switch over to a relational database model later, if any serious issues should show up.
+
+The power of Hibernate comes from it's ability to persist \acp{POJO} transparently.
+Hibernate exposes its power via either it's native Hibernate API, or a more generic \ac{JPA} implementation.
+The native Hibernate interface has the advantage of being specific to Hibernate, and therefore it provides more direct and nuanced access to the Hibernate persistence engine.
+That is also the biggest shortcoming of the native interface.
+Being specific to Hibernate means that an application using it is deeply dependant on the way Hibernate functions, and its specific implementations.
+Enter the \ac{JPA}, which provides a generic, high level, and well supported interface for persisting objects, mainly based around annotations of the persistence \code{entities}.
+Hibernate has support for the \ac{JPA}, and even allows mixing it with the native api, allowing developers to mix in specific hibernate features when needed.
+An additional nicety of using the \ac{JPA} is that spring has support for configuring \ac{JPA} providers, like hibernate, through the normal \code{Bean Factory}.

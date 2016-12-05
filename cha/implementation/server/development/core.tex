@@ -1,10 +1,34 @@
-\subsection{Core}
+% vim: tw=80:spell:spelllang=en
+\subsubsection{Core}
+In the core layer we implement all the business logic and data, which is
+independent from the presentation of that data. As stated in~\ref{subsec:internal_architecture},
+we want to keep the models in this layers closely related to our business
+constraints. As such we want to keep members private, and only provide access to
+the properties that make sense from a business model perspective. To facilitate
+separation, we don't allow direct access to list, opting instead to wrap them in
+\code{ReadOnlyCollection}. Mutation of collections have to be performed by
+accessing methods on the object that owns the collection.
+
+By making these choices we can sufficiently control what can and can't be done
+to our model by varying the accessibility of the properties and methods. We use
+the accessibility modifier to help us maintain the invariants in our model, such
+as a route always being driven by a vehicle. Without the constraints we impose
+via our accessors and implemented constructors the later modules could create
+a route that isn't being driven by any vehicle. Since that doesn't make any
+sense from a modeling perspective, we try to disallow that at compile time.
+
+Since classes in the core module are mostly intended to hold data about the
+model, and should be independent from the presentation and storage of the
+object, they are mostly implemented as POJOs.
+
+\fxnote{TODO:\@ Make some diagrams!}
+
 For the core i want to know
 \begin{itemize}
     \item What is the purpose of this layer?
-    \item What does this layer contain?(take folders and explain contents of folders using 1 file from each)
+    \item What does this layer contain? (take folders and explain contents of folders using 1 file from each)
     \item What issues does this layer handle?
-    \item How is this layer accessed(communication between layers)?
+    \item How is this layer accessed (communication between layers)?
     \item How are the technologies from the techstack used?
     \item How is the architecture and design pattern present?
 \end{itemize}
