@@ -2,20 +2,29 @@
 \subsubsection{Persistence}
 The persistence layer is what persists the object between requests and
 sessions. In effect it's where all the state is stored and retrieved. To store
-the needed data, the layer makes use of \code{Hibernate-OGM},
+the needed data, the layer makes use of \code{Hibernate},
 \code{Hibernate-Search}, and \code{Spring}. We have chosen to use the JPA
-instead of using hibernates own interfaces, since that gives us the opportunity
-to switch out Hibernate in the future.
+instead of using Hibernates own interfaces, since that gives us the opportunity
+to switch out Hibernate to something else in the future, and also interoperates
+nicely with spring.
 
 A large part of the configuration is done in the persistence layer, since this
-is where we define our connections to \code{Mongodb} and configure the hibernate
-library to use it. Our configuration of hibernate is done with spring, via the
-\code{persistence-config.xml} file. Doing the configuration via spring achieves
-two specific goals. It makes configuration easily modified, since it's all
-specified in a single XML file, rather than being spread throughout the
-codebase. It also helps integrate hibernate with spring, allowing spring to
-manage the \code{EntityManager}, and inject it where necessary. Spring will also
-manage things like transactions this way.
+is where we define our connections to the database and configure the Hibernate
+library to use it. Our configuration of Hibernate is done with spring, via the
+\code{persistence-config.xml} file, which achieves two specific goals. It makes
+configuration easily modified, since it's all specified in a single XML file,
+rather than being spread throughout the codebase. It also helps integrate
+Hibernate with spring, allowing spring to manage the \code{EntityManager}
+lifecycle, and inject it where necessary. Spring will also manage things like
+transactions this way.
+
+Other than configuring Hibernate, this layers also, for SQL databases,
+configures flyway. To make flyway run ever time the application is deployed, we
+configure a bean flyway provide, and add it as a dependency to the Hibernate
+entityManagerFactory. We have configured flyway to consume sql files from the
+sql directory in the classpath. To kick off the database after the migration
+from NoSQL, we create a single SQL file to contain all the \code{DDL} that is
+needed immediately, but create separate files for every change after.
 
 For persistence i want to know
 \begin{itemize}
