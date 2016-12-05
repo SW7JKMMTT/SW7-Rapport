@@ -1,0 +1,7 @@
+@MISC{spring_pojo,
+  author = {Pivotal Software Inc},
+  publisher = {spring.io},
+  title = {Unserstanding POJOs},
+  lastchecked = {30-11-2016},
+  howpublished = {\url{https://spring.io/understanding/POJO}}
+}
