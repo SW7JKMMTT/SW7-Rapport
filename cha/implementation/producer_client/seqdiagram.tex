@@ -1,0 +1,47 @@
+% chktex-file 01
+\begin{figure}[h]
+    \centering
+\resizebox{!}{1\textheight}{
+    \begin{sequencediagram}
+        \newthread{u}{User}
+        \newinst[2]{p}{Producer Client}
+        \newinst[5]{s}{Server}
+        \begin{messcall}{u}{Login}{p}{}
+            \begin{call}{p}{\shortstack{Authenticate User\\\\ \code{POST /auth}}}{s}{auth token}
+            \end{call}
+        \end{messcall}
+        \begin{sdblock}{New Vehicle}{If a new vehicle is needed}
+            \begin{messcall}{u}{Vehicle Information}{p}{}
+                \begin{call}{p}{\shortstack{Create New Vehicle\\\\\code{POST /vehicle}}}{s}{vehicle id}
+                \end{call}
+            \end{messcall}
+        \prelevel
+        \end{sdblock}
+        \begin{messcall}{u}{Start Route}{p}{}
+            \begin{sdblock}{New Route}{If a new route is needed}
+                \postlevel
+                \begin{call}{p}{\shortstack{Create New Route\\\\\code{POST /route}}}{s}{route id}
+                \end{call}
+            \end{sdblock}
+            \postlevel
+            \begin{call}{p}{\shortstack{Activate Route\\\\\code{PUT /route/\{route id\}}}}{s}{}
+            \end{call}
+            \begin{sdblock}{Driving Loop}{Loops forever while driving}
+                \begin{call}{p}{GatherData()}{p}{} % chktex 36
+                    \postlevel
+                    \begin{call}{p}{\shortstack{Add Vehicle Data\\\\\code{POST /route/\{route id\}/vehicledata}}}{s}{}
+                    \end{call}
+                    \postlevel
+                    \begin{call}{p}{\shortstack{Add Waypoint\\\\\code{POST /route/\{route id\}/waypoint}}}{s}{}
+                    \end{call}
+                \end{call}
+            \end{sdblock}
+        \end{messcall}
+        \begin{messcall}{u}{Stop Route}{p}{}
+            \begin{call}{p}{\shortstack{Complete Route\\\\\code{PUT /route/\{route id\}}}}{s}{}
+            \end{call}
+        \end{messcall}
+    \end{sequencediagram}
+}
+    \caption{Sequence diagram, depicting the workflow of producer clients in relation to the server, and initiated by the user.}\label{fig:producer_workflow}
+\end{figure}
