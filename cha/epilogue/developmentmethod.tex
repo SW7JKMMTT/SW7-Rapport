@@ -15,17 +15,76 @@ Areas of interest
 \end{itemize}
 
 Possible section setup
-\section{The Planned Development Process}
+\section{The Development Process}
 %Meta shit%
-6th semester experience, All-in Scrum, Phab, Code-review
-\subsection{Process Plan}
-Scrum Plans, Dailyscrum/scrumboard
-\subsection{Process Reality}
-Scrum? Not. Daily scrum, 2 times a week at best. Scheduling issues, 1.5 - 2 days a week for majority, Hours available graph?
-Realizing we need to work weekends4graph.
-Phab workflow, Review process
-Test focused development, review+test relly handy with exponential workload as several iterations would block too much
+Our 6th semester was a multi-group project with several groups working together, as a result it was heavily focused on the development process.
+The focus on development process from the previous semester gave us a very clear idea of how we wanted the development process to be.
+The idea was to reduce the overhead from scrum and go back to using only a few scrum elements, as some of us had done before, while maintaining some of the other processes we had used.
+%%%%%%%%%%%
+\subsection{Planned Development Process}
+%Meta Shit%
+Initially we planned to use certain tools to manage our development, first we introduce these tools and methods and why we wanted to use them.
+Following the introduction to our planned development process we describe how the tools and methods worked for us in reality, and lastly we reflect on the outcome of how the development process was actually handled.
+%%%%%%%%%%%
+\subsubsection{Scrum}
+Most of the group has worked together for several semesters and through these semesters used parts of Scrum during development.
+The 6th semester heavily focused on running proper Scrum with sprints and meetings.
+We decide that running Scrum with sprints and meetings was too much overhead, as such we wanted to instead use the management tools we had successfully used before.
+These tools were Daily Scrum and a Scrum Board.
+The Daily Scrum is a short meeting in the beginning of the day where each member answers three questions:
+\begin{itemize}
+    \item What have you done since the last meeting? 
+    \item What do you intent to do today?
+    \item Is there anything stopping you?
+\end{itemize}
+These three questions allows for a quick overview for each member to keep up with what others are doing and also provides an opportunity each day to ask for help if there are any uncertainties about a task.
+The Scrum Board allows for an overview of the project as a whole.
+The Scrum Board contains user stories and tasks that divide the development process into smaller more manageable workloads.
+%Step down
+%hard scrum to a few elements
+%Board+Daily
+\subsubsection{Phabricator \& Code Review}\fxnote{overvejer at omskrive nogle ting i dette afsnit og introducere master, developer og bugfix branches saa det bliver lettere at snakke om.}
+In order to have some version control and also implement some quality control we decided to use a tool called Phabricator\footnote{https://www.phacility.com/phabricator/}, which is a software development tool.
+Phabricator facilitates an environment designed for code review which is another method we wanted to use.
+In order to reduce the number of time something should be iterated upon, we decided that the better choice is for everything to go through a thorough review process.
+We decided the way to do this was that anything developed had to be reviewed and accepted by two reviewers.
+This was also intended to help with knowledge sharing even further than the daily scrum, as anything that would be considered done, would have been through at least three group members.
+As an extra precaution whenever an group member wanted push something for review, it should pass a linter and all unit tests, or an error occurs instead.
+We had used a similar process on the 6th semester, however review had been very strict and rigid which meant it could take over a week to get anything through the review phase.
+As we did not want to spend too much time on review, we agreed that reviews should be less rigid and focus on design issues, rather than naming conventions and other less important issues.
+%Unit tests and Linter // Version Control Biatch git/arc
+%Code--review // 2 reviewers min.
+\subsubsection{Jenkins test}
+%May not be written
+%Finds errors that may not occur on a single computer but would not occur on others.
+\subsection{Development Process in Reality}
+%Meta Shit%
+While we had a plan for how we wanted to develop, it did not quite turn out the way we wanted it to.
+The primary factor that caused a split between our plan and how we actually ended up developing was our timetables.
+For our courses 3 out of four courses had a mini-project which in turn meant we had less scheduled time than usual for our own project, about 1 - 1.5 days a week.
+This was not helped by the group having different courses creating a split in when the entire group was gathered at once.
+The scheduling issues have primarily affected our Scrum plans, but also had us think about our time scheduling as for how we were gonna develop, as time was scarce early on.
+%%%%%%%%%%%
+\subsubsection{Scrum}
+yee like that happend
+%Scrum? Not. Daily scrum, 2 times a week at best. Scheduling issues, 1.5 - 2 days a week for majority, Hours available graph?
+%Realizing we need to work weekends4graph.
+%Developer split, postive outcome
+\subsubsection{Phabricator \& Code Review}
+%Changins course to a more rigid review structure
+%Phab workflow, Review process
+%Test focused development, review+test relly handy with exponential workload as several iterations would block too much
+\subsubsection{Jenkins}
+%May not be written
 \section{Process Reflection}
+%Meta Shit%
+%%%%%%%%%%%
+\subsection{Scheduling/Scrum}
+Compressed time frame, 1.5 months instead of 4.
+\subsection{Code-Review}
 Code-review perks, hard to get stuff through but for the most part we barely have to go back once it's in master.
 The effect of exponential workload and miniprojects.
 Would have had a less of an effect if our project used parts of miniprojects.
+\subsection{Test Focus}
+Test it all
+\subsection{}
