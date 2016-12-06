@@ -1,0 +1,105 @@
+\begin{tikzpicture}
+\umlclass[x=0, y=4]{Permission}
+{
+-type
+}{
+}
+
+\umlclass[x=5, y=4]{AuthToken}
+{
+-token \\
+-created \\
+-expires
+}{
+}
+
+\umlclass[x=10, y=4]{UserIcon}
+{
+}{
+}
+
+\umlclass[x=0, y=0]{Driver}
+{
+}{
+}
+
+\umlclass[x=5, y=0]{User}
+{
+-username \\
+-password \\
+-givenname \\
+-surname \\
+}{
++getHasIcon 
+}
+
+\umlclass[x=10, y=0, type=abstract]{PersistFileHandle}
+{
+-filePath
+}{
+}
+
+\umlclass[x=0, y=-3.5]{Route}
+{
+-routeState
+}{
+}
+
+\umlclass[x=5, y=-3.5]{Vehicle}
+{
+-make \\
+-model \\
+-vintage \\
+
+}{
+}
+
+\umlclass[x=10, y=-3.5]{VehicleIcon}
+{
+}{
+}
+
+\umlclass[x=0, y=-7.0]{Waypoint}
+{
+-timestamp \\
+-latitude \\
+-longitude
+}{
+}
+
+\umlclass[x=5, y=-7.0]{VehicleData}
+{ 
+-timestamp
+}{
+}
+
+\umlclass[x=10, y=-7.0]{VIN}
+{
+-vin 
+}{
+}
+
+\umlassoc[mult1=1, mult2=0..*]{Driver}{Route}
+\umlassoc[mult1=0..1, mult2=1]{Driver}{User}
+\umlassoc[arg1=0..*, arg2=1]{Route}{Vehicle}
+\umlHVHassoc[mult1=0..*, mult2=0..1, anchor1=-25, pos1=0.4, pos2=2.5]{Route}{VehicleData}
+
+
+\umlaggreg[mult1=1, mult2=0..*]{Route}{Waypoint}
+\umlHVaggreg[mult1=1, mult2=1, anchor1=-45, pos2=1.8]{Vehicle}{VIN}
+\umlHVaggreg[arg1=1, arg2=0..1, anchor1=45, anchor2=-130, pos2=1.72]{User}{UserIcon}
+\umlHVaggreg[mult1=1, mult2=0..*, anchor1=135, pos2=1.72]{User}{Permission}
+\umlaggreg[mult1=1, mult2=0..*]{User}{AuthToken}
+\umlaggreg[arg1=1, arg2=0..1]{Vehicle}{VehicleIcon}
+
+\umlinherit[]{UserIcon}{PersistFileHandle}
+\umlinherit[]{VehicleIcon}{PersistFileHandle}
+
+\end{tikzpicture}
+
+
+
+
+
+
+
