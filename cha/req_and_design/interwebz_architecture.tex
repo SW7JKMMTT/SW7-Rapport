@@ -14,7 +14,8 @@
         ]
 
         %Pre build
-        \node (interwebz) at (0,0) [sharp] {Internet};
+        \node (interwebz) at (0,0) [draw=none] {};
+        \node (web) at (0,-0.2) [draw, cloud, cloud puffs=20, cloud ignores aspect, minimum width=16em, minimum height=6em,fill=blue!20] {Internet};
         \node (ghost) [draw=none, above=2cm of interwebz] {};
 
         \node (prod_n) [stage, left=0.4cm of ghost] {Producer \\ client m};
@@ -58,21 +59,22 @@
         \node (ghost2) [draw=none, below=1.0cm and 0.0cm of prod_1] {};
         \node (ghost3) [draw=none, below=0.7cm and 0.0cm of prod_dot] {};
 
-        \node (interwebs_edge1) [draw=none] at (-2.35,0.5) {};
+        \node (interwebs_edge1) [draw=none] at (-2.35,0.35) {};
         \node (interwebs_edge2) [draw=none] at (-1.85,0.5) {};
-        \node (interwebs_edge3) [draw=none] at (-1.35,0.5) {};
+        \node (interwebs_edge3) [draw=none] at (-1.35,0.55) {};
 
         %front-end ghost nodes
         \node (ghost4) [draw=none, below=0.7cm and 0.0cm of cons_dot] {};
         \node (ghost5) [draw=none, below=1.0cm and 0.0cm of cons_n] {};
 
-        \node (interwebs_edge4) [draw=none] at (1.42,0.5) {};
-        \node (interwebs_edge5) [draw=none] at (1.92,0.5) {};
-        \node (interwebs_edge6) [draw=none] at (2.42,0.5) {};
+        \node (interwebs_edge4) [draw=none] at (1.42,0.6) {};
+        \node (interwebs_edge5) [draw=none] at (1.92,0.4) {};
+        \node (interwebs_edge6) [draw=none] at (2.42,0.30) {};
 
         %back-end ghost nodes
-        \node (interwebs_edge7) [draw=none] at (-2.365,-0.5) {};
-        \node (interwebs_edge8) [draw=none] at (2.38,-0.5) {};
+        \node (interwebs_edge7) [draw=none] at (-2.365,-0.75) {};
+        \node (interwebs_edge8) [draw=none] at (2.38,-0.75) {};
+        %\node (interwebs_edge9) [draw=none] at (0,-1.2) {};
 
         %draw producer
         \draw [flow] (prod_1.south) -- (ghost2.center) -| (interwebs_edge1.center);
@@ -85,7 +87,7 @@
         \draw [double_flow] (cons_dot.south) -- (ghost4.center) -| (interwebs_edge5.center);
 
         %draw server
-        \draw [double_flow] (server_dot) -- (interwebz);
+        \draw [double_flow] (server_dot) -- (web);
         \draw [double_flow] (server_1) -- (interwebs_edge7.center);
         \draw [double_flow] (server_n) -- (interwebs_edge8.center);
     \end{tikzpicture}
