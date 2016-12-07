@@ -1,16 +1,41 @@
 \chapter{Requirements Elicitation}\label{cha:requirements_elicitation}
-As mentioned in \cref{sec:problem_statement} we wish to develop a back--end service capable of providing vehicle relevant information to a client, for all the vehicles they own, in whatever format they wish.
+As mentioned in \cref{sec:problem_statement} we wish to develop a back--end service capable of providing vehicle relevant information to a possible user, for all the vehicles they own, in whatever format they wish.\fxnote{The problem statement really should not be making this choice}
 Before starting the design of the actual system we derive some requirements for the system.
 
-First let us look at what makes up the system as a whole. \fxnote{Explain this better with rich pictures}
-The system consists of three parts: a data provider, a back--end, and a front--end.
-Data providers are relatively simple as they simply forward the data to the back--end.
-The requirements for the front--end may differ significantly depending on the user and as such without a company as stakeholder would be a lot of guesswork to produce.
-The data provider and back--end also depend somewhat on the user, but if all available data is collected, all data will be available to the front--end, whereas the front--end is very user specific and developing every possible UI and possible feature.
-This leads us to focus on the back--end, the connection between front--end and data provider. \fxnote{argument not strong, any ideas? keep in mind architecture isnt yet decided(2 lines ahead)}
-By focusing on the back--end we can also fit it for a $n..1..m$ structure.
-In this structure the n represents the data providers, the 1 the back--end and the m the front--end clients.
-This leads to us being able to have an arbitrary number of data providers and front--end clients communicate with the back--end.
+\section{Constituents of The System}
+First let us look at what makes up the system as a whole.\fxnote{supervisor would like some graphics}
+The system consists of three components: a data provider, a front--end, and a back--end.
+\begin{description}
+    \item [Data Providers] are the data collectors for the system. Their purpose is to collect data about the vehicle and its location and then forward that data to the back--end.
+    \item [The Front--End] is the component that performs data analysis and represents this to an employee of the company using the system.
+    Data analysis is a broad definition, the specifics of what this data analysis is would depend on the specific company, as different companies may require the front--end to perform different kinds of analysis.
+    \item [The Back--End] This is the link between the data providers and front--end as they have no direct communication.
+    The back--end is the storage component and also handles data validation such that no corrupt or incorrect data is stored.
+    This component facilitates requests for the front--end such that it can use the stored data.
+\end{description}
+
+The aforementioned data analysis performed by the front--end may be different depending on the company's requirements, as such without a company as stakeholder it would be a lot of guesswork to develop and we therefore choose not to focus on the development of the front--end.
+The front--end will still be considered in regard to the other constituents of the system and a prototype or proof of concept system may still be developed in order to show the interaction between the back--end and front--end.
+Both the back--end and data provider also depend on the user, however this is to a lesser degree than the front--end.
+For the data provider the user dependency is in obtaining data that is only available through manual input, or cooperation with other companies, e.g. fuel prices.
+As for the back--end the dependency relies on what data should be available to the front--end.
+Comparatively providing all available data may be time--consuming and thus may not be done, but has its perks as it opens up more features for the front--end, whereas developing every possible UI and possible feature is impossible.
+
+\bigskip
+Due to the back--end being the link between data providers and front--end clients it is arguably the most influential part of the system.
+We have several data providers sending data to the back--end, the front--end clients may then request data from the back--end, provided by the data providers.
+This means we have an arbitrary number of data providers and front--end clients all communicating with the same back--end.
+A way to represent this would be $n..1..m$.
+In this example the $n$ represents the data providers, the $1$ the back--end and the $m$ the front--end clients.
+Not only can we have an arbitrary number of data providers and front--end clients, but they may also be different systems, as long as they adhere to the communication protocol of the back--end.
+Keeping in mind the aforementioned system interactions we deem the back--end the most influential part of the system, as such we choose to focus on developing the back--end.
+
+\section{Choosing the Back--End}
+By choosing to focus on the back--end this also means that our users would be developers themselves, using our system as a data source to develop a front--end.
+As such the system will need sufficient documentation such that a developer could develop a front--end by requesting data from our back--end.
+This documentation would be what the developers working with the front--end should interact with, the documentation would fill the role of a user interface of sorts for the back--end.
+The data provider may be developed by the same company as the front--end in order to achieve company specific specifications, or a generic data provider that forwards all available \ac{OBD} and GPS data could be created.
+Whatever the choice may be it would use the same documentation for development as the front--end.
 
 It is important to keep in mind that all three constituents of the system can be isolated and considered as their own individual systems.
 The data provider may be an app collecting and forwarding GPS and \ac{OBD} data to the back--end.
@@ -30,17 +55,22 @@ Providing the data required allows a company to customize the front--end to thei
 This also means that the back--end must support providing data in a standardised platform neutral format, as to not impose any restrictions onto the front--end development.
 Lastly \ac{OBD} is an evolving standard with the most recent addition being \ac{HDOBD}, as such the system should also be designed with this in mind; such that it can be further developed in order to support future \ac{OBD} standards, without the development causing issues for the rest of the system.
 
-\bigskip
-This  leads to the following functional requirements for the back--end:
-\fxnote{convert to letters instead of bullet points}
-\begin{itemize}
-    \item Receive \ac{OBD} and GPS data from some data provider, such as an Android app.
+\section{Requirements}\label{sec:requirements}
+This leads to the following functional requirements for the back--end:
+\begin{eletterate}
+    \item Receive and store \ac{OBD} and GPS data from some data provider, such as a smartphone app.
     \item Access management for front--end requests.
     \item Normalise incoming data and offer the data in a platform neutral format. %Device scalability.
-    \item Support load scalability.%Be load scalable such that an arbitrary number of vehicles and clients can make use of the service without new clients negatively impacting performance.
     \item Allow the front--end to request any data obtained from data providers.
+\end{eletterate}
+As well as the following non-functional requirements:
+\fxnote{resume this}
+\begin{eletterate}
+    \item Support load scalability.%Be load scalable such that an arbitrary number of vehicles and clients can make use of the service without new clients negatively impacting performance.
     \item Support both functional and generational scalability.
-\end{itemize}
+    \item Be documented in regard to how data can be accessed and uploaded.
+\end{eletterate}
+
 
 %    \item Be able to read data from OBD and GPS off a mobile device.
 %    \item Have a design which allows for easy scalability of the incoming data(OBD/HDOBD) and other possible extensions or future generations of OBD.
