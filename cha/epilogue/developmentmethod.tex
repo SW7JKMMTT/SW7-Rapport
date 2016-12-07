@@ -1,3 +1,4 @@
+Ignore these notes(the itemize)
 \begin{itemize}
     \item Pro: Hard split for parallel development of consumer and back--end provided us with a ``user'' who had some needs for the back--end in regard to services required. Also proves feature scalability!
     \item Con: Scheduling
@@ -7,7 +8,7 @@
     \item Pro: Code-review, helped particularly for exponential work as it gave less time for iterations
     \item Pro: Focus on testing for code-base, 50+\% of code is test.
     \item Pro: Testing beyond testing the code -  data provider(Sass efforts) - Load test/system test
-    \item Continous integration > Gains?
+    \item Continuous integration > Gains?
 \end{itemize}
 
 \section{The Development Process}
@@ -28,7 +29,7 @@ We decide that running Scrum with sprints and meetings was too much overhead, as
 These tools were daily Scrum and a Scrum Board.
 The daily Scrum is a short meeting in the beginning of the day where each member answers three questions:
 \begin{itemize}
-    \item What have you done since the last meeting? 
+    \item What have you done since the last meeting?
     \item What do you intent to do today?
     \item Is there anything stopping you?
 \end{itemize}
@@ -38,9 +39,9 @@ The Scrum Board contains user stories and tasks that divide the development proc
 %Step down
 %hard scrum to a few elements
 %Board+Daily
-\subsubsection{Phabricator \& Code Review}\fxnote{overvejer at omskrive nogle ting i dette afsnit og introducere master, developer og bugfix branches saa det bliver lettere at snakke om.}
+\subsubsection{Phabricator \& Code--Review}\fxnote{overvejer at omskrive nogle ting i dette afsnit og introducere master, developer og bugfix branches saa det bliver lettere at snakke om.}
 In order to have some version control and also implement some quality control we decided to use a tool called Phabricator\footnote{https://www.phacility.com/phabricator/}, which is a software development tool.
-Phabricator facilitates an environment designed for code review which is another method we wanted to use.
+Phabricator facilitates an environment designed for code--review which is another method we wanted to use.
 In order to reduce the number of time something should be iterated upon, we decided that the better choice is for everything to go through a thorough review process.
 We decided the way to do this was that anything developed had to be reviewed and accepted by two reviewers.
 This was also intended to help with knowledge sharing even further than the daily scrum, as anything that would be considered done, would have been through at least three group members.
@@ -49,6 +50,8 @@ We had used a similar process on the 6th semester, however review had been very 
 As we did not want to spend too much time on review, we agreed that reviews should be less rigid and focus on design issues, rather than naming conventions and other less important issues.
 %Unit tests and Linter // Version Control Biatch git/arc
 %Code--review // 2 reviewers min.
+\subsubsection{Test Focus}
+%may require some input
 \subsubsection{Jenkins}
 %May not be written
 %Finds errors that may not occur on a single computer but would not occur on others.
@@ -68,36 +71,49 @@ The scheduling issues made us realize we needed to work weekends as well in orde
 In the later months of the project the courses started to fade out and the mini-projects were ending, this meant we had more time in the group room to work which in turn allowed us to revive our daily Scrum meetings.
 %Scrum? Not. Daily scrum, 2 times a week at best. Scheduling issues, 1.5 - 2 days a week for majority, Hours available graph?
 %Realizing we need to work weekends4graph.
-\subsubsection{Phabricator \& Code Review}
-Unlike our Scrum tools, the use of Phabricator and code reviews went well, although a few changes were made to code review.
-While originally not wanting reviews to take too long as we were expecting to iterate upon things, we ended up doing rigid code reviews anyway.
+\subsubsection{Phabricator \& Code--Review}
+Unlike our Scrum tools, the use of Phabricator and code--reviews went well, although a few changes were made to code--review.
+While originally not wanting reviews to take too long as we were expecting to iterate upon things, we ended up doing rigid code--reviews anyway.
 With how our time available was, little time early on and lots in the end, this came to be a perk.
 Doing several iterations, while effective is also blocking, you can not iterate on something till it has been done the first time.
 Since the majority of our time lies in the end of the semester and we have six group members, waiting on iterations would be blocking; as such ensuring high quality through a rigid review structure meant less iterations and in turn a workload that can better be developed in parallel.
 %Changins course to a more rigid review structure
 %Phab workflow, Review process
 %Test focused development, review+test relly handy with exponential workload as several iterations would block too much
+\subsubsection{Test Focus}
+%May require some input
 \subsubsection{Jenkins}
 %May not be written
 \section{Process Reflection}
 %Meta Shit%
 With the differences between or development plan and the actual execution described, in this section we consider the success or lack thereof it provided alongside possible improvements which could have yielded a greater success.
+This section will evaluate each of the core values that we have based our development around that is our focus on code--review, our focus on testing and lastly we consider the choice to focus on the back--end, make a proof of concept front--end and emulate the data provider.
+Before expanding on those core development ideas we will take a look at the time scheduling issues, as this has affected most of our development.
 %%%%%%%%%%%
-\subsection{Scheduling/Scrum}
+\subsection{Time Scheduling}
+%Might just scrap this if it ends up just sounding as an excuse
+As mentioned the amount of mini-projects we had this semester made it particularly difficult to find time for the group to discuss the what we wanted to do, and where we wanted the project to go, this was not helped by the mini-projects not being useful for our particular project in any way
+These issues meant that deciding on a project and what direction to take said project took longer than we would have liked and in order to make up for this time loss we added the weekend to our timetable.
+While working in the weekend somewhat made up for the time we were now spending on mini-projects it still did not help collect the group, as such the more impactful group discussions were still limited to once a week.
 
-
-
-
-
-Even with adding weekends to the schedule the project still progressed slowly, it was clear that as soon as the mini-projects would be over we would be able to get a lot more work done on the project.
-As such our time available for the project would rise exponentially in the last two months.
-While suddenly having a load of time
+%Would have had a less of an effect if our project used parts of miniprojects.
 %Developer split, postive outcome
 %Compressed time frame, 1.5 months instead of 4.
-\subsection{Code-Review}
+\subsection{Code--Review}
+Our systematic code--review has been a supremely effective tool, even more so due to the timetable issues.
+Code--review in itself is a useful tool in order ensure that anything we produce is of such a quality that we rarely will need to refactor it once it has passed through review thus reducing the number of iterations any developed part requires.
+With our scheduling issues or code--review structure has also helped with knowledge sharing.
+In our original plan for development Scrum was supposed to be a place where knowledge and issues could be shared, however since the scheduling issues ruined the daily Scrum plans it did not produce this effect.
+Code--review helps pick up the slack in this area, by reviewing code produced by others in the group, the reviewer learns about other parts of the system that they may not have been involved in up to that point.
+By requiring at least two reviewers it brings the knowledge sharing up to a point where at least half the group have been involved in every part of the system.
+
+Despite the positives of code--review, it does have its negatives.
+Code--review takes time, some time quite a while, this means that if other parts of the system are dependent on a part currently being reviewed, they will be blocked until it passes review.
+This downside can be somewhat helped by prioritising reviews of blocking parts.
+Another downside of code--review is how time consuming it is, while it helps to ensure a high quality it also means that if something has to be redone, an even greater amount of time is lost, as the entire thing will have to be redone and re--reviewed.
+
+Overall few things had to be iterated upon once through review, as such we deem that overall our code--review has been supremely effective, and through knowledge sharing and reducing number of iterations required has also helped diminish the effect of our time scheduling problems.
 %Code-review perks, hard to get stuff through but for the most part we barely have to go back once it's in master.
-%The effect of exponential workload and miniprojects.
-%Would have had a less of an effect if our project used parts of miniprojects.
 \subsection{Test Focus}
 %Test it all
-\subsection{}
+\subsection{System Constituents/Splitting the System/Project Focus}
