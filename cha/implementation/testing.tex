@@ -1,0 +1,327 @@
+\section{Testing the Server}\label{sec:testing}
+In this section we will describe the reason for testing, how much we should test,
+our test methodology and provide testing examples from the server.
+Furthermore examples of how the testing have improved the server will be given.
+We will also present some concrete examples of how these tests have found bugs and improved the server.
+
+\subsection{Reasons for Testing}
+The intention of testing software is to demonstrate that it does what it is intended to do.
+According to Ian Sommerville in his book \textit{Software Engineering}\cite[p.~227]{software_engineering} testing is supposed to do two things:
+
+\begin{description}
+    \item[Validation testing]\cite[p.~227]{software_engineering} \hfill\\
+    To test if the software meets its requirements validation testing is used.
+    This means that there should, for a custom system, be a test for each requirement, 
+    demonstrating the ability of the software to fulfil the requirements.
+    The test cases to test the requirements is supposed to reflect the intended use of the software,
+    i.e. the tests should imitate regular use from a regular user.
+
+    \item[Defect testing]\cite[p.~227]{software_engineering} \hfill\\
+    To find input which makes the software behave incorrectly defect testing is used.
+    The incorrect behaviour is the result of software defects, 
+    which can result in system crash, data corruption or other faults.
+    Testing for incorrect behaviour also prevent regression during development,
+    where new bugs could be introduced.
+    Regression is the case where a piece of working software stops working after a new feature is added\cite{regression}.
+    The test cases to expose the defects are not required to imitate regular use as validation testing.
+    Therefore these test cases can be obscure, such that edge cases can be covered.
+\end{description}
+
+Since we are interested in the server being able to fulfil its requirements, 
+and we want to find and eliminate incorrect behaviour, we determine that we have to test the server.
+Furthermore testing is a part of the requirements of the server, as mentioned in \cref{sec:requirements_elicitation}\fxnote{Add testing som requirement}.
+The next sections will describe the testing methods we intend to use.
+
+\subsection{Test Methodology}
+Ian Sommerville provides three stages of testing a system\cite[p.~231]{software_engineering}:
+development testing, release testing, and user testing.
+Development testing is tests made by the developers of the system during development 
+and includes unit testing, regression testing, component testing, 
+and system testing\cite[p.~232]{software_engineering}.
+
+The second stage is release testing, 
+where a particular release of a system is tested to prove it is ready for use outside of the development environment\cite[p.~245]{software_engineering}.
+Release testing includes requirements--based testing, scenario testing and performance testing.
+The final test stage is user testing where users or customers provide feedback to the system.\cite[p.~249]{software_engineering}
+User testing includes alpha testing, beta testing and acceptance testing.
+
+User testing is deemed not to be relevant in testing the server, 
+since the server provides data for a front--end,
+and an end user would never interact directly with the server.
+If we were to make a front--end, which is not only a proof of concept, user testing would be relevant.
+
+We will perform both development testing and release testing, in order to test the server.
+This choice is taken since we find elements from both development testing and release testing relevant.
+The methods we will use from development testing and release testing are:
+unit testing, regression testing, component testing, and performance testing.
+
+\bigskip
+
+Another type of test we perform is smoke testing.
+Smoke testing is an ad-hoc testing method where basic functionality is tested and happens naturally during development\cite{smoke_testing}.
+An example of smoke testing in a software system is to make a compilation and see if it succeeds, since we use a statically typed language,
+we can use the type system to check if all types are compatible.
+
+To sum up, we will do unit testing, regression testing, and component testing which is a part of development testing. 
+Furthermore we will do performance testing which is a part of release testing
+and we will use smoke testing to quick test basic functionality.
+
+\subsection{Adequate Testing}\label{subsec:adequate_testing}
+It is difficult to determine when a piece of software is adequately tested.
+
+A way of measuring how much the code in a software project is tested is called code coverage.
+There exist different metrics to measure code coverage, e.g. statement coverage and condition coverage,
+and which one to use should chosen according to the specific use case.
+Performing a code coverage analysis can pinpoint untested areas of a software project.
+It also calculates a quantitative measure of the code coverage, 
+which can be used to estimate if more tests are needed or not, 
+but it do not say what must be tested.\cite{code_coverage}
+
+The downside thing of using code coverage as a goal for testing, 
+is that the code coverage measure of a software project does not say anything about the quality of the tests, 
+only that the code is being tested.
+Therefore relying too heavily on having a high code coverage can give a false impression of the quality of the software.\cite{code_coverage_neg}
+
+In a larger system having a code coverage of 100 \% is generally impractical and often it is not cost effective compared to the benefit gained by testing.
+It is also estimated that a code coverage at 100 \% only expose about half the faults in a system.
+Instead of testing everything the focus should be at finding bugs.
+The point at which to stop testing is when the tests become contrived.\cite{code_coverage_not_100}
+
+\bigskip
+
+In regards to testing the server, we will not use code coverage as a goal for testing.
+This choice is taken since code coverage do not give any qualitative information of the testing.
+Instead code coverage will be used to find areas with low code coverage or no tests.
+These areas will then be investigated to see if they need more tests or if the testing is adequate.
+
+From the previously mentioned reason for testing, 
+it is stated that the components, which makes the software fulfil its requirements, should be tested.
+Therefore when testing the server, the functionality, 
+which directly fulfil the requirements stated in \cref{sec:requirements_elicitation}, will be tested.
+
+We do not deem it sufficient to only test the functionality which directly fulfil the requirements of the server.
+Therefore selected parts of the server, which indirectly fulfil the requirements, 
+will also be tested to make sure they behave correctly.
+The selected parts will be chosen from their importance in the functionality of the server,
+for instance testing database connections, 
+which is not directly a part of the requirements from \cref{sec:requirements_elicitation}.
+
+\fxnote{Dette skal revideres når de endelige krav kommer, f.eks. ryger det med databasen nok.
+Alternativt kan det med indirekte krav slettes hvis det ``indirekte krav'' ikke anses som passende og så testen tilpasses så der kun testes for kravene.} 
+
+Thorough testing of the server will also help avoid regression during development.
+Regression bugs can be hard to debug, since the system initially worked correctly and suddenly it do not.
+With a combination of unit tests and integration tests together with the automatic running of tests,
+the risk of not catching regression bugs is minimised\cite{regression}.
+
+To avoid regression in the code, the execution of tests should be done automatically.
+The reason for this is that a software projects can have as many good tests to test the code,
+but if the developers forgets to run the tests during development,
+the tests will no be used optimal.
+
+\bigskip
+To summarize, we will test that the server satisfies the requirements,
+and functions as intended. 
+Furthermore we will test other functionality which indirectly fulfil the requirements,
+to avoid bugs and regression during development.
+Finally the tests will be run automatically to make sure that regression bugs and other bugs are caught.
+
+\subsection{Used Test Methods}
+It is not possible to achieve an adequate level of testing of the server, using only one type of test.
+This is caused by the fact that the server is made up of different components, 
+as mentioned in \cref{sec:internal_architecture}, 
+which depends on and uses each other.
+Furthermore testing the different aspects of the requirements, for instance ``Support load scalability.'' 
+and ``Normalise incoming data and offer the data in a platform neutral format.'' puts completely different
+requirements on the tests and testing methodology.
+Therefore several testing methods is used to test the requirements to the server 
+and the important functionality to achieve an adequate level of testing.
+The different testing methods we will use to test the server with is unit, integration, load, and system testing.
+
+\subsubsection{Unit and integration testing}
+For unit and integration testing, JUnit\footnote{\url{http://junit.org/junit4/}} with Hamcrest\footnote{\url{http://hamcrest.org/}} are used.
+JUnit is a testing framework and Hamcrest is a matching framework, and therefore they have different types of assert methods.
+Where JUnit have assert methods like \code{assertEquals}, Hamcrest have \code{assertThat}.
+Since JUnit 4, Hamcrest's \code{assertThat} have been a part of JUnit and can be used without including Hamcrest separately\cite{hamcrest_vs_junit}.
+
+The advantage of using \code{assertThat} over JUnit's assert methods is firstly the readability.
+An example of the improved readability can be seen in \cref{lst:assert_readability}, 
+where the \code{assertThat} statement at line 1 can be read as plain English, 
+but the \code{assertFalse} statement at line 3 can be harder to interpret for someone unknown to the code\cite{hamcrest_vs_junit}.
+
+\begin{listing}
+    \begin{java2}
+        assertThat(actual, is(not(equalTo(expected))));
+
+        assertFalse(expected.equals(actual));
+    \end{java2}
+    \caption{An example of the difference in readability taken from \cite{hamcrest_vs_junit}.}
+    \label{lst:assert_readability}
+\end{listing}
+
+Furthermore the \code{assertThat} statement gives better failure messages\cite{hamcrest_vs_junit}.
+An example of that can be seen in \cref{lst:assert_diff},
+where a failed \code{assertTrue} returns the failure message at line 1 to 8 (only relevant information is showed),
+which do not contain the values, which failed the test.
+A failed \code{assertThat} returns the failure message at line 10 to 14, 
+but this message contains the values which failed the test,
+which is helpful in debugging the reason the test failed.
+It also makes it easier for people relatively unknown to the tests to debug a failed test.
+
+\begin{listing}
+    \begin{java2}
+    junit.framework.AssertionFailedError
+        at junit.framework.Assert.fail(Assert.java:55)
+        at junit.framework.Assert.assertTrue(Assert.java:22)
+        at junit.framework.Assert.assertTrue(Assert.java:31)
+        at junit.framework.TestCase.assertTrue(TestCase.java:201)
+        at rocks.stalin.sw708e16.server.persistence.TestSpatialRouteDao
+            .testWithinRadius_WrappingAroundGlobeLongitude(TestSpatialRouteDao.java:225)
+        ...
+
+    java.lang.AssertionError: 
+    Expected: not a collection containing <rocks.stalin.sw708e16.server.core.spatial.Route@544e3900>
+    but: was <[rocks.stalin.sw708e16.server.core.spatial.Route@544e3900]>
+    Expected :not a collection containing <rocks.stalin.sw708e16.server.core.spatial.Route@544e3900>
+    Actual   :<[rocks.stalin.sw708e16.server.core.spatial.Route@544e3900]>
+    \end{java2}
+    \caption{An example of the difference in failure messages.}
+    \label{lst:assert_diff}
+\end{listing}
+
+To test the individual components of the server, 
+a combination of unit tests with JUnit and Hamcrest is used.
+An individual component is a component which do not depend or interact with other components.
+
+An example of a unit test from the server can be seen in \cref{lst:unit_test_example}.
+First the test is arranged from line 4 to 7 with the data it needs.
+Then at line 10 is the route added to a list,
+and at line 13 and 14 the test assert that what is expected actually happened.
+At line 1, the annotation \code{@Test} is JUnits way of define a method as a test.
+As can be seen in \cref{lst:unit_test_example}, we use the \ac{AAA} pattern when doing unit tests.\fxnote{Kan det ikke godt passe er det kun er ved unit tests AAA bliver brugt, og ikke ved integration tests?}
+The \ac{AAA} pattern splits the tests up into three parts.
+First is the Arrange part, where objects are initialised and variables declared and assigned.
+Second is the Act part, where the invocation of the method which is tested is happening.
+Lastly is the Assert part, where it is verified that the method which is tested is behaving as expected.\cite{aaa_pattern}
+
+\begin{listing}
+    \begin{java2}
+        @Test
+        public void testGetLatestWaypoint_NonePresent() {
+            // Arrange
+            User user = new User("Jens", "Jensen");
+            Driver driver = new Driver(user);
+            Vehicle vehicle = new Vehicle("Volvo", "V80", 2016, new Vin("ABC123"));
+            Route route = new Route(new ArrayList<>(), driver, vehicle);
+
+            // Act
+            List<Waypoint> found = route.getLastWaypoints(1);
+
+            // Assert
+            Assert.assertNotNull(found);
+            Assert.assertTrue(found.isEmpty());
+        }
+    \end{java2}
+    \caption{An example of a unit test from \code{TestRoute.java} which is a part of Core.}
+    \label{lst:unit_test_example}
+\end{listing}
+
+\bigskip
+
+When the components to be tested require more than them self to be tested, 
+for instance a database connection,
+then integration testing is used.
+The way the server is integration tested is the same way as unit tested,
+except that the test depends on other components.
+An example of this can be seen on \cref{lst:integration_test_example},
+where at line 3 the \code{waypointDao} is used.
+The \code{waypointDao} is used to communicate with the database,
+and therefore this is an integration test instead of a unit test.
+
+\begin{listing}
+    \begin{java2}
+        @Test
+        public void testWithinRadius_WithNone_FindNone() throws Exception {
+            List<Waypoint> ret = waypointDao.withinRadius(0, 0, 100);
+
+            Assert.assertThat(ret, hasSize(0));
+        }
+    \end{java2}
+    \caption{Integration test example from \code{WaypointDao.java} in Persistence.}
+    \label{lst:integration_test_example}
+\end{listing}
+
+\subsubsection{The \code{@Before} annotation}
+To make sure the state of the program is the same before each test and all resources needed are available,
+the JUnit annotation \code{@Before} is used.
+\code{@Before} is used to run methods before each test is executed, 
+for instance to set up needed objects\cite{before_doc}.
+An example of the use of \code{@Before} in the server is to clear the test database,
+to make sure the state of the database is the same before each test.
+This is done by having all the test classes, which use the database, inherit the abstract class \code{DatabaseTest.java},
+where the method \code{clearDatabase}, seen on \cref{lst:cleardatabase}, is defined.
+The database is cleared before each test to make sure that each test has no assumptions about other tests, 
+since they are unordered and each should stand for itself.
+
+\begin{listing}
+    \begin{java2}
+        @Before
+        public void clearDatabase() {
+            MongoClient client = new MongoClient(informationProvider.getUrl(), informationProvider.getPort());
+            client.getDatabase("test").drop();
+        }
+    \end{java2}
+    \caption{\code{clearDatabase} method from \code{DatabaseTest.java}.}
+    \label{lst:cleardatabase}
+\end{listing}
+
+Another use of \code{@Before} in the server is to set up a waypoint service before there is made test on it.
+The method \code{SetupWaypointService} from \code{TestWaypointService.java}, 
+which can be seen in \cref{lst:setupwaypointservice},
+creates a user, driver, vehicle, a route, and then sets the route.
+The \code{setRoute} method at line 13 configures the \code{waypointService} to use the route \code{route}.
+\code{TestWaypointService.java} also inherits \code{DatabaseTest.java}, 
+so the way \code{@Before} works with multiple \code{@Before} statements in different classes 
+is that the \code{@Before} methods of the superclass will be executed before the \code{@Before} methods of the current class\cite{before_doc}.
+This is convenient with the way we have constructed our tests since the newly inserted data will not be removed. 
+
+\bigskip
+
+When test data is needed by the tests, test data is created and inserted in the database by using the \code{Given} classes.
+An example of this can be seen in \cref{lst:setupwaypointservice}.
+Using the \code{Given} classes gives a easy and transparent way of creating test data for the tests, which is also their only purpose.
+By creating the \code{Given} classes as fluent interfaces\footnote{\url{http://martinfowler.com/bliki/FluentInterface.html}}, the method calls can be chained as shown in \cref{lst:setupwaypointservice} line 3 to 12,
+thus the code can be read as plain English.
+
+\begin{listing}
+    \begin{java2}
+        @Before
+        public void SetupWaypointService() {
+            User user = new GivenUser().withName("Jeff", "Jeffsen")
+                .withUsername("Anders").withPassword("hunter2").in(userDao);
+            Driver driver = new GivenDriver().withUser(user).in(driverDao);
+            Vehicle vehicle = new GivenVehicle()
+                .withMake("Ford")
+                .withModel("Mondeo")
+                .withVintage(1999)
+                .withVin(new Vin("ABC123"))
+                .in(vehicleDao);
+            Route route = new GivenRoute().withDriver(driver).withVehicle(vehicle).in(routeDao);
+            waypointService.setRoute(route);
+        }        
+    \end{java2}
+    \caption{\code{SetupWaypointService} method from \code{TestWaypointService.java} in Services.}
+    \label{lst:setupwaypointservice}
+\end{listing}
+
+\subsubsection{Testing status}
+As mentioned in \cref{subsec:adequate_testing}, we choose to test the requirements and important parts of the code.
+%Måske en tabel som viser hvilke tests/classes som dækker hvilke requirements.
+
+
+\subsubsection{Load testing}
+
+
+\subsubsection{System testing}
+
+
