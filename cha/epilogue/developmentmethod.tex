@@ -1,39 +1,25 @@
-Ignore these notes(the itemize)
-\begin{itemize}
-    \item Pro: Hard split for parallel development of consumer and back--end provided us with a ``user'' who had some needs for the back--end in regard to services required. Also proves feature scalability!
-    \item Con: Scheduling
-    \item Intended method compared to reality.(how we failed at scrum)
-    \item Con: Miniprojects
-    \item Exponential work
-    \item Pro: Code-review, helped particularly for exponential work as it gave less time for iterations
-    \item Pro: Focus on testing for code-base, 50+\% of code is test.
-    \item Pro: Testing beyond testing the code -  data provider(Sass efforts) - Load test/system test
-    \item Continuous integration > Gains?
-\end{itemize}
-
 \section{The Development Process}
 %Meta shit%
 Our 6th semester was a multi-group project with several groups working together, as a result it was heavily focused on the development process.
-The focus on development process from the previous semester gave us a very clear idea of how we wanted the development process to be.
-The idea was to reduce the overhead from scrum and go back to using only a few scrum elements, as some of us had done before, while maintaining some of the other processes we had used.
+The focus on development process from the previous semester gave us a very clear idea of how we wanted the development process to be for this semester.
+Ideally we wanted to reduce the overhead from Scrum and go back to using only a few elements form Scrum, while maintaining some of the other processes aside from Scrum which we had used.
 %%%%%%%%%%%
 \subsection{Planned Development Process}
 %Meta Shit%
 Initially we planned to use certain tools to manage our development, first we introduce these tools and methods and why we wanted to use them.
-Following the introduction to our planned development process we describe how the tools and methods worked for us in reality, and lastly we reflect on the outcome of how the development process was actually handled.
+Following the introduction to our planned development process we describe how the tools and methods worked for us in reality, and lastly we reflect on the outcome of how the development process and how we believe they contributed to our project.
 %%%%%%%%%%%
 \subsubsection{Scrum}
-Most of the group has worked together for several semesters and through these semesters used parts of Scrum during development.
-The 6th semester heavily focused on running proper Scrum with sprints and meetings.
-We decide that running Scrum with sprints and meetings was too much overhead, as such we wanted to instead use the management tools we had successfully used before.
-These tools were daily Scrum and a Scrum Board.
+As mentioned our 6th semester was heavily focused on development process, part of this was using Scrum correctly with planned sprints and a lot of cross group meetings.
+We decided that using Scrum with sprints and and sprint meetings is too much overhead, as such we wanted simply utilise some of the management tools we had successfully used in the past.
+These tools are daily Scrum and a Scrum Board.
 The daily Scrum is a short meeting in the beginning of the day where each member answers three questions:
 \begin{itemize}
     \item What have you done since the last meeting?
     \item What do you intent to do today?
     \item Is there anything stopping you?
 \end{itemize}
-These three questions allows for a quick overview for each member to keep up with what others are doing and also provides an opportunity each day to ask for help if there are any uncertainties about a task.
+These three questions allows for a quick overview of what others are doing and also provides an opportunity each day to ask for help if there are any uncertainties about a task.
 The Scrum Board allows for an overview of the project as a whole.
 The Scrum Board contains user stories and tasks that divide the development process into smaller more manageable workloads.
 %Step down
@@ -42,55 +28,66 @@ The Scrum Board contains user stories and tasks that divide the development proc
 \subsubsection{Phabricator \& Code--Review}\fxnote{overvejer at omskrive nogle ting i dette afsnit og introducere master, developer og bugfix branches saa det bliver lettere at snakke om.}
 In order to have some version control and also implement some quality control we decided to use a tool called Phabricator\footnote{https://www.phacility.com/phabricator/}, which is a software development tool.
 Phabricator facilitates an environment designed for code--review which is another method we wanted to use.
-In order to reduce the number of time something should be iterated upon, we decided that the better choice is for everything to go through a thorough review process.
+In order to reduce the amount of times something should be iterated upon, we decided that the better choice is for everything to go through a review process.
 We decided the way to do this was that anything developed had to be reviewed and accepted by two reviewers.
-This was also intended to help with knowledge sharing even further than the daily scrum, as anything that would be considered done, would have been through at least three group members.
+This was also intended to help with knowledge sharing even further than the daily scrum, as anything that would be considered done, would have been through at least three group members.%Fresh in mem makes it easier
 As an extra precaution whenever an group member wanted push something for review, it should pass a linter and all unit tests, or an error occurs instead.
 We had used a similar process on the 6th semester, however review had been very strict and rigid which meant it could take over a week to get anything through the review phase.
-As we did not want to spend too much time on review, we agreed that reviews should be less rigid and focus on design issues, rather than naming conventions and other less important issues.
+As we did not want to spend too much time on review, we agreed that reviews should be less rigid and focus on design issues, rather than naming conventions and issues without any real effect.
 %Unit tests and Linter // Version Control Biatch git/arc
 %Code--review // 2 reviewers min.
 \subsubsection{Test Focus}
-%may require some input
-\subsubsection{Jenkins}
+%may require some input from our testers
+As \cref{sec:testing} describes we believe that testing is important, particularly in order to demonstrate that a system not only works, but works as intended.
+In order to achieve a sufficient level of testing to prove the server works as intended, we decided that integration and system tests were the way to do so for the server.
+Another criteria for the server is several scalability measures, while most of the scalability measures establishes in \cref{sec:scalability} can not be systematically tested, load scalability can.
+This led us to require load testing, system tests and integration tests.
+%Systematic Integration tests(JUnit) not interesting if no interaction with DB, thus Integration > Unit
+%Load testing, system test(testing all services) JMeter
+\subsubsection{Jenkins/CI}
 %May not be written
 %Finds errors that may not occur on a single computer but would not occur on others.
+%Working version, always
 \subsection{Development Process in Reality}
 %Meta Shit%
 While we had a plan for how we wanted to develop, it did not quite turn out the way we wanted it to.
-The primary factor that caused a split between our plan and how we actually ended up developing was our timetables.
-For our courses 3 out of four courses had a mini-project which in turn meant we had less scheduled time than usual for our own project, about 1 - 1.5 days a week.
-This was not helped by the group having different courses creating a split in when the entire group was gathered at once.
-The scheduling issues have primarily affected our Scrum plans, but also had us think about our time scheduling as for how we were gonna develop, as time was scarce early on.
+Our plan to use elements of Scrum was the point we deviated from the most.
+The scheduling of our time this semester is what caused us to deviate from our plans, in particular for Scrum.
+The scheduling issues were caused by the amount of time spend on courses this year, in particular on each mini-projects which all the courses had.
+Since the group also had different courses this semester only about 1 day a week the entirety of the group would be together in the group room.
+This issues is expanded upon in \cref{sub:time_scheduling}.
 %%%%%%%%%%%
 \subsubsection{Scrum}
-Despite wanting to use the daily Scrum and Scrum Board tools from Scrum, the daily Scrum ended up being more of a weekly thing as the group would so rarely be gathered without two or more people missing.
-While the daily Scrum was more or less scrapped in the first couple of months due to the scheduling issues, the Scrum Board prevailed and gave us the benefit of seeing what tasks were currently being worked on, and what tasks had yet to be started.
-The daily Scrum was not completely scrapped, it simply became more of a weekly thing than a daily one.
-The scheduling issues made us realize we needed to work weekends as well in order to make up for the less scheduled time, this made monday the ideal day to do our weekly Scrum despite it being scheduled for mini-project work for most of the group.
+Despite wanting to use the daily Scrum and Scrum Board tools from Scrum, the daily Scrum ended up being more of a weekly thing.
+While the daily Scrum suffered, the Scrum Board prevailed and gave us the benefit of seeing what tasks were currently being worked on, and what tasks had yet to be started.
+The scheduling issues made us realise we needed to work weekends in order to make up for the less scheduled time.
+Working weekends made monday the ideal day to do our weekly Scrum; despite monday being assigned to mini-project work for most of the group.
 In the later months of the project the courses started to fade out and the mini-projects were ending, this meant we had more time in the group room to work which in turn allowed us to revive our daily Scrum meetings.
 %Scrum? Not. Daily scrum, 2 times a week at best. Scheduling issues, 1.5 - 2 days a week for majority, Hours available graph?
 %Realizing we need to work weekends4graph.
 \subsubsection{Phabricator \& Code--Review}
 Unlike our Scrum tools, the use of Phabricator and code--reviews went well, although a few changes were made to code--review.
-While originally not wanting reviews to take too long as we were expecting to iterate upon things, we ended up doing rigid code--reviews anyway.
-With how our time available was, little time early on and lots in the end, this came to be a perk.
-Doing several iterations, while effective is also blocking, you can not iterate on something till it has been done the first time.
-Since the majority of our time lies in the end of the semester and we have six group members, waiting on iterations would be blocking; as such ensuring high quality through a rigid review structure meant less iterations and in turn a workload that can better be developed in parallel.
+Originally not wanting reviews to take too long as we were expecting to iterate upon things, we ended up doing rigid code--reviews anyway.
+Doing several iterations, while effective is also blocking, since you can not iterate on something until it has been done the first time.
+With the majority of our time being stacked in the end of the semester and we have six group members, waiting on iterations would be blocking. 
+As such ensuring high quality through a rigid review structure meant less iterations and in turn a workload better suited for parallel development.
 %Changins course to a more rigid review structure
 %Phab workflow, Review process
 %Test focused development, review+test relly handy with exponential workload as several iterations would block too much
-\subsubsection{Test Focus}
-%May require some input
-\subsubsection{Jenkins}
+\subsubsection{Test Focus}\fxnote{This is very short, not quite sure what else to write, also i don't know about the name for this, suggestions?}
+%May require some input - Eftersom vi har et dedicated test afsnit ved jeg ikke helt hvad man skulle skrive her, vi har jo rimelig successfully gjort det som vi ville mht. test
+As documented in \cref{sec:testing} we managed to successfully thoroughly test the system in various ways, integration testing with JUnit and Hamcrest, load testing with Apache JMeter and system tests also trough Apache JMeter.
+%Systematic Integration tests(JUnit) not interesting if no interaction with DB, thus Integration > Unit
+%Load testing, system test(testing all services) JMeter
+\subsubsection{Jenkins/CI}
 %May not be written
 \section{Process Reflection}
 %Meta Shit%
 With the differences between or development plan and the actual execution described, in this section we consider the success or lack thereof it provided alongside possible improvements which could have yielded a greater success.
-This section will evaluate each of the core values that we have based our development around that is our focus on code--review, our focus on testing and lastly we consider the choice to focus on the back--end, make a proof of concept front--end and emulate the data provider.
+This section will evaluate each of the core values that we have based our development around that is our focus on code--review, our focus on testing and lastly we consider the choice to focus on the server, make a proof of concept front--end and emulate the data provider.
 Before expanding on those core development ideas we will take a look at the time scheduling issues, as this has affected most of our development.
 %%%%%%%%%%%
-\subsection{Time Scheduling}
+\subsection{Time Scheduling}\label{sub:time_scheduling}
 %Might just scrap this if it ends up just sounding as an excuse
 As mentioned the amount of mini-projects we had this semester made it particularly difficult to find time for the group to discuss the what we wanted to do, and where we wanted the project to go, this was not helped by the mini-projects not being useful for our particular project in any way
 These issues meant that deciding on a project and what direction to take said project took longer than we would have liked and in order to make up for this time loss we added the weekend to our timetable.
@@ -109,21 +106,43 @@ By requiring at least two reviewers it brings the knowledge sharing up to a poin
 Despite the positives of code--review, it does have its negatives.
 Code--review takes time, some time quite a while, this means that if other parts of the system are dependent on a part currently being reviewed, they will be blocked until it passes review.
 This downside can be somewhat helped by prioritising reviews of blocking parts.
-Another downside of code--review is how time consuming it is, while it helps to ensure a high quality it also means that if something has to be redone, an even greater amount of time is lost, as the entire thing will have to be redone and re--reviewed.
+Another downside of code--review is how time consuming it is, while it helps to ensure a high quality it also means that if something has to be redone after already having passed review, an even greater amount of time is lost, as the entire thing will have to be redone and re--reviewed.
 
 Overall few things had to be iterated upon once through review, as such we deem that overall our code--review has been supremely effective, and through knowledge sharing and reducing number of iterations required has also helped diminish the effect of our time scheduling problems.
 %Code-review perks, hard to get stuff through but for the most part we barely have to go back once it's in master.
 \subsection{Test Focus}
-%Test it all
+%Systematic Integration tests(JUnit) not interesting if no interaction with DB, thus Integration > Unit
+%Load testing, system test(testing all services) JMeter
+Testing our system has been of high priority for us throughout this project, as such one would hope that it has also yielded some value.
+When writing tests one has to think differently than when writing the functionality, as a result not only may the test find errors, but the writing of the test may also help to find an error.
+While we have not been tracking how many errors we have found through the different test measures, we would estimate that about one in every three integration test has helped us identify an error.
+By using a systematic test framework such as JUnit, each test written becomes a regression test.
+While the fact that tests yield errors when written is useful, the most useful part of our test setup is the regression tests that ensure the system keeps working as intended when other components are added or changed, this ties in closely with our continuous integration setup which runs all tests whenever something is pushed to the release branch.
+
+Testing the functionality within the system works is important, but it also has to work for the clients using the system, for this we used system testing as described in \cref{sec:testing}.
+The system tests, test that the API acts as the user intends it to, which would as the API specification describes it as is shown through the enunciate documentation at.\fxnote{Insert ref to enunciate documentation!}
+In order to find as many errors as possible we also used some manual smoke testing for the API which also helped find some errors that the system tests did not.\fxnote{Eksempel?(Truls/Sass)}
+With scalability being of import to our project we decided to test this as well through load testing, the load test helped us identify bottlenecks in the server, which we in turn could act upon.\fxnote{Troels/Jesper add example for system test yield, evt. om SQL Query rewrite coz bottleneck}
+
+While testing is a time consuming endeavor, the time we spend testing is at least equal to that we have spend developing, it is also a tool required in order to proof some measure of quality for the system.
+Collectively all the tests have enabled us to attain a high internal quality within the code with use of good code practice methods like smoke tests, a test framework and extensive regression tests, while also having a high external quality to potential users of the API with a thoroughly tested API.
+
+
+%1/3 test writing found a logical error.
+%test makes u think also revealing errors
+%Regression test the most helpful part
+%Integration test didnt find JSON errors.(Testing doenst find all tests obviously) Manual sanity test(Smoke Test)
+%System test finds bottlenecks // revealed, not acted upon - improvements --- 
+
+\subsection{Jenkins/CI}
 \subsection{Splitting the System/Project Focus}
-In \cref{cha:requirements_elicitation} we made the choice to focus on the back--end component.
+In \cref{cha:requirements_elicitation} we made the choice to focus on the server component.
 Despite making this choice we still made a proof--of--concept version of the front--end and emulated the data provider.
-We did this in order to prove the the back--end we produced is compatible with those systems as well as test the systems scalability.
+We did this in order to prove the the server we produced is compatible with arbitrary data providers and front--ends systems, as well as to test the systems scalability.
 Doing this for the front--end in particular gave us an unexpected perk.
-As we have no stakeholder we had no one producing requirements in regards to what what services our back--end should provide, however through front--end development this was partially accomplished.
-Due to the aforementioned time scheduling issues the tasks worked on outside of the group room were for the most part pretty separate, as such front--end proof--of--concept development was separate from the back--end developer.
-This gave us the unexpected advantage of having the the front--end proof--of--concept development act like a user, as this is exactly whom our back--end is designed to interact with.
-The front--end proof--of--concept development required some services by the back--end, in the case they did not exist this created requirements for us to use.
-This interaction within the group has resulted in a more complete back--end with a wider range of services available to possible front--end developers.
+As we have no stakeholder we had no one producing requirements in regards to what services our server should provide.
+The front--end development, while not strictly producing requirements, did help us figure out which services were required and also worked as an integration test, finding numerous design faults that were then rectified.
+This was an unexpected advantage of having the the front--end proof--of--concept development act like a user, as this is exactly whom our server is designed to interact with.
+This interaction within the group has resulted in a more complete server with a wider range of services available to possible front--end developers.
 
 %Developer split, postive outcome
