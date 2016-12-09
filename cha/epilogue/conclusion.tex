@@ -1,0 +1,34 @@
+%Summary
+    %DB Choice, Back--end Focus, Front--end PoC, Data provider Emulated,
+    %Architecture Choice
+    %Test Heavy
+%Meta introduction to choice of project focus
+The goal for this project was to construct a scalable system that could receive geospatial and vehicle relevant data from a disjoint vehicle fleet and present this data to an arbitrary user.
+Through our analysis of existing systems we found that current systems on the market revealed very little information to potential users before buying their software.
+Through our initial analysis of how a system may be constructed we knew that constructing a complete system with data provider, server and front--end client was not feasible.
+With our newfound information about the market focusing on developing a server which could receive data from a data provider and present this data to a front--end client through an API, would allow a company to develop their own front--end client to suit their exact needs rather than invest in a system with insufficient or redundant features.
+With our newfound focus we created the list of requirements detailed in \cref{sec:requirements}.
+The server we have developed uses a client--server architecture with the server providing a REST API for clients, both data providers and front--end, to communicate with.
+
+\bigskip
+%Discussion --- Make these segments into sections rather than just split them under the same chap?
+    %NoSQL for scalability?open
+    %Less restrictions for more performance
+    %nosql less rigid so maintenance is easier
+    %NoSQL vs. MySQL
+    %Hibernate OGM less mature than Hibernate ORM
+    %Test Focus, twas it value?
+    %No stakeholder?
+    %Truck focus? have this given us anything? at all???
+    %Would another focus have changed anything? Mili - security // All theoretical as we have no Stakeholder -- No coz we dont have anything specific, would mostly have been front--end changes, but the front--end is PoC anyway so no big deal
+    %Could have had stakeholder how would this have affected? would that have been the better choice?
+The client--server architecture in combination with a REST API was chosen such that the server only relies on the clients using the endpoints correctly, this way the implementation of any client is completely irrelevant for the server.\fxnote{Kunne eventuelt stille op imod andre arkitekturer her, kan bare ikke lige komme paa nogle arkitekture som ville vaere relevante at stille op imod.}
+We put a high priority on scalability 
+%Conclusion
+    %Problem statement fulfillment?
+    %How can a scalable back–end service be designed and implemented, such that geospatial
+    %and vehicle data can be collected and aggregated in a timely way from a disjoint fleet
+    %of vehicles, while maintaining arbitrary possibilities of presenting the data to a given user?
+
+    %Test outcome? was it worth?
+    %Scalability is our source of complexity and should be an intergral part of the conclusion
