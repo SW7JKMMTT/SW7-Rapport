@@ -1,6 +1,12 @@
 \section{Testing the Server}\label{sec:testing}
-In this section we will describe the reason for testing, how much we should test,
-our test methodology and provide testing examples from the server.
+In this section we will describe the following things:
+\begin{itemize}
+    \item The reason for testing.
+    \item How much we should test.
+    \item Our test methodology.
+    \item Provide testing examples from the server.
+\end{itemize}
+
 Furthermore examples of how the testing have improved the server will be given.
 We will also present some concrete examples of how these tests have found bugs and improved the server.
 
@@ -29,10 +35,11 @@ According to Ian Sommerville in his book \textit{Software Engineering}\cite[p.~2
 
 Since we are interested in the server being able to fulfil its requirements, 
 and we want to find and eliminate incorrect behaviour, we determine that we have to test the server.
-Furthermore testing is a part of the requirements of the server, as mentioned in \cref{sec:requirements_elicitation}\fxnote{Add testing som requirement}.
+Furthermore testing is a part of the requirements of the server, as mentioned in \cref{cha:requirements_elicitation}\fxnote{Add testing som requirement}.
+Since our core area, as mentioned in \cref{sec:problem_statement} is the server, we will not test the front--end. 
 The next sections will describe the testing methods we intend to use.
 
-\subsection{Test Methodology}
+\subsection{Types of Testing}
 Ian Sommerville provides three stages of testing a system\cite[p.~231]{software_engineering}:
 development testing, release testing, and user testing.
 Development testing is tests made by the developers of the system during development 
@@ -40,20 +47,25 @@ and includes unit testing, regression testing, component testing,
 and system testing\cite[p.~232]{software_engineering}.
 
 The second stage is release testing, 
-where a particular release of a system is tested to prove it is ready for use outside of the development environment\cite[p.~245]{software_engineering}.
+where a particular release of a system is prepared and tested to prove it is ready for use outside of the development environment\cite[p.~245]{software_engineering}.
 Release testing includes requirements--based testing, scenario testing and performance testing.
 The final test stage is user testing where users or customers provide feedback to the system.\cite[p.~249]{software_engineering}
 User testing includes alpha testing, beta testing and acceptance testing.
 
 User testing is deemed not to be relevant in testing the server, 
 since the server provides data for a front--end,
-and an end user would never interact directly with the server.
+and an end user would only interact through a client with the server.
 If we were to make a front--end, which is not only a proof of concept, user testing would be relevant.
 
-We will perform both development testing and release testing, in order to test the server.
-This choice is taken since we find elements from both development testing and release testing relevant.
-The methods we will use from development testing and release testing are:
-unit testing, regression testing, component testing, and performance testing.
+We will perform development testing to test the server.
+This choice is taken since we find elements from development testing relevant.
+The methods we will use from development testing:
+unit testing, regression testing, and component testing.
+
+The form of release testing which Ian Sommerville describes do not fit very well with our development method.
+This way of release testing is for major releases, where we instead create small and continuous releases.\fxnote{Vær sikker på at dette bliver nævnt tidligere.}
+The way we will do release testing is by doing code review on code changes and make sure all development tests pass.
+Nevertheless we will still do performance testing, not in the context of releasing, but to benchmark the server.
 
 \bigskip
 
@@ -63,21 +75,21 @@ An example of smoke testing in a software system is to make a compilation and se
 we can use the type system to check if all types are compatible.
 
 To sum up, we will do unit testing, regression testing, and component testing which is a part of development testing. 
-Furthermore we will do performance testing which is a part of release testing
+Furthermore we will do our own version of release testing, do performance benchmarking, 
 and we will use smoke testing to quick test basic functionality.
 
-\subsection{Adequate Testing}\label{subsec:adequate_testing}
+\subsection{Code coverage}\label{subsec:code_coverage}
 It is difficult to determine when a piece of software is adequately tested.
 
 A way of measuring how much the code in a software project is tested is called code coverage.
 There exist different metrics to measure code coverage, e.g. statement coverage and condition coverage,
-and which one to use should chosen according to the specific use case.
+and which one to use should be chosen according to the specific use case.
 Performing a code coverage analysis can pinpoint untested areas of a software project.
 It also calculates a quantitative measure of the code coverage, 
 which can be used to estimate if more tests are needed or not, 
 but it do not say what must be tested.\cite{code_coverage}
 
-The downside thing of using code coverage as a goal for testing, 
+The downside of using code coverage as a goal for testing, 
 is that the code coverage measure of a software project does not say anything about the quality of the tests, 
 only that the code is being tested.
 Therefore relying too heavily on having a high code coverage can give a false impression of the quality of the software.\cite{code_coverage_neg}
@@ -110,14 +122,14 @@ which is not directly a part of the requirements from \cref{cha:requirements_eli
 Alternativt kan det med indirekte krav slettes hvis det ``indirekte krav'' ikke anses som passende og så testen tilpasses så der kun testes for kravene.} 
 
 Thorough testing of the server will also help avoid regression during development.
-Regression bugs can be hard to debug, since the system initially worked correctly and suddenly it do not.
+Regression bugs can be hard to debug, since the system initially worked correctly and suddenly it does not.
 With a combination of unit tests and integration tests together with the automatic running of tests,
 the risk of not catching regression bugs is minimised\cite{regression}.
 
 To avoid regression in the code, the execution of tests should be done automatically.
 The reason for this is that a software projects can have as many good tests to test the code,
 but if the developers forgets to run the tests during development,
-the tests will no be used optimal.
+the tests will be useless.
 
 \bigskip
 To summarize, we will test that the server satisfies the requirements,
@@ -194,36 +206,54 @@ a combination of unit tests with JUnit and Hamcrest is used.
 An individual component is a component which do not depend or interact with other components.
 
 An example of a unit test from the server can be seen in \cref{lst:unit_test_example}.
-First the test is arranged from line 4 to 7 with the data it needs.
-Then at line 10 is the route added to a list,
-and at line 13 and 14 the test assert that what is expected actually happened.
-At line 1, the annotation \code{@Test} is JUnits way of define a method as a test.
-As can be seen in \cref{lst:unit_test_example}, we use the \ac{AAA} pattern when doing unit tests.\fxnote{Kan det ikke godt passe er det kun er ved unit tests AAA bliver brugt, og ikke ved integration tests?}
-The \ac{AAA} pattern splits the tests up into three parts.
-First is the Arrange part, where objects are initialised and variables declared and assigned.
-Second is the Act part, where the invocation of the method which is tested is happening.
-Lastly is the Assert part, where it is verified that the method which is tested is behaving as expected.\cite{aaa_pattern}
+The test checks if the user icons can be set on a user and retrieved.
+First at line 4 a user is initialised without a user icon.
+At line 7 a user icon is assigned to the created user,
+and at line 10 it is tested that the user actually has the icon.
+At line 1, the annotation \code{@Test} is JUnits way of defining a method as a test.
 
 \begin{listing}
     \begin{java2}
         @Test
-        public void testGetLatestWaypoint_NonePresent() {
+        public void testHasIcon_WithIcon_IsTrue() throws Exception {
             // Arrange
-            User user = new User("Jens", "Jensen");
-            Driver driver = new Driver(user);
-            Vehicle vehicle = new Vehicle("Volvo", "V80", 2016, new Vin("ABC123"));
-            Route route = new Route(new ArrayList<>(), driver, vehicle);
+            User jeff = new User("Jeff", "passw0rd", "Jeff", "Lam");
 
             // Act
-            List<Waypoint> found = route.getLastWaypoints(1);
+            jeff.setIcon(new UserIcon());
 
             // Assert
-            Assert.assertNotNull(found);
-            Assert.assertTrue(found.isEmpty());
+            assertThat(jeff.getHasIcon(), is(true));
         }
     \end{java2}
-    \caption{An example of a unit test from \code{TestRoute.java} which is a part of Core.}
+    \caption{An example of a unit test from \code{UserTest.java} which is a part of Core.}
     \label{lst:unit_test_example}
+\end{listing}
+
+As can be seen in \cref{lst:aaa_example}, we use the \ac{AAA} pattern when doing unit tests.
+The \ac{AAA} pattern splits the tests up into three parts.
+First is the Arrange part, where objects are initialised and variables declared and assigned.
+Second is the Act part, where the invocation of the method which is tested is happening.
+Lastly is the Assert part, where it is verified that the method which is tested is behaving as expected.\cite{aaa_pattern}
+The test seen in \cref{lst:aaa_example} tests if a created user do not have a \code{authToken} as default.
+
+\begin{listing}
+    \begin{java2}
+        @Test
+        public void testListTokens_NoTokens() throws Exception {
+            //Arrange
+            User jeff = new GivenUser().withName("Jeff", "Jeffsen")
+                .withUsername("Jeff").withPassword("password").in(userDao);
+
+            // Act
+            Collection<AuthToken> authTokens = authService.listTokens(jeff);
+
+            // Assert
+            Assert.assertTrue(authTokens.isEmpty());
+        }
+    \end{java2}
+    \caption{An example of the use of \ac{AAA} pattern from \code{TestAuthenticationService.java} which is a part of Service.}
+    \label{lst:aaa_example}
 \end{listing}
 
 \bigskip
@@ -315,7 +345,7 @@ thus the code can be read as plain English.
 \end{listing}
 
 \subsubsection{Testing status}
-As mentioned in \cref{subsec:adequate_testing}, we choose to test the requirements and important parts of the code.
+As mentioned in \cref{subsec:code_coverage}, we choose to test the requirements and important parts of the code.
 %Måske en tabel som viser hvilke tests/classes som dækker hvilke requirements.
 
 
