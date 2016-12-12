@@ -95,8 +95,8 @@ Although we have picked JSON, it would be possible to have an XML representation
 
 To serialize our object into JSON from \acp{POJO} we decided to use Jackson\footnote{\url{https://github.com/FasterXML/jackson}}, which is a library for serializing \acp{POJO} to JSON or XML, with JAX-RS support.
 Jackson is, like a lot of the other \ac{Java EE} libraries, configured using annotations.
-Among the most important annotations are \code{@JsonIgnore}, which causes a property to be ignored, and \code{@JsonSetter/Getter}, which can be used in conjunction with \code{@JsonIgnore} to create write or read on properties.
-Another feature that fits in will with the rest of the technology stack is the integration with JAX-RS, which means that the various endpoint handers, or methods, can return object, and let the JAX-RS library handle the serialization.
+Among the most important annotations are \code{@JsonIgnore}, which causes a property to be ignored, and \code{@JsonSetter/Getter}, which can be used in conjunction with \code{@JsonIgnore} to create,write, or read on properties.
+Another feature that fits in well with the rest of the technology stack is the integration with JAX-RS, which means that the various endpoint handers, or methods, can return object, and let the JAX-RS library handle the serialization.
 
 \subsection{Deployment}
 To be able to deliver our service we need what is called an application server, i.e.~something which can run our code and serve it to the outside world in a production environment.
