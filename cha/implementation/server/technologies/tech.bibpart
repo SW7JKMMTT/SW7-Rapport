@@ -3,7 +3,7 @@
   publisher = {db--engines.com},
   title = {DB--Engines Ranking},
   year = {2016},
-  lastchecked = {9-11-2016},
+  lastchecked = {08-12-2016},
   howpublished = {\url{http://db-engines.com/en/ranking}}
 }
 
@@ -58,4 +58,45 @@
   pages={153--162},
   year={2012},
   organization={IEEE}
+}
+
+@book{dbs_concepts,
+ author = {Silberschatz, Abraham and Korth, Henry and Sudarshan, S.},
+ title = {Database Systems Concepts},
+ year = {2011},
+ isbn = {9780073523323},
+ edition = {6},
+ publisher = {McGraw-Hill, Inc.},
+ address = {New York, NY, USA},
+} 
+
+@MISC{oracle_pricing,
+  author = {Oracle Corporation},
+  title = {Oracle Technology Global Price List},
+  year = {2016},
+  lastchecked = {08-12-2016},
+  howpublished = {\url{http://www.oracle.com/us/corporate/pricing/technology-price-list-070617.pdf}}
+}
+
+@MISC{ms_sql_linux,
+  author = {Scott Guthrie},
+  title = {Announcing SQL Server on Linux},
+  year = {2016},
+  lastchecked = {08-12-2016},
+  howpublished = {\url{https://blogs.microsoft.com/blog/2016/03/07/announcing-sql-server-on-linux/}}
+}
+
+@MISC{post_vs_mysql,
+  author = {Ng Heng Lim},
+  title = {PostgreSQL [9.5.0] vs MariaDB [10.1.11] vs MySQL [5.7.0] year 2016},
+  year = {2016},
+  lastchecked = {08-12-2016},
+  howpublished = {\url{http://nghenglim.github.io/PostgreSQL-9.5.0-vs-MariaDB-10.1.11-vs-MySQL-5.7.0-year-2016/}}
+}
+
+@MISC{hibernate_support,
+  author = {tutorialspoint},
+  title = {Hibernate - Quick Guide},
+  lastchecked = {09-12-2016},
+  howpublished = {\url{https://www.tutorialspoint.com/hibernate/hibernate_quick_guide.htm}}
 }
