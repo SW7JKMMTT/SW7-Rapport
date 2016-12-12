@@ -1,4 +1,4 @@
-\subsection{System and Load Testing}
+\chapter{System \& Load Testing}\label{cha:system_and_load_testing}
 \begin{itemize}
     \item What is this shit even? \checkmark
     \item What is our strategy, what outcome do we want?
@@ -16,7 +16,10 @@ Meaning that this test also is a system test -- And by increasing the amount of 
 Moreover \textit{JMeter}, can also distribute tests such that multiple computers can be used to load test the server.
 By utilising this feature we can assure that the machine executing the test is not the bottleneck, and the outcome of any test will reflect the performance of the server.
 
-\subsubsection{Test Plans}
+\section{Test Plans}
+We focus on memes.
+
+\subsection{Submitting Data}
 Our first test plan aims to react all functional behaviour which is involved in a producer clients typical workflow.
 This workflow can be summarized by the following points:
 \begin{enumberate}
@@ -33,7 +36,7 @@ This workflow can be summarized by the following points:
 It should be noted that this test plan only submits data to the server, and advanced queries are not performed.
 This means that the result only represents the server's ability to receive data.
 
-\bigskip
+\subsection{Fetching Data}
 To analyse the server's performance while executing queries, both simple and complex, and fetching data, we set up a test plan which does this.
 In the test we want to gauge the performance of
 \begin{enumberate*}
@@ -42,5 +45,22 @@ In the test we want to gauge the performance of
     \item geospatial queries, which we reckon will be the most demanding type of fetching data, performance wise.
 \end{enumberate*}
 
-\subsubsection{Results}
+\section{Results}
+Some even nicer graphs here.
 
+\subsection{NoSQL vs. SQL}
+FIGURES MAN
+
+\subsection{General Performance}
+FIGURES MAN
+
+\section{Effects}
+We found this stuf
+\begin{description}
+    \item[High Response Times]\hfill \\
+        First we sweeep SQL in. Then we index shit
+    \item[Consistency Errors]\hfill \\
+        Duplicate indeces in NoSQL. Duplicate driver.
+    \item[Persistence Errors]\hfill \\
+        Something something set route.
+\end{description}
