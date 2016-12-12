@@ -23,12 +23,12 @@ The server we have developed uses a client--server architecture with the server 
     %Would another focus have changed anything? Mili - security // All theoretical as we have no Stakeholder -- No coz we dont have anything specific, would mostly have been front--end changes, but the front--end is PoC anyway so no big deal
     %Could have had stakeholder how would this have affected? would that have been the better choice?
 The client--server architecture in combination with a REST API was chosen such that the server only relies on the clients using the endpoints correctly, this way the implementation of any client is completely irrelevant for the server.\fxnote{Kunne eventuelt stille op imod andre arkitekturer her, kan bare ikke lige komme paa nogle arkitekture som ville vaere relevante at stille op imod.}
-With the project revolving around receiving, storing and forwarding data scalability became an important measure for us.
-As a result scalability influenced our choice of database.
+With the project revolving around receiving, storing and provding data; scalability became an important measure for us.
+As a result scalability influenced our choice of database system.
 Originally we chose the NoSQL database system MongoDB.
 The choice fell on NoSQL as NoSQL imposes less restrictions which leads to greater performance and easier maintenance.
 Furthermore MongoDB provides auto--sharding which would provide us with horizontal load scalability.
-Halfway through the project we decided to change back to MySQL. \fxnote{Some1 DB oriented should expand on why we went back yo MySQL(Jesper/Truls)}
+Halfway through the project we decided to change to a MySQL database system. \fxnote{Some1 DB oriented should expand on why we went back yo MySQL(Jesper/Truls)}
 This took no more than a couple of days which also attests to our other scalability measures in that they closely relate to low coupling which is why the change could be made so quickly.
 
 At the beginning of the project we chose to focus on lorry drivers over other types of businesses that rely on vehicles.
@@ -37,7 +37,7 @@ Doing so in combination with the scalability measures the system should have bee
 The reality is that most use case specific features would be developed on for the consumer client as we do not perform business logic for the consumer client on the server.
 A few specific endpoints may have been requested by the different use cases.
 These endpoints, if any exist, could be revealed by having a stakeholder and through that perhaps the choice of use case would have had an influence in that case.
-The focus we chose to put on testing and maintaining good code conduct alongside our focus on the scalability measures we described in \cref{sec:scalability} does mean that the addition of additional endpoints is a simple matter. 
+The focus we chose to put on testing and maintaining good code conduct alongside our focus on the scalability measures we described in \cref{sec:scalability} does mean that the implementation of additional endpoints is a simple matter.
 As such it is merely the information of what endpoints are required we would need to expand the system.
 
 \bigskip \noindent
@@ -62,4 +62,3 @@ while maintaining arbitrary possibilities of presenting the data to a given user
 
 }
 We deem that the system solves this problem while also adhering to the requirements established in \cref{sec:requirements}.
-
