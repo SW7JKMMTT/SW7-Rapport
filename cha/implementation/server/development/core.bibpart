@@ -1,0 +1,7 @@
+@MISC{Fowler_TellDontAsk,
+  author = {Martin Fowler},
+  title = {TellDontAsk},
+  year = {2013},
+  lastchecked = {10-12-2016},
+  howpublished = {\url{https://martinfowler.com/bliki/TellDontAsk.html}}
+}

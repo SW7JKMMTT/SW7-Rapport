@@ -1,10 +1,80 @@
-\subsection{Core}
-For the core i want to know
-\begin{itemize}
-    \item What is the purpose of this layer?
-    \item What does this layer contain?(take folders and explain contents of folders using 1 file from each)
-    \item What issues does this layer handle?
-    \item How is this layer accessed(communication between layers)?
-    \item How are the technologies from the techstack used?
-    \item How is the architecture and design pattern present?
-\end{itemize}
+\subsection{Model}
+%For the model i want to know
+%\begin{itemize}
+%    \item What is the purpose of this layer?
+%    \item What does this layer contain?(take folders and explain contents of folders using 1 file from each)
+%    \item What issues does this layer handle?
+%    \item How is this layer accessed(communication between layers)?
+%    \item How are the technologies from the techstack used?
+%    \item How is the architecture and design pattern present?
+%\end{itemize}
+
+%%% This part is adapted from D56, where Jesper writes about the model.
+In the model layer we implement all the business logic and data, which is independent from the persistence and presentation of that data. 
+Therefore we will only provide access to properties which make sense from a business perspective.
+This includes using getters and setters to provide and protect access to our private parts. % <- Innuendo
+Additionally we do not want other classes to access mutable objects, such as collections, in our class, as they could violate constraints in the business model, therefore we employ the ``TellDontAsk'' principle\cite{Fowler_TellDontAsk}.
+TellDontAsk in short means that if another class wants to add an object to a list of ours, then it should tell us to add the object, and not ask for the list, and add the object itself. 
+If another class wants access to a list in another class then it can get a \code{ReadOnlyCollection} of it, which does not allow mutation of the collection, this is all to decrease the coupling.
+%%%
+
+\subsubsection*{The Constituents of the Model}
+The classes we have implemented as part of the Model are shown on \cref{fig:model_class_diagram}.
+We have excluded some parts for the purposes of simplicity and readability here, these are the aforementioned getters and setters, and the \code{id}--field on each class which are stored in the database. 
+\fxnote{Hvis vi laver en anden model i design så skal der stå her at de 2 ikke nødvendigvis er 1-til-1 og hvorfor.}
+
+\begin{figure}[p]
+    \begin{center}
+        \subimport{marcaintneednoman}{model_class_diagram.tex}
+        \caption{The class diagram as implemented in the server.}\label{fig:model_class_diagram}
+    \end{center}
+\end{figure}
+
+% Note om hvorfor vi har Driver <-> User som has a, og ikke is a.
+In the class diagram there are two central classes; \code{User} and \code{Route}, which are connected via the \code{Driver}--class.\fxnote{Vi skal skrive senere hvorfor at Driver--classen ikke skulle ``leakes'' til api brugeren.}
+\paragraph*{User}
+The relationship between the \code{User}-- and \code{Driver}--class is modeled using a has--a, in contrast to is--a, for the purposes of functional scalability, which we defined in \cref{sec:scalability}.
+Say for the sake of argument that we wanted to have an Administrator, and we have modeled the \code{User}--\code{Driver} relationship as is--a (i.e. using inheritance), 
+then logically an Administrator would also inherit from the \code{User}--class.
+However then there cannot exist an instance which is both a driver and an administrator, which might not represent the reality we are trying to model. 
+Thus we limit the functional scalability of the system by using an is--a relationship. 
+Since we want to enable functional scalability, we don't want to limit the development of new system roles by artificially tying them to inheritance.
+
+In addition to the \code{Driver}--class the \code{User}--class also has relations to the \code{Permission}--class, the \code{AuthToken}--class, and the \code{UserIcon}--class.
+The \code{Permission}--class is used to grant permissions to which endpoints in the REST API a given user can use. 
+The \code{AuthToken}--class is a session token which is sent with each request to identify which user sent the request. 
+Lastly the \code{UserIcon}--class which inherits from the abstract class \code{PersistFileHandle}--class is used to optionally give a profile picture to each user, for the use in a consumer. 
+
+\paragraph*{Route}
+The \code{Route}--class is an aggregate of its constituents, they are \code{Driver}, \code{Waypoint}s, \code{Vehicle}, and \code{VehicleData}. 
+The \code{Waypoint}--class is the spatial part of the model, it contains latitude, longitude, and a timestamp.
+The \code{Vehicle}--class is our abstraction of a vehicle, on it we have the simple data which is general for all vehicles, and optionally an icon via the \code{VehicleIcon}--class.
+If we wanted to support different kind of vehicles, which has additional attributes, they should inherit from the \code{Vehicle}--class.
+For example a bus could contain information about how many people it could carry, while for a truck the amount of load it can take would be useful. 
+
+\paragraph*{VehicleData}
+The last part of the \code{Route}--class is the \code{VehicleData}--class. 
+The \code{VehicleData}--class is used to store the information gathered by the DataProvider which is not spatial, i.e. \ac{OBD}--data.
+We placed this as a part of the \code{Route}--class since it makes sense for the other parts of the system, i.e. the Producer and the Consumer. 
+As the name suggests one could have made this a constituent of the \code{Vehicle}--class instead, or placed a relation between them.
+However they already have an indirect relationship via the \code{Route}--class, 
+thus we can find all \code{VehicleData}--instances which are related to a given \code{Vehicle}--instance, even though they do not have a direct relation. 
+We do not attach the \code{VehicleData}--class to the \code{Waypoint}--class, 
+since we want to give the flexibility to the DataProvider that it can send those two pieces of information separately, as they may not be wanted at the same frequency. 
+
+The \code{VehicleData}--class has a one--to--many relationship with \code{VehicleDataPoint}, moreover one \code{VehicleData} has at least one \code{VehicleDataPoint}. 
+The \code{VehicleDataPoint}--class is an abstract class, and from it another abstract class, \code{FloatVehicleDataPoint}, inherit. 
+Each data point which has the value of the type float, can inherit from this class, and reuse the \code{value} field on it, to store its data.
+As an example of these we have made \code{CurrentSpeedDataPoint}, and \code{FuelLevelDataPoint}, which both inherit from \code{FloatVehicleDataPoint}. 
+The two classes only consist of a constructor which sets the \code{value} they inherit from \code{FloatVehicleDataPoint}.
+While designing this we have functional scalability, i.e. expandability, in mind, meaning that adding a third type of \code{FloatVehicleDataPoint} should be easy. 
+In order to add a new data point which uses a floating value, all that would have to be done is: 
+\begin{enumerate}
+    \item Create the class 
+    \item Make it inherit from \code{FloatVehicleDataPoint}.
+    \item Set the appropriate annotations for Hibernate in it.
+    \item Set the appropriate annotations for Jackson in \code{VehicleDataPoint}.
+\end{enumerate}
+
+Adding a \code{VehicleDataPoint} which would store a string, for example, would involve a similar procedure.
+% Ved ikke helt hvordan jeg skal afslutte det her?
