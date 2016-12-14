@@ -1,0 +1,46 @@
+% vim: spell;tw=80
+\section{User endpoints}
+
+In \fxnote{sec:requirements} we identified the need of access management in the
+both the consumer and provider client. To facilitate the features in the
+front--end, the server will keep track of users, permissions, and passwords.
+Users and their permissions are also what is used in the authentication step
+developed in \fxnote{authentication}. The prototype consumer, developed in
+\fxnote{front--end chapter}, also required icons for users.
+
+
+From these requirements we derived the endpoints shown in \cref{tab:rest_user}.
+All the user endpoints require at least \code{User} permission, except the
+endpoint to create and modify a user, which requires \code{SuperUser}
+permission. The create and modify endpoints both use the builders discussed in
+\fxnote{ref til Builder}. The \code{list all} endpoint gets a list of users,
+but is not guaranteed to include all details about them, in the current version
+they do, but more details could be shown only in the detailed \code{Get user}
+endpoint, to conserve bandwidth and database joins. To enable the storage of
+user icons we use the \code{FileDao} from \fxnote{ref til faildao database},
+which allows for easy storage of binary files in the database. We are currently
+only allowing files in the \code{image/png} \ac{MIME} format, but any binary
+file can be uploaded.  If the system was to be deployed in production, a limit
+on the size or file type would have to be placed in the user icons. For the
+endpoint to upload a user icon, we chose to use the HTTP method \code{PUT},
+since the request is idempotent, in other words, doing the operation, uploading
+the same image, twice does not change the state of the object. We have allowed
+the user icon be downloaded as \code{BASE64}, to help consumer developers
+wanting to download the image from JavaScript, while setting the headers, and
+displaying the resulting image in a browser.
+
+\begin{table}[htpb]
+    \centering
+    \begin{tabu} to \textwidth {lX[c]l}
+        Endpoint                         & HTTP Method        & Description                              \\
+        \midrule
+        \rendpoint{user/}                & \code{GET}         & List the users                           \\
+        \rendpoint{user/}                & \code{POST}        & Create new user                          \\
+        \rendpoint{user/<uid>}           & \code{GET}         & Get user                                 \\
+        \rendpoint{user/<uid>}           & \code{PUT}         & Modify user                              \\
+        \rendpoint{user/<uid>/icon}      & \code{GET}         & Get user icon                            \\
+        \rendpoint{user/<uid>/icon}      & \code{PUT}         & Set user icon                            \\
+    \end{tabu}
+    \caption{User endpoints.}
+    \label{tab:rest_user}
+\end{table}
