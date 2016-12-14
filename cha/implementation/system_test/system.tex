@@ -1,12 +1,9 @@
 \chapter{System \& Load Testing}\label{cha:system_and_load_testing}
-\begin{itemize}
-    \item What is this shit even? \checkmark
-    \item What is our strategy, what outcome do we want?
-    \item Show me some numbers and graphs, beautiful graphics
-    \item Interpret these beautiful graphs and numbers for me, i dont know math.
-    \item How do the results reflect on our requirements?
-\end{itemize}
+In this chapter we will describe how we perform a system and load test on our server;
+then we will present results of said tests and conclude on them.
+Lastly we will reflect on what these results mean going forward, and what they can do for us.
 
+\bigskip
 To test our server application as a whole, we use \textit{Apache JMeter}\footnote{\url{http://jmeter.apache.org/}} which is a open source application designed for testing web services among others.
 This tools allows us to simulate a typical workflow of using our REST API, while gathering various data about the performance and result of specific requests to the server.
 
@@ -17,33 +14,45 @@ Moreover \textit{JMeter}, can also distribute tests such that multiple computers
 By utilising this feature we can assure that the machine executing the test is not the bottleneck, and the outcome of any test will reflect the performance of the server.
 
 \section{Test Plans}
-We focus on memes.
+When doing system testing we focus on testing the interaction between components in the system.
+For us, this means using the server through its REST API and trying to cover all, or at least the most significant, endpoints.
+Because of this two test plans are made; one for submitting data to the server, and one for fetching data from the server.
+We do not deem it necessary to include features such as uploading profile images, since these endpoints are insignificant for the business logic.
 
 \subsection{Submitting Data}
 Our first test plan aims to react all functional behaviour which is involved in a producer clients typical workflow.
-This workflow can be summarized by the following points:
+The test plan can be summarized by the following points:
 \begin{enumberate}
     \item Setup $n$ new test users.
     \begin{enumberate}
         \item Get authorization token for existing super user.
         \item Create $n$ new users and get authorization token for each.
+        \item Change the given name of each user.
     \end{enumberate}
     \item Create $m$ vehicles and save their ids.
     \item Create $x$ routes with random vehicle and random user, and randomly select a center point for each route.
-    \item Each route has its own thread with creates $y$ waypoints, with a minimum delay of 1 second between each. All waypoints on a route are placed within a given radius of the route's center point.
+    \item For each route:
+    \begin{enumberate}
+        \item Mark route as \code{ACTIVE}
+        \item In a loop, create $y$ waypoint and datapoint pairs in random order, with a minimum delay of 1 second between each pair.
+              All waypoints on are placed within a given radius of the route's center point, and the datapoints consists of \textit{current speed} and \textit{fuel level}.
+        \item Mark route as \code{COMPLETE}
+    \end{enumberate}
 \end{enumberate}
 
 It should be noted that this test plan only submits data to the server, and advanced queries are not performed.
 This means that the result only represents the server's ability to receive data.
 
 \subsection{Fetching Data}
-To analyse the server's performance while executing queries, both simple and complex, and fetching data, we set up a test plan which does this.
+To analyse the performance of the server while executing queries, both simple and complex, and fetching data, we set up a test plan which does this.
 In the test we want to gauge the performance of
 \begin{enumberate*}
     \item regular fetching of data, e.g. getting all users;
     \item more complex fetching, e.g. getting all routes associated with a given driver; and
     \item geospatial queries, which we reckon will be the most demanding type of fetching data, performance wise.
 \end{enumberate*}
+
+
 
 \section{Results}
 Some even nicer graphs here.
