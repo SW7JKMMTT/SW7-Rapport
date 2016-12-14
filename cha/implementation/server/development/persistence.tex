@@ -20,28 +20,28 @@ Three of these: create, update, and delete, are simple to implement using Hibern
 Here we use generics since the code are type safe but the types are unknown at this point.
 Implementing these operations is done using the methods from the \ac{JPA}\fxnote{Tjek lige at vi har forklaret JPA sufficiently} which Hibernate in turn implement.
 The remaining operation in \ac{CRUD} is the read operation.
-This has to be done individually for each \ac{DAO}. 
+This has to be done individually for each \ac{DAO}.
 
 \subsubsection*{Fetching from the Database System}
 In the \ac{JPA} there are two main ways of querying it: using the \ac{JPQL} or Criteria Queries.
-The \ac{JPQL} has a \ac{SQL} like syntax, which makes it easy for programmers familiar to \ac{SQL} to adapt to. 
-Whereas criteria queries uses the \code{Criteria}--class, to specify what data you want to retrieve. 
+The \ac{JPQL} has a \ac{SQL} like syntax, which makes it easy for programmers familiar to \ac{SQL} to adapt to.
+Whereas criteria queries uses the \code{Criteria}--class, to specify what data you want to retrieve.
 There is some performance difference, with an advantage to \ac{JPQL}, since criteria queries has to generate a \ac{SQL} query before each execution\cite{jboss_fetchingstrategies}.
 Since we are already familiar with \ac{SQL}, and we would like the better performance, we choose \ac{JPQL} as our querying language.
-More specifically we use \ac{HQL}\footnote{\url{https://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html\#hql}}, which is the Hibernate version of \ac{JPQL}. 
-\ac{HQL} is a superset of \ac{JPQL}, meaning that \ac{HQL} implements all of \ac{JPQL} and a bit more.   
+More specifically we use \ac{HQL}\footnote{\url{https://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html\#hql}}, which is the Hibernate version of \ac{JPQL}.
+\ac{HQL} is a superset of \ac{JPQL}, meaning that \ac{HQL} implements all of \ac{JPQL} and a bit more.
 
 \bigskip
 An example of a \ac{HQL}--query is shown in \cref{lst:userDaoGetAllForDisplay}.
 In the method \code{getAll\_ForDisplay()} we fetch all users in the system along with the fields: \code{driver} and \code{permissions}, eagerly.
 This is a \code{TypedQuery} generic given the type \code{User} on line 5 and 10, this is for type--safety.
-\code{u.driver} is a nullable field, which is the reason we use a \code{LEFT JOIN} on line 7. 
+\code{u.driver} is a nullable field, which is the reason we use a \code{LEFT JOIN} on line 7.
 \code{u.permissions} is a list which can have zero or more members, again we use a \code{LEFT JOIN} on line 8.
-On both line 7 and 8, we use the \code{FETCH} primitive with our joins, 
-this is to eagerly load lazy elements, such that they do not have to be loaded in a separate query. 
-We use the \code{DISTINCT} primitive in our select, on line 5, 
+On both line 7 and 8, we use the \code{FETCH} primitive with our joins,
+this is to eagerly load lazy elements, such that they do not have to be loaded in a separate query.
+We use the \code{DISTINCT} primitive in our select, on line 5,
 otherwise we would get multiple copies of users which has more than one permission.
-Lastly on line 10, we use the \code{.getResultList()}--method to get Hibernate to fetch the result from the database system, and return it. 
+Lastly on line 10, we use the \code{.getResultList()}--method to get Hibernate to fetch the result from the database system, and return it.
 \begin{listing}
     \begin{java2}
 public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
@@ -62,17 +62,18 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
 \end{listing}
 
 Hibernate can fetch the information from other tables when it is requested, if the code using it is within a transaction.
-However doing this excessively will cause the database system to retrieve many small queries, which is often not desired for performance reasons. 
-Additionally we will often know which information is used at the caller side of using the \ac{DAO}, 
+However doing this excessively will cause the database system to retrieve many small queries, which is often not desired for performance reasons.
+Additionally we will often know which information is used at the caller side of using the \ac{DAO},
 therefore we write a \ac{HQL}--query for each of these situations.
 
-For example in our model, \cref{subsec:model} the \code{Route}--class, has two lists, 
-one with \code{Waypoint}s, and one with \code{VehicleDataPoint}s. 
+For example in our model, \cref{subsec:model} the \code{Route}--class, has two lists,
+one with \code{Waypoint}s, and one with \code{VehicleDataPoint}s.
 However, there is currently not a piece of code which needs both of theses lists at the same time, but there is code which use one of the two.
-Therefore we make a method which fetches each list eagerly (fetches before first use) when it fetches the route. 
+Therefore we make a method which fetches each list eagerly (fetches before first use) when it fetches the route.
 
 \subsubsection*{Overview of created \acp{DAO}}
 In total we have made eight \acp{DAO} and the \code{BaseDao} mentioned earlier:
+\begin{multicols}{2}
 \begin{itemize}
     \item \code{AuthDao}
     \item \code{DriverDao}
@@ -83,21 +84,23 @@ In total we have made eight \acp{DAO} and the \code{BaseDao} mentioned earlier:
     \item \code{VehicleDataDao}
     \item \code{WaypointDao}
 \end{itemize}
+\end{multicols}
+
 Each of these interfaces inherit from the \code{BaseDao}, and their implementations extends the \code{BaseDaoImpl}.
 Most of these have some variation of a \code{byId}--method and a \code{getAll}.
-The \code{byId}--methods are for the services where the ids are used by the user of the API instead of sending the entire object. 
+The \code{byId}--methods are for the services where the ids are used by the user of the API instead of sending the entire object.
 
 \subsubsection*{Database migrations}
-Hibernate has support for creating a database schema automatically based on the model provided, and the annotations, 
-this is called ``Hibernate Mapping to Data Definition Language'' or ``hbm2ddl'' for short. 
-However using this in production can be dangerous when the schema changes due to new feature or changes to the mode, 
-as it may perform changes to the model which are unwanted, 
-and can therefore cause data--loss\cite[p.~64]{javapersistence}. 
+Hibernate has support for creating a database schema automatically based on the model provided, and the annotations,
+this is called ``Hibernate Mapping to Data Definition Language'' or ``hbm2ddl'' for short.
+However using this in production can be dangerous when the schema changes due to new feature or changes to the mode,
+as it may perform changes to the model which are unwanted,
+and can therefore cause data--loss\cite[p.~64]{javapersistence}.
 When writing a database schema by hand, and subsequently writing migrations, it is possible to preserve the data.
 Additionally writing the database schema by hand also allows us to fine--tune some features more than Hibernate allows us.
-For example we can freely include secondary indices for performance improvements. 
-As previously mentioned in \fxnote{Techstack ref}, we use the tool Flyway to handle our database migrations. 
-Flyway will only apply the migrations which have not already been applied to the database system. 
+For example we can freely include secondary indices for performance improvements.
+As previously mentioned in \fxnote{Techstack ref}, we use the tool Flyway to handle our database migrations.
+Flyway will only apply the migrations which have not already been applied to the database system.
 This makes it much simpler as a developer, compared to having to manage this manually.
 
 \subsubsection*{Spatial queries}
@@ -105,27 +108,27 @@ It is possible to perform spatial queries using Hibernate Search which we mentio
 We only have one class which directly contains spatial data, that is the \code{Waypoint}--class.
 Therefore we have a spatial query called, \code{withinRadius}, which is shown in \cref{lst:withinRadius}.
 The parameters to this query is a coordinate and a radius.
-A coordinate is the simple collections of latitude and longitude. 
+A coordinate is the simple collections of latitude and longitude.
 First, on lines 6 to 12, we check that the input is valid, i.e. are the coordinates placed on the earth.
-Then we get a \code{FullTextEntityManager}, on line 14, which is used to access the capabilities of Hibernate Search. 
+Then we get a \code{FullTextEntityManager}, on line 14, which is used to access the capabilities of Hibernate Search.
 Then we start building our query, first by setting it up to return elements of the \code{Waypoint}--class, on line 16.
 Then we create a coordinate for Hibernate, on line 17, which is not the same class as the one used in the parameter.
-The two are different such the callers of this method does not need to rely on Hibernate.  
+The two are different such the callers of this method does not need to rely on Hibernate.
 On line 19 we continue building the query, by specifying that our query is spatial, the radius in kilometers, and the coordinates made on line 17.
 Then on line 20 we create the final query to be executed by the \code{FullTextEntityManager} created earlier.
-And finally we execute the query, and cast the result to a list of waypoints, on line 22. 
+And finally we execute the query, and cast the result to a list of waypoints, on line 22.
 \begin{listing}
     \begin{java2}
 public class WaypointDaoImpl extends BaseDaoImpl<Waypoint> implements WaypointDao {
     private static Logger logger = LoggerFactory.getLogger(WaypointDaoImpl.class);
     @Override
     public List<Waypoint> withinRadius(Coordinate coordinate, double kilometers) {
-        logger.info(String.format("Querying for within radius, lat: {}, long: {}, radius: {}", 
+        logger.info(String.format("Querying for within radius, lat: {}, long: {}, radius: {}",
             coordinate.getLatitude(), coordinate.getLongitude(), kilometers));
-        if(coordinate.getLatitude() > GeometricConstants.LATITUDE_DEGREE_MAX || 
+        if(coordinate.getLatitude() > GeometricConstants.LATITUDE_DEGREE_MAX ||
             coordinate.getLatitude() < GeometricConstants.LATITUDE_DEGREE_MIN)
             throw new IllegalArgumentException("Illegal latitude");
-        if(coordinate.getLongitude() > GeometricConstants.LONGITUDE_DEGREE_MAX || 
+        if(coordinate.getLongitude() > GeometricConstants.LONGITUDE_DEGREE_MAX ||
             coordinate.getLongitude() < GeometricConstants.LONGITUDE_DEGREE_MIN)
             throw new IllegalArgumentException("Illegal longitude");
 
@@ -145,4 +148,4 @@ public class WaypointDaoImpl extends BaseDaoImpl<Waypoint> implements WaypointDa
     \caption{The spatial query \code{withinRadius}, which returns all \code{Waypoint}s with in a given radius of a coordinate.}\label{lst:withinRadius}
 \end{listing}
 The \code{withinRadius}--method is used in the \code{RouteDao} called \code{withinRadius\_ForDisplay}, to find routes which are within a radius of a coordinate.
-\code{withinRadius\_ForDisplay} is in turn used to provide data to the front--end which are only interested in routes in its view. 
+\code{withinRadius\_ForDisplay} is in turn used to provide data to the front--end which are only interested in routes in its view.
