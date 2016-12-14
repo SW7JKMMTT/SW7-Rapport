@@ -1,0 +1,102 @@
+% vim: spell:tw=80
+\section{Authentication}
+
+Since the system will store proprietary business data, we need some form of
+access control. Both to keep unwanted users out, but also to keep people with
+access to one part of the system, from modifying data in another part.
+
+Authentication in a REST API can in principle be done in four ways:
+
+\begin{enumberate}
+    \item Using a custom HTTP header.
+    \item Using HTTP basic authorization.
+    \item Using a custom HTTP authorization scheme.
+    \item Using a query parameter.
+\end{enumberate}
+
+We wanted to follow the HTTP specification as closely as possible, to stay in
+line with the spirit of REST\@. While HTTP does allow for custom headers, it
+already has an accepted method of doing authentication. Since we want use HTTP
+accepted standards where applicable this rules out methods 1 and 4, which are
+both ad--hoc solutions to an already solved problem. Picking between 2 and
+3 requires looking at the problem in context. Since the main use of our service
+is as a backend for other applications, we do not want to store both the
+username and the password of the user locally on the device for the entire
+runtime of the application. HTTP basic authentication requires sending the
+plaintext username and password with every request, which would necessitate
+storing those credentials. To avoid the security implications of that storage,
+we have chosen to implement method 3, where we use the HTTP standard to its full
+potential, but define our own authorization scheme, which will not require
+storing or sending the username and password for every request.\cite{http_basic}
+A problem with method 3 is that the client accessing the API has to be able to
+set the authorization scheme to something custom. While this requirement makes
+is harder to explore the API in a web browser, it is our judgement that most
+application frameworks and tools will let you set the authorization header
+manually.
+
+The standard for defining a custom HTTP authorization scheme is to accept some
+data in the HTTP \code{Authorization} header. The header value has to, by
+convention, start with the name of your scheme, followed by a whitespace and
+then data of the schemes choice\cite{http_basic}. Since we want a token based
+authentication, to avoid the client having to store the password, we decide that
+our authorization header will look like the following: \code{Sleepy
+token=<tkn>}. Where token is the unique token for the current session of
+a specific user, it is notable that a user can have multiple sessions open at
+once.
+
+\subsection{Filter}
+\label{subsec:auth_filter}
+
+JAX-RS, and RESTEasy, has support for roles and authorization via the
+\code{RolesAllowed} annotation, which is put on the service methods that need
+protection. The JAX-RS framework then asks the security context if the current
+request is allowed. We set the security to a custom subclass that implements our
+permission system, using a \code{ContainerRequestFilter}. The filter is run
+before much of the RESTEasy processing, where it extracts the header, looks for
+the token in the database, and sets the security context. The JAX-RS framework
+asks the \code{SecutityContext} if the authenticated user is authorized to take
+a given role. If it is not, the framework will immediately conclude the request
+with an appropriate HTTP response code. If the user is allowed however, the
+request is continued as normal. The JAX-RS authentication model we have chosen
+is entirely transparent to the REST endpoints once they have declared the roles
+allowed. It also makes it possible to add another authentication method, such as
+another one listed above, with no development overhead, thus allowing for great
+functional scalability.
+
+We have also decided to make the authentication filter inject the authenticated
+user into the container. This facilitate interaction with the logged in user in
+methods further in the chain. A diagram over the authentication filter can be
+seen in \cref{fig:auth_auth}.
+
+\subimport{}{auth_seq_auth.tex}
+
+\subsection{Endpoint}
+The filter described in \cref{subsec:auth_filter} looks for an authentication
+token in the database. To create an authentication token we need a REST endpoint
+to insert the token into the database, and associate it with a user.
+
+We want to expose three basic authentication operations to the users: login, logout,
+and a listing of all the currently active authentication tokens. As logout is
+non--essential and trivial, we have decided not to implement it. That leaves us
+with login and listing. We decided to map the operations to REST endpoints as
+can be seen in \cref{tab:rest_auth}. The \code{POST} request to \code{auth/} is
+what generates a new token, inserts it into the database, and then inserts it to
+the client. We have implemented the expired property on the \code{AuthToken}, to
+allow for easier implementation in the future, without breaking database, and
+client, compatibility. The \code{GET} request lists the other tokens for the
+user currently logged in. In the table the unimplemented \code{DELETE} method is
+also shown, this endpoint would immediatly expire the token with the id
+\code{<aid>}.
+
+\begin{table}[htpb]
+    \centering
+    \begin{tabu} to \textwidth {lX[c]l}
+        Endpoint                         & HTTP Method & Description                                     \\
+        \midrule
+        \rendpoint{auth/}                & \code{GET}         & List the tokens                          \\
+        \rendpoint{auth/}                & \code{POST}        & Create new token                         \\
+        \rendpoint{auth/<aid>}           & \code{DELETE}      & Expire a token (not implemented)         \\
+    \end{tabu}
+    \caption{Authentication endpoints.}
+    \label{tab:rest_auth}
+\end{table}

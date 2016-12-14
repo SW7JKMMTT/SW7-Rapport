@@ -1,0 +1,46 @@
+% vim: tw=0
+% chktex-file 36 <- Shut the fuck up chktex
+\begin{figure}[h]
+    \centering
+    \resizebox{1\textwidth}{!}{%
+        \begin{sequencediagram}
+            \newthread{c}{Client}
+            \newthread{r}{Resteasy}
+            \newinst[4]{e}{SecurityContext}
+            \newinst[4]{f}{Filter}
+            \newinst[4]{d}{Database}
+            \begin{messcall}{c}{Request}{r}{}
+                \begin{call}{r}{filter(context)}{f}{}
+                    \begin{call}{f}{extractToken(header)}{f}{tknStr}
+                        \postlevel{}
+                    \end{call}
+                    \postlevel{}
+                    \begin{call}{f}{tokenFromStr(tknStr)}{d}{token}
+                    \end{call}
+                    \postlevel{}
+                    \begin{call}{f}{makeSecurityContext(token)}{f}{context}
+                        \postlevel{}
+                        \begin{call}{f}{userFromToken(token)}{d}{user}
+                        \end{call}
+                        \begin{call}{f}{create(token, user)}{e}{context}
+                        \end{call}
+                    \end{call}
+                    \postlevel{}
+                    \begin{messcall}{f}{setSecurityContext(context)}{r}
+                    \end{messcall}
+                    \postlevel{}
+                    \begin{messcall}{f}{injectContext(user)}{r}
+                    \end{messcall}
+                \end{call}
+                \postlevel{}
+                \begin{call}{r}{isUserInRole(role)}{e}{isAllowed}
+                    \postlevel{}
+                \end{call}
+                \begin{sdblock}{Auth Fail}{isAllowed == false}
+                    \mess{r}{Auth Err}{c}
+                \end{sdblock}
+            \end{messcall}
+        \end{sequencediagram}
+    }
+    \caption{Sequence diagram depicting the pre--request authentication filter.}\label{fig:auth_auth}
+\end{figure}
