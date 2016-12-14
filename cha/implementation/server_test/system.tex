@@ -23,13 +23,13 @@ We do not deem it necessary to include features such as uploading profile images
 Our first test plan aims to react all functional behaviour which is involved in a producer clients typical workflow.
 The test plan can be summarized by the following points:
 \begin{enumberate}
-    \item Setup $n$ new test users.
+    \item Setup $x$ new test users.
     \begin{enumberate}
         \item Get authorization token for existing super user.
-        \item Create $n$ new users and get authorization token for each.
+        \item Create $x$ new users and get authorization token for each.
         \item Change the given name of each user.
     \end{enumberate}
-    \item Create $m$ vehicles and save their ids.
+    \item Create $n$ vehicles and save their ids.
     \item Create $x$ routes with random vehicle and random user, and randomly select a center point for each route.
     \item For each route:
     \begin{enumberate}
@@ -52,13 +52,29 @@ In the test we want to gauge the performance of
     \item geospatial queries, which we reckon will be the most demanding type of fetching data, performance wise.
 \end{enumberate*}
 
-
-
 \section{Results}
-Some even nicer graphs here.
+FIGURES MAN
 
 \subsection{NoSQL vs. SQL}
-FIGURES MAN
+During the early development of the server we had chosen a NoSQL database, which was switched out for a SQL database.
+This switch was done partially due to early test runs of the submit test plan, where short comings of the NoSQl implementation was found.
+We found that \enquote{duplicate id errors} prevailed when the server was under load, because new unique ids not could be generated fast enough.
+
+After switching to a SQL database and Hibernate ORM, we found that the \enquote{duplicate id errors} vanished, but performance remained approximately the same, as can be seen on \cref{fig:same_response_sql}.
+However, after then adding indices our SQL tables we found that performance increased drastically, even though additional complexity was introduced to the server functionality along side.
+This means that queries which used to take upwards of 200 milliseconds, now only takes approximately 5 milliseconds, and the response time distribution reflects a significantly faster server, as can be seen in \cref{fig:fast_response_indices}.
+
+\begin{figure}[!htb]
+    \centering
+    \rule{5cm}{5cm}
+    \caption{Response time distribution with a NoSQL vs. SQL database}\label{fig:same_response_sql}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \rule{5cm}{5cm}
+    \caption{Response time distribution with a SQL database with indices}\label{fig:fast_response_indices}
+\end{figure}
 
 \subsection{General Performance}
 FIGURES MAN
