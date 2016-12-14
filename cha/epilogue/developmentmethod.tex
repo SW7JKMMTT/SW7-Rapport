@@ -47,7 +47,7 @@ As we did not want to spend too much time on review, we agreed that reviews shou
 %Code--review // 2 reviewers min.
 \subsubsection{Test Focus}
 %may require some input from our testers
-As \cref{sec:testing} describes we believe that testing is important, particularly in order to demonstrate that a system not only works, but works as intended.
+As \cref{cha:testing} describes we believe that testing is important, particularly in order to demonstrate that a system not only works, but works as intended.
 In order to achieve a sufficient level of testing to prove the server works as intended, we decided that integration and system tests were the way to do it.
 Another criteria for the server is several scalability measures, while most of the scalability measures established in \cref{sec:scalability} can not be systematically tested, load scalability can.
 This led us to require load testing, system tests and integration tests.
@@ -85,7 +85,7 @@ As such ensuring high quality through a rigid review structure meant less iterat
 %Test focused development, review+test relly handy with exponential workload as several iterations would block too much
 \subsubsection{Test Focus}\fxnote{This is very short, not quite sure what else to write, also i don't know about the name for this, suggestions?}
 %May require some input - Eftersom vi har et dedicated test afsnit ved jeg ikke helt hvad man skulle skrive her, vi har jo rimelig successfully gjort det som vi ville mht. test
-As documented in \cref{sec:testing} we managed to successfully thoroughly test the system in various ways, integration testing with JUnit and Hamcrest, load testing with Apache JMeter and system tests also trough Apache JMeter.
+As documented in \cref{cha:testing} we managed to successfully thoroughly test the system in various ways, integration testing with JUnit and Hamcrest, load testing with Apache JMeter and system tests also trough Apache JMeter.
 %Systematic Integration tests(JUnit) not interesting if no interaction with DB, thus Integration > Unit
 %Load testing, system test(testing all services) JMeter
 \subsubsection{Jenkins/CI}\fxnote{this needs writing}
@@ -145,7 +145,7 @@ Regression tests also ties in closely with our continuous integration setup whic
 
 \bigskip
 Testing that the functionality within the system works is important, but it also has to work for the clients using the system.
-In order to test that the system works for clients we used system testing as described in \cref{sec:testing}.
+In order to test that the system works for clients we used system testing as described in \cref{cha:testing}.
 The system tests, test that the API acts as the user expects it to, which would be as the API specification describes it, as the Enunciate documentation at refhere\fxnote{Insert ref to enunciate documentation!} describes.
 In order to find as many errors as possible we also used smoke testing for the API which helped find some errors that the system tests did not.\fxnote{Eksempel?(Truls/Sass)}
 With scalability being of importance to our project we decided to test this as well through load testing, the load test helped us identify bottlenecks in the server, which we in turn could act upon.\fxnote{Troels/Jesper add example for system test yield, evt. om SQL Query rewrite coz bottleneck}
