@@ -54,6 +54,7 @@ We will use that to hide the constructor when it's use would result in a wrongly
 
 
 \subsubsection{Communication}
+\label{subsec:tech_communication}
 As the server in our system needs to communicate with other parts of the system over the internet, we need a unified way of passing information around.
 The two de facto standards for this type of communication are SOAP and REST.
 
@@ -85,6 +86,17 @@ RESTEasy is developed by JBoss, owned by Red Hat, and is a well documented set o
 It allows us to easily develop a RESTful service while being closely integrated into Spring.
 Moreover RESTEasy handles the HTTP communication, and does it asynchronously, which can greatly improve performance and scalability,
 since multiple inbound requests can be handled simultaneously.
+
+\subsection{Serialization}
+As can be read in \cref{subsec:tech_communication} we decided to use REST as a general design guideline for the server.
+Since the REST standard permits any form of representation of the data, we have to pick a format to carry our data.
+We chose JSON, since it has a lower size overhead than XML, and is a newer standard which has gained massive traction in later years, but XML would be suitable as well.
+Although we have picked JSON, it would be possible to have an XML representation of the API running using mostly the same codebase.
+
+To serialize our object into JSON from \acp{POJO} we have decided to use Jackson\footnote{\url{https://github.com/FasterXML/jackson}}, which is a library for serializing \acp{POJO} to JSON or XML, with JAX-RS support.
+Jackson is, like a lot of the other \ac{Java EE} libraries, configured using annotations.
+Among the most important annotations are \code{@JsonIgnore}, which causes a property to be ignored, and \code{@JsonSetter/Getter}, which can be used in conjunction with \code{@JsonIgnore} to create write or read only properties.
+Another feature that integrates with the rest of the technology stack is the integration with JAX-RS, which means that the various endpoint handlers, or methods, can return a Java object, and let the JAX-RS framework handle the serialization.
 
 \subsection{Deployment}
 To be able to deliver our service we need what is called an application server, i.e.~something which can run our code and serve it to the outside world in a production environment.
