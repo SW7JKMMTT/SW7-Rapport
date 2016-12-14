@@ -1,0 +1,23 @@
+@MISC{oracle_dao,
+  author = {Oracle},
+  title = {{Core J2EE Patterns - Data Access Object}},
+  year = {2002},
+  lastchecked = {14-12-2016},
+  howpublished = {\url{http://www.oracle.com/technetwork/java/dataaccessobject-138824.html}}
+}
+
+@MISC{jboss_fetchingstrategies,
+  author = {Anthony Patricio},
+  title = {A Short Primer On Fetching Strategies},
+  year = {2010},
+  lastchecked = {14-12-2016},
+  howpublished = {\url{https://developer.jboss.org/wiki/AShortPrimerOnFetchingStrategies}}
+}
+
+@book{javapersistence,
+    author    = {{Christian Bauer}, {Gavin King}},
+    title     = {Java Persistence With Hibernate},
+    year      = {2007},
+    publisher = {Manning Publications Co.},
+    ISBN      = {1932394885}
+}
