@@ -1,0 +1,59 @@
+\section{Code Coverage}\label{sec:code_coverage}
+It is difficult to determine when a piece of software is adequately tested.
+
+A way of measuring how much the code in a software project is tested is called code coverage.
+There exist different metrics to measure code coverage, e.g. statement coverage and condition coverage,
+and which one to use should be chosen according to the specific use case.
+Performing a code coverage analysis can pinpoint untested areas of a software project.
+It also calculates a quantitative measure of the code coverage,
+which can be used to estimate if more tests are needed or not,
+but it do not say what must be tested.\cite{code_coverage}
+
+The downside of using code coverage as a goal for testing,
+is that the code coverage measure of a software project does not say anything about the quality of the tests,
+only that the code is being tested.
+Therefore relying too heavily on having a high code coverage can give a false impression of the quality of the software.\cite{code_coverage_neg}
+
+In a larger system having a code coverage of 100 \% is generally impractical and often it is not cost effective compared to the benefit gained by testing.
+It is also estimated that a code coverage at 100 \% only expose about half the faults in a system.
+Instead of testing everything the focus should be at finding bugs.
+The point at which to stop testing is when the tests become contrived.\cite{code_coverage_not_100}
+
+\bigskip
+
+In regards to testing the server, we will not use code coverage as a goal for testing.
+This choice is taken since code coverage do not give any qualitative information of the testing.
+Instead code coverage will be used to find areas with low code coverage or no tests.
+These areas will then be investigated to see if they need more tests or if the testing is adequate.
+
+From the previously mentioned reason for testing,
+it is stated that the components, which makes the software fulfil its requirements, should be tested.
+Therefore when testing the server, the functionality,
+which directly fulfil the requirements stated in \cref{cha:requirements_elicitation}, will be tested.
+
+We do not deem it sufficient to only test the functionality which directly fulfil the requirements of the server.
+Therefore selected parts of the server, which indirectly fulfil the requirements,
+will also be tested to make sure they behave correctly.
+The selected parts will be chosen from their importance in the functionality of the server,
+for instance testing database connections,
+which is not directly a part of the requirements from \cref{cha:requirements_elicitation}.
+
+\fxnote{Dette skal revideres når de endelige krav kommer, f.eks. ryger det med databasen nok.
+Alternativt kan det med indirekte krav slettes hvis det ``indirekte krav'' ikke anses som passende og så testen tilpasses så der kun testes for kravene.}
+
+Thorough testing of the server will also help avoid regression during development.
+Regression bugs can be hard to debug, since the system initially worked correctly and suddenly it does not.
+With a combination of unit tests and integration tests together with the automatic running of tests,
+the risk of not catching regression bugs is minimised\cite{regression}.
+
+To avoid regression in the code, the execution of tests should be done automatically.
+The reason for this is that a software projects can have as many good tests to test the code,
+but if the developers forgets to run the tests during development,
+the tests will be useless.
+
+\bigskip
+To summarize, we will test that the server satisfies the requirements,
+and functions as intended.
+Furthermore we will test other functionality which indirectly fulfil the requirements,
+to avoid bugs and regression during development.
+Finally the tests will be run automatically to make sure that regression bugs and other bugs are caught.

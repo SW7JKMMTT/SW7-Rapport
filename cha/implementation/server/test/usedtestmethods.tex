@@ -1,0 +1,209 @@
+\section{Used Test Methods}
+It is not possible to achieve an adequate level of testing of the server, using only one type of test.
+This is caused by the fact that the server is made up of different components,
+as mentioned in \cref{sec:internal_architecture},
+which depends on and uses each other.
+Furthermore testing the different aspects of the requirements, for instance ``Support load scalability.''
+and ``Normalise incoming data and offer the data in a platform neutral format.'' puts completely different
+requirements on the tests and testing methodology.
+Therefore several testing methods is used to test the requirements to the server
+and the important functionality to achieve an adequate level of testing.
+The different testing methods we will use to test the server with is unit, integration, load, and system testing.
+
+\subsection{Unit and integration testing}
+For unit and integration testing, JUnit\footnote{\url{http://junit.org/junit4/}} with Hamcrest\footnote{\url{http://hamcrest.org/}} are used.
+JUnit is a testing framework and Hamcrest is a matching framework, and therefore they have different types of assert methods.
+Where JUnit have assert methods like \code{assertEquals}, Hamcrest have \code{assertThat}.
+Since JUnit 4, Hamcrest's \code{assertThat} have been a part of JUnit and can be used without including Hamcrest separately\cite{hamcrest_vs_junit}.
+
+The advantage of using \code{assertThat} over JUnit's assert methods is firstly the readability.
+An example of the improved readability can be seen in \cref{lst:assert_readability},
+where the \code{assertThat} statement at line 1 can be read as plain English,
+but the \code{assertFalse} statement at line 3 can be harder to interpret for someone unknown to the code\cite{hamcrest_vs_junit}.
+
+\begin{listing}
+    \begin{java2}
+        assertThat(actual, is(not(equalTo(expected))));
+
+        assertFalse(expected.equals(actual));
+    \end{java2}
+    \caption{An example of the difference in readability taken from \cite{hamcrest_vs_junit}.}
+    \label{lst:assert_readability}
+\end{listing}
+
+Furthermore the \code{assertThat} statement gives better failure messages\cite{hamcrest_vs_junit}.
+An example of that can be seen in \cref{lst:assert_diff},
+where a failed \code{assertTrue} returns the failure message at line 1 to 8 (only relevant information is showed),
+which do not contain the values, which failed the test.
+A failed \code{assertThat} returns the failure message at line 10 to 14,
+but this message contains the values which failed the test,
+which is helpful in debugging the reason the test failed.
+It also makes it easier for people relatively unknown to the tests to debug a failed test.
+
+\begin{listing}
+    \begin{java2}
+    junit.framework.AssertionFailedError
+        at junit.framework.Assert.fail(Assert.java:55)
+        at junit.framework.Assert.assertTrue(Assert.java:22)
+        at junit.framework.Assert.assertTrue(Assert.java:31)
+        at junit.framework.TestCase.assertTrue(TestCase.java:201)
+        at rocks.stalin.sw708e16.server.persistence.TestSpatialRouteDao
+            .testWithinRadius_WrappingAroundGlobeLongitude(TestSpatialRouteDao.java:225)
+        ...
+
+    java.lang.AssertionError:
+    Expected: not a collection containing <rocks.stalin.sw708e16.server.core.spatial.Route@544e3900>
+    but: was <[rocks.stalin.sw708e16.server.core.spatial.Route@544e3900]>
+    Expected :not a collection containing <rocks.stalin.sw708e16.server.core.spatial.Route@544e3900>
+    Actual   :<[rocks.stalin.sw708e16.server.core.spatial.Route@544e3900]>
+    \end{java2}
+    \caption{An example of the difference in failure messages.}
+    \label{lst:assert_diff}
+\end{listing}
+
+To test the individual components of the server,
+a combination of unit tests with JUnit and Hamcrest is used.
+An individual component is a component which do not depend or interact with other components.
+
+An example of a unit test from the server can be seen in \cref{lst:unit_test_example}.
+The test checks if the user icons can be set on a user and retrieved.
+First at line 4 a user is initialised without a user icon.
+At line 7 a user icon is assigned to the created user,
+and at line 10 it is tested that the user actually has the icon.
+At line 1, the annotation \code{@Test} is JUnits way of defining a method as a test.
+
+\begin{listing}
+    \begin{java2}
+        @Test
+        public void testHasIcon_WithIcon_IsTrue() throws Exception {
+            // Arrange
+            User jeff = new User("Jeff", "passw0rd", "Jeff", "Lam");
+
+            // Act
+            jeff.setIcon(new UserIcon());
+
+            // Assert
+            assertThat(jeff.getHasIcon(), is(true));
+        }
+    \end{java2}
+    \caption{An example of a unit test from \code{UserTest.java} which is a part of Core.}
+    \label{lst:unit_test_example}
+\end{listing}
+
+As can be seen in \cref{lst:aaa_example}, we use the \ac{AAA} pattern when doing unit tests.
+The \ac{AAA} pattern splits the tests up into three parts.
+First is the Arrange part, where objects are initialised and variables declared and assigned.
+Second is the Act part, where the invocation of the method which is tested is happening.
+Lastly is the Assert part, where it is verified that the method which is tested is behaving as expected.\cite{aaa_pattern}
+The test seen in \cref{lst:aaa_example} tests if a created user do not have a \code{authToken} as default.
+
+\begin{listing}
+    \begin{java2}
+        @Test
+        public void testListTokens_NoTokens() throws Exception {
+            //Arrange
+            User jeff = new GivenUser().withName("Jeff", "Jeffsen")
+                .withUsername("Jeff").withPassword("password").in(userDao);
+
+            // Act
+            Collection<AuthToken> authTokens = authService.listTokens(jeff);
+
+            // Assert
+            Assert.assertTrue(authTokens.isEmpty());
+        }
+    \end{java2}
+    \caption{An example of the use of \ac{AAA} pattern from \code{TestAuthenticationService.java} which is a part of Service.}
+    \label{lst:aaa_example}
+\end{listing}
+
+\bigskip
+
+When the components to be tested require more than them self to be tested,
+for instance a database connection,
+then integration testing is used.
+The way the server is integration tested is the same way as unit tested,
+except that the test depends on other components.
+An example of this can be seen on \cref{lst:integration_test_example},
+where at line 3 the \code{waypointDao} is used.
+The \code{waypointDao} is used to communicate with the database,
+and therefore this is an integration test instead of a unit test.
+
+\begin{listing}
+    \begin{java2}
+        @Test
+        public void testWithinRadius_WithNone_FindNone() throws Exception {
+            List<Waypoint> ret = waypointDao.withinRadius(0, 0, 100);
+
+            Assert.assertThat(ret, hasSize(0));
+        }
+    \end{java2}
+    \caption{Integration test example from \code{WaypointDao.java} in Persistence.}
+    \label{lst:integration_test_example}
+\end{listing}
+
+\subsection{The \code{@Before} annotation}
+To make sure the state of the program is the same before each test and all resources needed are available,
+the JUnit annotation \code{@Before} is used.
+\code{@Before} is used to run methods before each test is executed,
+for instance to set up needed objects\cite{before_doc}.
+An example of the use of \code{@Before} in the server is to clear the test database,
+to make sure the state of the database is the same before each test.
+This is done by having all the test classes, which use the database, inherit the abstract class \code{DatabaseTest.java},
+where the method \code{clearDatabase}, seen on \cref{lst:cleardatabase}, is defined.
+The database is cleared before each test to make sure that each test has no assumptions about other tests,
+since they are unordered and each should stand for itself.
+
+\begin{listing}
+    \begin{java2}
+        @Before
+        public void clearDatabase() {
+            MongoClient client = new MongoClient(informationProvider.getUrl(), informationProvider.getPort());
+            client.getDatabase("test").drop();
+        }
+    \end{java2}
+    \caption{\code{clearDatabase} method from \code{DatabaseTest.java}.}
+    \label{lst:cleardatabase}
+\end{listing}
+
+Another use of \code{@Before} in the server is to set up a waypoint service before there is made test on it.
+The method \code{SetupWaypointService} from \code{TestWaypointService.java},
+which can be seen in \cref{lst:setupwaypointservice},
+creates a user, driver, vehicle, a route, and then sets the route.
+The \code{setRoute} method at line 13 configures the \code{waypointService} to use the route \code{route}.
+\code{TestWaypointService.java} also inherits \code{DatabaseTest.java},
+so the way \code{@Before} works with multiple \code{@Before} statements in different classes
+is that the \code{@Before} methods of the superclass will be executed before the \code{@Before} methods of the current class\cite{before_doc}.
+This is convenient with the way we have constructed our tests since the newly inserted data will not be removed.
+
+\bigskip
+
+When test data is needed by the tests, test data is created and inserted in the database by using the \code{Given} classes.
+An example of this can be seen in \cref{lst:setupwaypointservice}.
+Using the \code{Given} classes gives a easy and transparent way of creating test data for the tests, which is also their only purpose.
+By creating the \code{Given} classes as fluent interfaces\footnote{\url{http://martinfowler.com/bliki/FluentInterface.html}}, the method calls can be chained as shown in \cref{lst:setupwaypointservice} line 3 to 12,
+thus the code can be read as plain English.
+
+\begin{listing}
+    \begin{java2}
+        @Before
+        public void SetupWaypointService() {
+            User user = new GivenUser().withName("Jeff", "Jeffsen")
+                .withUsername("Anders").withPassword("hunter2").in(userDao);
+            Driver driver = new GivenDriver().withUser(user).in(driverDao);
+            Vehicle vehicle = new GivenVehicle()
+                .withMake("Ford")
+                .withModel("Mondeo")
+                .withVintage(1999)
+                .withVin(new Vin("ABC123"))
+                .in(vehicleDao);
+            Route route = new GivenRoute().withDriver(driver).withVehicle(vehicle).in(routeDao);
+            waypointService.setRoute(route);
+        }
+    \end{java2}
+    \caption{\code{SetupWaypointService} method from \code{TestWaypointService.java} in Services.}
+    \label{lst:setupwaypointservice}
+\end{listing}
+
+\subsection{Testing status}
+As mentioned in \cref{sec:code_coverage}, we choose to test the requirements and important parts of the code.
+%Måske en tabel som viser hvilke tests/classes som dækker hvilke requirements.

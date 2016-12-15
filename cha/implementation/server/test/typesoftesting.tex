@@ -1,0 +1,38 @@
+\section{Types of Testing}
+Ian Sommerville provides three stages of testing a system\cite[p.~231]{software_engineering}:
+development testing, release testing, and user testing.
+Development testing is tests made by the developers of the system during development
+and includes unit testing, regression testing, component testing,
+and system testing\cite[p.~232]{software_engineering}.
+
+The second stage is release testing,
+where a particular release of a system is prepared and tested to prove it is ready for use outside of the development environment\cite[p.~245]{software_engineering}.
+Release testing includes requirements--based testing, scenario testing and performance testing.
+The final test stage is user testing where users or customers provide feedback to the system.\cite[p.~249]{software_engineering}
+User testing includes alpha testing, beta testing and acceptance testing.
+
+User testing is deemed not to be relevant in testing the server,
+since the server provides data for a front--end,
+and an end user would only interact through a client with the server.
+If we were to make a front--end, which is not only a proof of concept, user testing would be relevant.
+
+We will perform development testing to test the server.
+This choice is taken since we find elements from development testing relevant.
+The methods we will use from development testing:
+unit testing, regression testing, and component testing.
+
+The form of release testing which Ian Sommerville describes do not fit very well with our development method.
+This way of release testing is for major releases, where we instead create small and continuous releases.\fxnote{Vær sikker på at dette bliver nævnt tidligere.}
+The way we will do release testing is by doing code review on code changes and make sure all development tests pass.
+Nevertheless we will still do performance testing, not in the context of releasing, but to benchmark the server.
+
+\bigskip
+
+Another type of test we perform is smoke testing.
+Smoke testing is an ad-hoc testing method where basic functionality is tested and happens naturally during development\cite{smoke_testing}.
+An example of smoke testing in a software system is to make a compilation and see if it succeeds, since we use a statically typed language,
+we can use the type system to check if all types are compatible.
+
+To sum up, we will do unit testing, regression testing, and component testing which is a part of development testing.
+Furthermore we will do our own version of release testing, do performance benchmarking,
+and we will use smoke testing to quick test basic functionality.

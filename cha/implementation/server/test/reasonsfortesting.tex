@@ -1,0 +1,29 @@
+\section{Reasons for Testing}
+The intention of testing software is to demonstrate that it does what it is intended to do.
+According to Ian Sommerville in his book \textit{Software Engineering}\cite[p.~227]{software_engineering} testing is supposed to do two things:
+
+\begin{description}
+    \item[Validation testing]\cite[p.~227]{software_engineering} \hfill\\
+    To test if the software meets its requirements validation testing is used.
+    This means that there should, for a custom system, be a test for each requirement,
+    demonstrating the ability of the software to fulfil the requirements.
+    The test cases to test the requirements is supposed to reflect the intended use of the software,
+    i.e. the tests should imitate regular use from a regular user.
+
+    \item[Defect testing]\cite[p.~227]{software_engineering} \hfill\\
+    To find input which makes the software behave incorrectly defect testing is used.
+    The incorrect behaviour is the result of software defects,
+    which can result in system crash, data corruption or other faults.
+    Testing for incorrect behaviour also prevent regression during development,
+    where new bugs could be introduced.
+    Regression is the case where a piece of working software stops working after a new feature is added\cite{regression}.
+    The test cases to expose the defects are not required to imitate regular use as validation testing.
+    Therefore these test cases can be obscure, such that edge cases can be covered.
+\end{description}
+
+Since we are interested in the server being able to fulfil its requirements,
+and we want to find and eliminate incorrect behaviour, we determine that we have to test the server.
+Furthermore testing is a part of the requirements of the server, as mentioned in \cref{cha:requirements_elicitation}\fxnote{Add testing som requirement}.
+Since our core area, as mentioned in \cref{sec:problem_statement} is the server, we will not test the front--end.
+The next sections will describe the testing methods we intend to use.
+
