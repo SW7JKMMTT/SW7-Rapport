@@ -1,17 +1,34 @@
 \chapter{System \& Load Testing}\label{cha:system_and_load_testing}
-In this chapter we will describe how we perform a system and load test on our server;
-then we will present results of said tests and conclude on them.
-Lastly we will reflect on what these results mean going forward, and what they can do for us.
+In this chapter we describe how we perform system and load testing on our server;
+then we present results of said tests and conclude upon them.
+Lastly we reflect on what these results mean going forward, and what they can do for us.
+
+Throughout this chapter we comment on and evaluating the \textit{performance} of the server.
+We define \textit{performance} of the server as a measure for both response time of requests and how many requests per second the server can handle.
+To gauge performance we also use the term \textit{load}, which we define as follows;
+if a system is \textit{under heavy load} it means that a significant amount of more users are using it, compared to \textit{under normal load}, which is when a realistic number of users are hitting the system.
+When we use the term \textit{under load} without any quantifier, we mean usage such that the system is not idle.
 
 \bigskip
-To test our server application as a whole, we use \textit{Apache JMeter}\footnote{\url{http://jmeter.apache.org/}} which is a open source application designed for testing web services among others.
-This tools allows us to simulate a typical workflow of using our REST API, while gathering various data about the performance and result of specific requests to the server.
+Because scalability is a significant non--functional requirement for our system, as described in \cref{sec:requirements}, we want to gauge the load scalability of our system, such that we can identify what kind of load a single instance of our server can handle --- this is done with load testing. % chktex 08
+It would be possible to configure a second instance of the server and use load balancer to distribute traffic, i.e.~horizontal scaling, but due to time constraints this test remains undone.
+
+The system testing is used to both determine faults in the system's functionality, and to ensure that the implementation of the specification for API usage is correct.
+
+\bigskip
+To test our server application as a whole, we use \textit{Apache JMeter}\footnote{\url{http://jmeter.apache.org/}} which is an open source application designed for testing web services and other services.
+This tool allows us to simulate a typical workflow of our REST API, while gathering various data about the performance and results of specific requests to the server.
 
 Because \textit{JMeter} can be used to simulate the workflow, we are testing both the performance and the functional behaviour of the server.
-Meaning that this test also is a system test -- And by increasing the amount of requests we send to the server in any given test, we can shift focus towards load testing.
+Meaning that this testing is also a system test --- and by increasing the amount of requests we send to the server in any given test, we can shift focus towards load testing.
 
-Moreover \textit{JMeter}, can also distribute tests such that multiple computers can be used to load test the server.
+Moreover, \textit{JMeter} can also distribute tests such that multiple computers can be used to load test the server.
 By utilising this feature we can assure that the machine executing the test is not the bottleneck, and the outcome of any test will reflect the performance of the server.
+
+\bigskip
+To better understand the results of our system and load tests, we use various profiling tools on the server.
+These tools are capable of measuring which parts of the system are most critical when under load, and can therefore give an insight in where optimizations can potentially increase performance.
+Additionally we monitor server logs and use debugging tools to identify any faults which may surface during testing.
 
 \section{Test Plans}
 When doing system testing we focus on testing the interaction between components in the system.
@@ -20,8 +37,8 @@ Because of this two test plans are made; one for submitting data to the server, 
 We do not deem it necessary to include features such as uploading profile images, since these endpoints are insignificant for the business logic.
 
 \subsection{Submitting Data}
-Our first test plan aims to react all functional behaviour which is involved in a producer clients typical workflow.
-The test plan can be summarized by the following points:
+Our first test plan aims to reach all functional behaviour which is involved in a producer clients typical workflow.
+The test plan can be summarized by the following points, note that $x$, $y$, and $n$ are integers, and will be expanded when we present the results of the test plan:
 \begin{enumberate}
     \item Setup $x$ new test users.
     \begin{enumberate}
@@ -30,7 +47,7 @@ The test plan can be summarized by the following points:
         \item Change the given name of each user.
     \end{enumberate}
     \item Create $n$ vehicles and save their ids.
-    \item Create $x$ routes with random vehicle and random user, and randomly select a center point for each route.
+    \item Create $x$ routes each with a random vehicle, a unique user, and a randomly selected a center point.
     \item For each route:
     \begin{enumberate}
         \item Mark route as \code{ACTIVE}
@@ -44,48 +61,128 @@ It should be noted that this test plan only submits data to the server, and adva
 This means that the result only represents the server's ability to receive data.
 
 \subsection{Fetching Data}
-To analyse the performance of the server while executing queries, both simple and complex, and fetching data, we set up a test plan which does this.
-In the test we want to gauge the performance of
-\begin{enumberate*}
-    \item regular fetching of data, e.g. getting all users;
-    \item more complex fetching, e.g. getting all routes associated with a given driver; and
+To analyse the performance of the server while executing queries, both simple and complex, and fetching data, we set up a second test plan which does this.
+In the test we want to gauge the performance of:
+\begin{enumberate}
+    \item regular fetching of data, e.g.~getting all users;
+    \item more complex fetching, e.g.~getting all routes associated with a given driver; and
     \item geospatial queries, which we reckon will be the most demanding type of fetching data, performance wise.
-\end{enumberate*}
+\end{enumberate}
 
 \section{Results}
-FIGURES MAN
+Running our tests produce test result summaries, which contains statistics such as error rate and average response time about the given test, and various graphs;
+the most interesting graph being the response time distribution and requests per second graphs.
+These two graphs represent the performance of the server in different tasks, such as \textit{create user} and \textit{add datapoint to route}.
 
-\subsection{NoSQL vs. SQL}
-During the early development of the server we had chosen a NoSQL database, which was switched out for a SQL database.
-This switch was done partially due to early test runs of the submit test plan, where short comings of the NoSQl implementation was found.
-We found that \enquote{duplicate id errors} prevailed when the server was under load, because new unique ids not could be generated fast enough.
+Results for the \textit{Submitting Data} test plan can be seen in \cref{fig:submit_test_results}.
+In this test we create 500 routes and unique users, 100 vehicles, and 400 way and datapoints on every route --- we define this as our \textit{Normal load}.
+We the compare the results of that test with a distributed version using three computers --- thereby tripling the amount of requests, bringing the total number of way and datapoints up to $600.000$.
+We define this as our \textit{Heavy load}.
 
-After switching to a SQL database and Hibernate ORM, we found that the \enquote{duplicate id errors} vanished, but performance remained approximately the same, as can be seen on \cref{fig:same_response_sql}.
-However, after then adding indices our SQL tables we found that performance increased drastically, even though additional complexity was introduced to the server functionality along side.
+\bigskip
+In \cref{fig:submit_test_results} the results of the \textit{Submitting Data} test plan can be seen.
+
+\begin{figure}[!htb]
+    \centering
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \rule{5cm}{5cm}
+        \caption{Response time distribution --- Normal load}\label{fig:submit_resp_t_dist}
+    \end{subfigure}\hfill%
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \rule{5cm}{5cm}
+        \caption{Requests per second --- Normal load}\label{fig:submit_reqs_p_sec}
+    \end{subfigure}\\
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \rule{5cm}{5cm}
+        \caption{Response time distribution --- Heavy load}\label{fig:submit_resp_t_dist_heavy}
+    \end{subfigure}\hfill%
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \rule{5cm}{5cm}
+        \caption{Requests per second --- Heavy load}\label{fig:submit_reqs_p_sec_heavy}
+    \end{subfigure}
+    \caption{Submitting test plan results}\label{fig:submit_test_results}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \rule{5cm}{5cm}
+        \caption{Response time distribution --- Normal load}\label{fig:fetch_resp_t_dist}
+    \end{subfigure}\hfill%
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \rule{5cm}{5cm}
+        \caption{Requests per second --- Normal load}\label{fig:fetch_reqs_p_sec}
+    \end{subfigure}\\
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \rule{5cm}{5cm}
+        \caption{Response time distribution --- Heavy load}\label{fig:fetch_resp_t_dist_heavy}
+    \end{subfigure}\hfill%
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \rule{5cm}{5cm}
+        \caption{Requests per second --- Heavy load}\label{fig:fetch_reqs_p_sec_heavy}
+    \end{subfigure}
+    \caption{Fetching test plan results}\label{fig:fetch_test_results}
+\end{figure}
+
+\subsection{NoSQL vs. SQL}\label{subsec:nosql_vs._sql}
+During the early development of the server we had chosen a NoSQL database, which was switched out for an SQL database.
+This switch was done partially due to early test runs of the \textit{Submitting Data} test plan, where a short coming of the NoSQl implementation was found:
+We found that \enquote{duplicate id errors} occurred when the server was under load, because new unique ids not could be generated fast enough.
+
+After switching to an SQL database and Hibernate ORM, we found that the \enquote{duplicate id errors} vanished, but performance remained approximately the same, as can be seen on \cref{fig:same_response_sql}.
+However, after then adding indices to our SQL tables we found that performance increased drastically, even though additional complexity was introduced to the server functionality across the switch from NoSQL to SQL with indices.
 This means that queries which used to take upwards of 200 milliseconds, now only takes approximately 5 milliseconds, and the response time distribution reflects a significantly faster server, as can be seen in \cref{fig:fast_response_indices}.
 
 \begin{figure}[!htb]
     \centering
-    \rule{5cm}{5cm}
-    \caption{Response time distribution with a NoSQL vs. SQL database}\label{fig:same_response_sql}
-\end{figure}
-
-\begin{figure}[!htb]
-    \centering
-    \rule{5cm}{5cm}
-    \caption{Response time distribution with a SQL database with indices}\label{fig:fast_response_indices}
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \rule{5cm}{5cm}
+        \caption{NoSQL vs. SQL database}\label{fig:same_response_sql}
+    \end{subfigure}\hfill%
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \rule{5cm}{5cm}
+        \caption{SQL database with indices}\label{fig:fast_response_indices}
+    \end{subfigure}
+    \caption{Response time distributions}\label{fig:nosql_vs_sql}
 \end{figure}
 
 \subsection{General Performance}
-FIGURES MAN
+Although it is interesting to measure our servers performance under heavy load, this is not a realistic use scenario for the system to be in.
+In day--to--day operation the server may see periods of heavy load, which it can handle, as seen in for example \cref{fig:submit_reqs_p_sec_heavy}.
+Here we see that the server still responds to requests albeit at a slower rate.
+This means that even under heavy load, the server will not crash and/or refuse to response.
+
+We deem that it is fast as balls, when under normal load.
 
 \section{Effects}
-We found this stuf
+The following points present our findings during system and load testing, and how we tried to mend found faults:
 \begin{description}
-    \item[High Response Times]\hfill \\
-        First we sweeep SQL in. Then we index shit
     \item[Consistency Errors]\hfill \\
-        Duplicate indeces in NoSQL. Duplicate driver.
+        As presented in \cref{subsec:nosql_vs._sql}, we discovered that our first choice of type of database system, NoSQL, and especially its implementation through Hibernate OGM, behaived faulty under load.
+        The error occurred when two objects were being created at the same time, partly because Hibernate OGM's way of requiring unique ids was not thread safe.
+        This meant that we had to change our persistence layer in order to establish a consistent data handling.
+
+        Another consistency error found, was that sometimes two different drivers would be made for the same user, something which should not be allowed in our system.
+        This error was caused by a fault where the same user would create two routes simultaneously, while having no existing driver, thus resulting in a race condition creating two different drivers.
+        Fortunately, this error will never present itself in daily use of our system, since a given user is assigned a driver the first time he/she crates a route;
+        and a real user should only be used by one person, thus making it improbable to be creating two separate routes at the exact same time.
+
+        After discovering that creating two or more routes for the same user at the same time, could lead to this error, we changed the test plan to reflect the real world more accurately by ensuring that all routes are created by a unique user.
+    \item[High Response Times]\hfill \\
+        When we switched from a NoSQL to SQL database system, we expected to get faster performance through out the system, because we in the NoSQL database had to aggregate a lot of documents to use the data, which now could be done using joins in the SQL database.
+        However, this was the not case, and our new SQL database system had unsatisfactory performance under load, i.e.~nearly identical to the previous NoSQL database system.
+
+        We then introduced indices in our SQL database system, which meant that fetching elements, something that Hibernate ORM does every time an existing object is changed, was significantly faster.
     \item[Persistence Errors]\hfill \\
         Something something set route.
 \end{description}
