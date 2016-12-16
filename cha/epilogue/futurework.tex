@@ -7,10 +7,15 @@ These improvements covers both areas we have not developed, and areas where we c
 \section{Producer Client}\fxnote{Is this enough? I can add more details but as this point i feel like we covered producer client pretty well}
 %Data provider that handles data normalisation to replace sim
 The current implementation only emulates a producer client.
-This works for testing and proving that the server works as intended, but the server also relies on the producer client.
+This works for testing and demonstrating that the server works as intended, but the server also relies on the producer client.
 We emulate data in a JSON format, which is the only format the server supports.
 In \cref{sec:data_normalisation} we described that the ideal place for data normalisation would be on the producer client.
 If we were to release the server without a producer client, any potential client would have to develop their own producer client, able to produce the data in a JSON format, as well as a consumer client.
+
+\bigskip
+We envision the producer client as a smartphone app which utilises the phone's GPS and uses bluetooth to communicate with an \ac{OBD} device.
+The app then normalises the data from the two sources and uses the phone to transmit data to the server.
+This is the most simple solution, as is described later in \cref{sec:fw_server} the client may be expanded to also allow for manual input or request data from other sources, in case such data would be relevant.
 \section{Consumer Client}\fxnote{Same as producer, can expand on specific features but not sure if worthwhile}
 %A baseline front--end client that allow for the simple functionality(fuel consumption, driving patterns, possible API extension to cooperation with fuel companies to determine price for a route, maintenance status.)
 The current consumer client is a proof of concepts and still lacks a lot of features for it to be usable in a commercial sense.
@@ -19,13 +24,15 @@ As described in \cref{sec:constituents_of_the_system} developing a consumer clie
 Considering commercial use, smaller companies may not have the resources to develop their own consumer client, in that regard a baseline consumer client could suit some of their needs.
 A baseline consumer client supporting features beyond what our proof of concept does, e.g. various statistics, would make our system usable for a wider clientele.
 This requires that a producer client exists and as such the producer client would be the higher priority when it comes to future development.
-\section{Improving the Server}
+\section{Improving the Server}\label{sec:fw_server}
 Both the producer client and consumer client can be viewed as their own systems, and their development would as such not influence the server.
 While developing those two systems would contribute to a complete vehicle fleet management system, improvements to several areas of the server can also be made, some of which might influence the capabilities of a potential consumer client and the requirements for a producer client.
+This section describes some of the possible improvements that could be made to the server, and also considers their influence on both producer and consumer clients.
 \subsection{Server/Technological Changes}\fxnote{Jesper Plz}
 Horizontal scale?
 Back to NoSQL?
 \subsection{More Endpoints}\fxnote{More endpoints is a very simple thing, not quite sure what to expand on here}
+Delete Features
 %More services??
 \fxnote{enunciate liste} shows all the currently implemented endpoints.
 The data obtainable through \ac{OBD} allows for the development of more endpoints as there are more details to be utilised, e.g. engine RPM.
@@ -53,7 +60,9 @@ As for catering to specific fields there are countless possible data points.
 In order to find these data point having a stakeholder in the given field to produce requirements for data distinct to their field is required.
 
 In the end catering to specific fields would enable the production of more specialised consumer clients targeting the field in which the system is to be used.
-For the server specifically as that is our focus, it would require a design that allows us to store data for a variety of fields without storing unwanted information, e.g. cargo weight for a city bus.
+For the server specifically as that is our focus, it would require a design that allows us to store data for a variety of fields without storing unwanted information, e.g. cargo weight for a taxi.
+
+The functional scalability we have ensured throughout the development process also means that the addition of any field specific data would not be a difficult task.
 
 \subsection{Long polling}
 During the development we have been mostly focusing on services, and having the
