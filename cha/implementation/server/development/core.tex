@@ -52,7 +52,7 @@ The \code{Vehicle}--class is our abstraction of a vehicle, on it we have the sim
 If we wanted to support different kind of vehicles, which has additional attributes, they should inherit from the \code{Vehicle}--class.
 For example a bus could contain information about how many people it could carry, while for a truck the amount of load it can take would be useful. 
 
-\paragraph*{VehicleData}
+\paragraph*{VehicleData}\label{par:vehicledata}
 The last part of the \code{Route}--class is the \code{VehicleData}--class. 
 The \code{VehicleData}--class is used to store the information gathered by the DataProvider which is not spatial, i.e. \ac{OBD}--data.
 We placed this as a part of the \code{Route}--class since it makes sense for the other parts of the system, i.e. the Producer and the Consumer. 

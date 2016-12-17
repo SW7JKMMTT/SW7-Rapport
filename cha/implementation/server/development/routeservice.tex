@@ -1,0 +1,80 @@
+\subsection{The Route Services}
+In this section we describe the functionality, and choices made when developing the \code{RouteService}, 
+and its two sub--services \code{WaypointService}, and \code{VehicleDataService}.
+
+In \cref{table:endpointrouteservice} we provide an overview of the end--points in the \code{RouteService}, \code{WaypointService}, and \code{VehicleDataService}. 
+In the last column of the table we list the name of the method which handles the request in the corresponding service. 
+
+\subimport{dankmemes}{route_services_table.tex}
+
+\subsubsection*{RouteService}
+The most interesting and complex method in the \code{RouteService} is the \code{getAllRoutes} method.
+It is more complex since there are more cases which much be handled. 
+If no query parameters are set, then it will return all the existing routes.
+However it can take five optional parameters: \code{routeState}, \code{driverId}, \code{latitude}, \code{longitude}, and \code{radius}.
+
+\code{routeState}, and \code{driverId} are filters, meaning that if one of them is set then it will be filtered by it, 
+they can also be used in conjunction.
+The three remaining parameters are used for spatial queries, if one of them is set, then all of them must be set for the query to make sense.
+We have previously explained how spatial queries are created and executed in the \ac{DAO}, in \fxnote{Kan ikke ref til den da den ikke har et nummer, men det bliver fixet senere får label: subsec:spatial}.
+
+The spatial queries can also be used in conjunction either one or both of \code{routeState}, and \code{driverId}. 
+In total there are eight methods in the \ac{DAO}, which can be called from this method depending on how many of the optional query parameters are set.
+A simpler method for filtering would be to fetch all elements from the database, then apply filters. 
+However, that method would cause unnecessary load on both the database and our application, which is unwanted. 
+Especially as the number of elements in the database increase, thus it would worsen the load scalability of the system. 
+We chose to use the \ac{DAO} for this filtering since we want to utilise what the database is good at, such as filtering large amounts of data.
+
+\bigskip
+The remaining methods in the \code{RouteService} are fairly straight forward.
+% Jeg relaterer dem her til deres metoder, måske man skulle relatere dem til endpoints i stedet? Opinions? Tabellen relaterer jo også de 2.
+\code{createRoute} takes a \code{RouteBuilder} which contains a \code{vehicleid}, \code{driverid}, and \code{routeState}.
+If all required fields are set, i.e. \code{vehicleid}, and \code{driverid}, then it will continue otherwise it will give an error.
+Then \code{createRoute} fetches the actual \code{Vehicle} and \code{Driver} with their appropriate \acp{DAO}, and uses the \code{RouteBuilder} to build the \code{Route}, 
+which it then adds to the database via the \code{RouteDao}, and then the method returns the \code{Route} created to the user. 
+
+\code{modifyRoute} is very similar to \code{createRoute}, with the exception that the method fetches an existing object, 
+then the method uses the \code{RouteBuilder} to modify the fetched object, instead of creating a new one.
+This also means that not all fields must be set on the \code{RouteBuilder} as they were in the context of creating a new one.
+
+\code{getRouteById} fetches, and returns a specific route from the \ac{DAO} by its id.
+
+\subsubsection*{Serving Sub--Services}
+Lastly in the \code{RouteService} are two methods each of which are responsible for serving a sub--service.
+They both work in the same way, first they fetch the \code{Route} via its id, then the methods sets up their appropriate sub--service, and then serve it.
+The route upon which a sub--service is working, is stored as a local variable in the sub--service, thus it is stateful. 
+Therefore the sub--services must be created before each request.
+This is done by making the scope of the sub--service last for the duration of the request, i.e. request scoped.
+In contrast to the default which is application scoped, meaning that the services are created once and lasts for the duration of the application.
+Setting a service or sub--service to be request scope is done by setting the \code{@Scope} annotation and giving it the value ``request''.
+
+For the sub--services we do not initialize the collections of waypoints or vehicledatapoints on them.
+If we eagerly fetch the collections on a \code{Route}, then the time it took to create a sub--service would be linear w.r.t. the size of the collections.
+Thus the performance would degrade as more \code{Waypoint}s, and/or \code{VehicleData} are added to \code{Route}s.
+
+\subsubsection*{WaypointService}
+The \code{WaypointService} is used to get and post waypoints to a route.
+It contains two methods, \code{getWaypoints}, and \code{addWaypoint}.
+
+\code{addWaypoint} takes a \code{WaypointBuilder} if the appropriate fields are set, then it will construct the waypoint, and add it to the route.
+If not then it will return an error.
+
+\code{getWaypoints} takes two optional query parameters: \code{maxCount}, and \code{after}.
+\code{maxCount} is the maximum number of waypoints to return.
+\code{after} is a timestamp which is used to only fetch waypoints newer than the timestamp.
+These two can be used in conjunction, meaning that there are four combinations in total.
+This is powerful for the consumer clients in many cases.
+For example to use for a map, only new information is required, thus this can avoid a lot of redundant data transfer.
+
+\subsubsection*{VehicleDataService}
+The \code{VehicleDataServer} is used to get and create vehicle--data to a route.
+It has two methods for this: \code{getVehicleData} and \code{addVehicleData}.
+
+\code{getVehicleData} returns the vehicle--data stored on the route.
+This is fairly straight forward. 
+
+\code{addVehicleData} is more complex.
+It uses a \code{VehicleDataBuilder}, which consists of a timestamp and one or more \code{VehicleDataPoint}s.
+We have previously documented how the relationship between \code{VehicleData} and \code{VehicleDataPoint}s in \fixme{Kan ikke ref før refactor: par:vehicledata}.
+We do not use a builder to construct the \code{VehicleDataPoint}s, but instead we use annotations which are part of Jackson, which we described in \fixme{Tech stack efter update???}.
+This is done since it is easier to add more different \code{VehicleDataPoints}, since they would only require changing the model, which we described in \fixme{Kan ikke ref lige nu men det bliver par:vehicledata}.
