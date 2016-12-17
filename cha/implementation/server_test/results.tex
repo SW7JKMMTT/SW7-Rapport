@@ -79,7 +79,7 @@ However, it should be noted that the final system could be distributed to avoid 
 
 \subsection{NoSQL vs. SQL}\label{subsec:nosql_vs._sql}
 During the early development of the server we had chosen a NoSQL database, which was switched out for an SQL database.
-This switch was done partially due to early test runs of the \textit{Submitting Data} test plan, where a short coming of the NoSQl implementation was found:
+This switch was done partially due to early test runs of the \textit{Submitting Data} test plan, where a short coming of the NoSQL implementation was found.
 We found that \enquote{duplicate id errors} occurred when the server was under load, because new unique ids not could be generated fast enough.
 
 After switching to an SQL database and Hibernate ORM, we found that the \enquote{duplicate id errors} vanished, but performance remained approximately the same, as can be seen on \cref{fig:same_response_sql}.
@@ -102,10 +102,9 @@ This means that queries which used to take upwards of 200 milliseconds, now only
 \end{figure}
 
 \subsection{General Performance}
-Although it is interesting to measure our servers performance under heavy load, this is not a realistic use scenario for the system to be in.
+Although it is interesting to measure our servers performance under heavy load, this is not a realistic use case for the system to be in.
 In day--to--day operation the server may see periods of heavy load, which it can handle, as seen in for example \cref{fig:submit_reqs_p_sec_heavy}.
 Here we see that the server still responds to requests albeit at a slower rate.
 This means that even under heavy load, the server will not crash and/or refuse to response.
 
 We deem that it is fast as balls, when under normal load.
-
