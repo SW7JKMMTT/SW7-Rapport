@@ -1,0 +1,111 @@
+\section{Results}
+Running our tests produce test result summaries, which contains statistics such as error rate and average response time about the given test, and various graphs;
+the most interesting graph being the response time distribution and requests per second graphs.
+These two graphs represent the performance of the server in different tasks, such as \textit{create user} and \textit{add datapoint to route}.
+
+Results for the \textit{Submitting Data} test plan can be seen in \cref{fig:submit_test_results}.
+In this test we create 1000 routes and unique users, 500 vehicles, and 400 waypoints and datapoints on every route --- we define this as our \textit{Normal load}.
+We then compare the results of that test with a distributed version using four computers --- thereby quadrupling the amount of requests, bringing the total number of waypoints and datapoints created during the test up to $1.6$ million.
+We define this as our \textit{Heavy load}.
+
+\bigskip
+In \cref{fig:submit_test_results} the results of the \textit{Submitting Data} test plan can be seen.
+The figure contains two pairs of graphs one for \textit{Normal load}, and one for \textit{Heavy load}.
+Each pair shows the response time distribution of all requests, and number of requests to the server per second.
+
+\begin{figure}[!htb]
+    \centering
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \rule{5cm}{5cm}
+        \caption{Response time distribution --- Normal load}\label{fig:submit_resp_t_dist}
+    \end{subfigure}\hfill%
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \rule{5cm}{5cm}
+        \caption{Requests per second --- Normal load}\label{fig:submit_reqs_p_sec}
+    \end{subfigure}\\
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \rule{5cm}{5cm}
+        \caption{Response time distribution --- Heavy load}\label{fig:submit_resp_t_dist_heavy}
+    \end{subfigure}\hfill%
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \rule{5cm}{5cm}
+        \caption{Requests per second --- Heavy load}\label{fig:submit_reqs_p_sec_heavy}
+    \end{subfigure}
+    \caption{Submitting test plan results}\label{fig:submit_test_results}
+\end{figure}
+
+\bigskip
+\cref{fig:fetch_test_results} shows the results of the \textit{Fetching Data} test plan.
+This test is run after cleaning the database and then running the \textit{Submitting Data} test plan under \textit{Heavy load}.
+This ensures that we have the same amount of data for each run.
+
+Identically to the \textit{Submitting Data} test, we run this test under \textit{Normal load} and \textit{Heavy load}.
+The amount of load is determined by how many threads we use to fetch data in parallel.
+Moreover each thread makes the same request for data to the server ten times sequentially, such that any caching can be caught in the test results.
+Under \textit{Normal load} we use 100 threads, or users, to request data simultaneously and under \textit{Heavy load} we quadruple that number --- giving us 400 users acting in parallel.
+
+Because the network interface is our bottle neck these numbers are significantly lower than in the \textit{Submitting Data} test, where we had 4000 users in parallel.
+We deem it unnecessary to test with higher load, since solving such network limitations not is the focus of this project.
+However, it should be noted that the final system could be distributed to avoid bandwidth problems.
+
+\begin{figure}[!htb]
+    \centering
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \rule{5cm}{5cm}
+        \caption{Response time distribution --- Normal load}\label{fig:fetch_resp_t_dist}
+    \end{subfigure}\hfill%
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \rule{5cm}{5cm}
+        \caption{Requests per second --- Normal load}\label{fig:fetch_reqs_p_sec}
+    \end{subfigure}\\
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \rule{5cm}{5cm}
+        \caption{Response time distribution --- Heavy load}\label{fig:fetch_resp_t_dist_heavy}
+    \end{subfigure}\hfill%
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \rule{5cm}{5cm}
+        \caption{Requests per second --- Heavy load}\label{fig:fetch_reqs_p_sec_heavy}
+    \end{subfigure}
+    \caption{Fetching test plan results}\label{fig:fetch_test_results}
+\end{figure}
+
+\subsection{NoSQL vs. SQL}\label{subsec:nosql_vs._sql}
+During the early development of the server we had chosen a NoSQL database, which was switched out for an SQL database.
+This switch was done partially due to early test runs of the \textit{Submitting Data} test plan, where a short coming of the NoSQl implementation was found:
+We found that \enquote{duplicate id errors} occurred when the server was under load, because new unique ids not could be generated fast enough.
+
+After switching to an SQL database and Hibernate ORM, we found that the \enquote{duplicate id errors} vanished, but performance remained approximately the same, as can be seen on \cref{fig:same_response_sql}.
+However, after then adding indices to our SQL tables we found that performance increased drastically, even though additional complexity was introduced to the server functionality across the switch from NoSQL to SQL with indices.
+This means that queries which used to take upwards of 200 milliseconds, now only takes approximately 5 milliseconds, and the response time distribution reflects a significantly faster server, as can be seen in \cref{fig:fast_response_indices}.
+
+\begin{figure}[!htb]
+    \centering
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \rule{5cm}{5cm}
+        \caption{NoSQL vs. SQL database}\label{fig:same_response_sql}
+    \end{subfigure}\hfill%
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \rule{5cm}{5cm}
+        \caption{SQL database with indices}\label{fig:fast_response_indices}
+    \end{subfigure}
+    \caption{Response time distributions}\label{fig:nosql_vs_sql}
+\end{figure}
+
+\subsection{General Performance}
+Although it is interesting to measure our servers performance under heavy load, this is not a realistic use scenario for the system to be in.
+In day--to--day operation the server may see periods of heavy load, which it can handle, as seen in for example \cref{fig:submit_reqs_p_sec_heavy}.
+Here we see that the server still responds to requests albeit at a slower rate.
+This means that even under heavy load, the server will not crash and/or refuse to response.
+
+We deem that it is fast as balls, when under normal load.
+
