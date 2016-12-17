@@ -1,0 +1,23 @@
+\begin{table}[ht]
+    \centering
+    \small
+    %\rowcolors{2}{white}{GoogleGrey!20}
+    \setlength\extrarowheight{1pt}
+    \begin{tabularx}{0.9\textwidth}{l p{13em} l l}
+        \textbf{HTTP Methods}       & \textbf{End--Point}               & \textbf{Service}             & \textbf{More info}  \\ \hline
+        \texttt{GET}, \texttt{POST} & \texttt{/auth}                    & \texttt{AuthService}         & ... \\ \tblgrpsep
+        \texttt{GET}, \texttt{POST} & \texttt{/user}                    & \multirow{3}{*}{\texttt{UserService}}         & ... \\
+        \texttt{GET}, \texttt{PUT}  & \texttt{/user/\{uid\}}            &          & ... \\
+        \texttt{GET}, \texttt{PUT}  & \texttt{/user/\{uid\}/icon}       &          & ... \\ \tblgrpsep
+
+        \texttt{GET}, \texttt{POST} & \texttt{/vehicle}                 & \multirow{3}{*}{\texttt{VehicleService}}      & ... \\
+        \texttt{GET}, \texttt{PUT}  & \texttt{/vehicle/\{vid\}}         &       & ... \\
+        \texttt{GET}, \texttt{PUT}  & \texttt{/vehicle/\{vid\}/icon}    &       & ... \\ \tblgrpsep
+
+        \texttt{GET}, \texttt{POST} & \texttt{/route}                   & \multirow{2}{*}{\texttt{RouteService}}        & ... \\
+        \texttt{GET}, \texttt{PUT}  & \texttt{/route/\{rid\}}           &        & ... \\
+        \texttt{GET}, \texttt{POST} & \texttt{/route/\{rid\}/waypoint}  & \texttt{WaypointService}     & ... \\
+        \texttt{GET}, \texttt{POST} & \texttt{/route/\{rid\}/datapoint} & \texttt{VehicleDataService}  & ... \\ 
+    \end{tabularx}
+    \caption{A table corrolating the end--points and services.}\label{table:endpointservice}
+\end{table}

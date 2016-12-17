@@ -1,10 +1,138 @@
-\subsection{Persistence}
-For the core i want to know
+\subsection{Services Overview}
+This section provides an introduction and overview of the services we have created for the server.
+
+A service delivers one or more resources which in turn contains end--points.
+These end--points are the interface to the server which is used by the developer of the producer and/or consumer clients.
+
+Each service is a Spring Bean, and is injected with the correct context when required. \fxnote{Er ikke 100\% på termonologien når det kommer til spring mumbo jumbo.}
+
+\subsubsection*{Overview of API End--points}
+We have 11 end--points split over four services and two sub--services.
+A sub--service is a service which is a constituent of another service, i.e. it is served by it.
+An overview of these are shown in \cref{table:endpointservice}.
+The four services are \code{AuthService}, \code{UserService}, \code{VehicleService}, and \code{RouteService}, 
+which all serve end--points relative to the root of the API.
+There are also two sub--services, they are \code{WaypointService}, and \code{VehicleDataService}.
+They are served as sub--services of the \code{RouteService}, since they are reliant on a \code{Route}.
+Each of the services and sub--services are explained later in further detail.
+The ``More Info''--column of the table lists the page of each.
+
+We decided not to implement any deletions in the REST API.
+Implementing this would have taken development time away from what we have considered more important features. \fxnote{Tilføj dette til future work.}
+\subimport{dankmemes}{services_overview_table.tex}
+
+\subsubsection*{Implementing Services}
+Each HTTP method for each endpoint needs to be implemented as a method in Java.
+For this we use JAX--RS\fxnote{Indsæt ref til det afsnit}, which provides annotations, such that the application server can handle incoming requests.
+We use the annotations in \cref{table:serviceannotations} most often in our services.
+
+\subimport{dankmemes}{services_annotation_table.tex}
+
+\bigskip
+To illustrate this we provide an example in \cref{lst:userServiceGetById}.
+In this example we fetch a user from the database and return it as JSON, if certain conditions are met.
+First on line 1--4 we have annotations, as explained in \cref{table:serviceannotations}.
+Then on line 5, we use the \code{@PathParam} to access the variable defined in the \code{@Path}--annotation on line 2.
+On line 6, we use the \code{UserDao}, explained in \cref{subsec:persistingtodb}, to fetch the user.
+The method is named \code{byId\_ForDisplay} since it initializes the fields which are lazily loaded, such that they can be sent to the user.
+On line 8, we check if a user with the given id is found, if not, then we return an error.
+Finally on line 11 we return the user object we fetched from the database.
+Then, as explained in \fxnote{Serialization}, it will be serialized into JSON.
+\begin{listing}
+    \begin{java2}
+@GET
+@Path("/{uid}")
+@Produces("application/json")
+@RolesAllowed({PermissionType.Constants.USER})
+public User getUserById(@PathParam("uid") Long id) {
+    User user = userDao.byId_ForDisplay(id);
+
+    if (user == null)
+        throw new NotFoundException("User not found.");
+
+    return user;
+}
+    \end{java2}
+    \caption{A sample method from the \code{UserService}, which fetches a single user by id.}\label{lst:userServiceGetById}
+\end{listing}
+
+After any creation, we return the created object. 
+Otherwise the client would not have an id to refer to the object.
+We do the same when a client updates an object, 
+since another client might have changed some other fields since the object was last fetched. 
+
+\bigskip
+\paragraph*{Error messages}
+In order to ease debugging for the users of our API, we want to provide as precise and detailed error messages as possible,
+we provide these messages as a JSON object.
+We also return an appropriate HTTP status code, the most common ones we use for reporting errors are:
+\begin{multicols}{3}
 \begin{itemize}
-    \item What is the purpose of this layer?
-    \item What does this layer contain?(take folders and explain contents of folders using 1 file from each)
-    \item What issues does this layer handle?
-    \item How is this layer accessed(communication between layers)?
-    \item How are the technologies from the techstack used?
-    \item How is the architecture and design pattern present?(Expand on builder pattern here)
+    \item 400 Bad Request,
+    \item 401 Unauthorized,
+    \item 403 Forbidden,
+    \item 404 Not Found,
+    \item 409 Conflict.
 \end{itemize}
+\end{multicols}
+
+For example, if insufficient arguments were given, a ``400 Bad Request'' would be the response,
+but additionally the missing argument(s) are listed.
+For ``409 Conflict'', it is also important to provide information about what conflicted,
+for example when trying to create two vehicles with the same VIN.
+
+\paragraph*{Builders}
+When a client makes a POST or PUT request for a given object, 
+the server also requires some additional information about the relation the object has to other classes, 
+e.g. a route would require driver and vehicle information.
+
+Providing entire objects of each relation would be impractical for the client as they might be outdated and it would increase the size of each request.
+Ideally the client would send the minimal amount of information, i.e. just the ids of the objects.
+
+To facilitate this we create builders, following the Builder pattern from ``Effective Java''\cite{Bloch:2008:EJ:1377533}. % http://www.javaworld.com/article/2074938/core-java/too-many-parameters-in-java-methods-part-3-builder-pattern.html
+
+\bigskip
+A builder is a class which is similar to the class it builds, has the same properties, with the following changes:
+\begin{itemize}
+    \item all references to existing items in the database are replaced with ids,
+    \item all properties should have public getters, and setters,
+    \item the id field is excluded.
+\end{itemize}
+
+Additionally all builders must have a build method, which build the object of the actual class, and returns it.
+If any fields are ids then building the objects will require accessing the database,
+therefore the build methods do in certain cases take \acp{DAO} as parameters.
+The \acp{DAO} are used to fetch the full elements from the database, 
+such that the appropriate relations can be set.
+
+We also use builders to modify existing objects,
+in that case there is a method which takes the object we want to modify,
+then on that object it will replace all the fields which has been set in the builder.
+
+\subsubsection*{Documenting Services}
+In order to document the services we use Enunciate\footnote{\url{https://github.com/stoicflame/enunciate}}.
+Enunciate is a tool, which among other features, can automaticly generate documentation for a REST API written in Java like ours.
+It does so by inspecting the code, the annotations, and our doc comments etc.
+
+Doc comments\footnote{\url{http://www.oracle.com/technetwork/articles/java/index-137868.html}} is a specific style of comments in Java, they are sometimes also refered to as JavaDocs, which is a tool developed by Oracle to generate documentation by analyzing doc comments.
+Doc comments are placed immediately above the method, field or class they are related to.
+The doc comments for the method listed in \cref{lst:userServiceGetById}, is shown in \cref{lst:userServiceGetById_comments}.
+Doc comments explain what the method does and what it will return.
+This includes the parameters, the return value, and for any exceptions which can be thrown.
+
+\begin{listing}
+    \begin{java2}
+/**
+ * Get a user by their id.
+ *
+ * @param id The id of the {@link User user} to retrieve
+ * @return The retrieved {@link User user}
+ *
+ * @HTTP 404 User not found
+ */
+    \end{java2}
+    \caption{The doc comments for the method listed in \cref{lst:userServiceGetById}.}\label{lst:userServiceGetById_comments}
+\end{listing}
+
+The documentation generated by Enunciate shows all the end--points, as well as how they are used,
+with JSON examples of the data sent and retrieved from them.

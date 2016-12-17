@@ -1,0 +1,21 @@
+\begin{table}[ht]
+    \centering
+    \small
+    %\rowcolors{2}{white}{GoogleGrey!20}
+    \setlength\extrarowheight{3pt}
+    \begin{tabularx}{\textwidth}{l X}
+        \textbf{Annotation} & \textbf{Description} \\ \hline
+        \code{@GET} & Specifies that this method should only be used for incoming HTTP GET requests. \\
+        \code{@POST} & Specifies that this method should only be used for incoming HTTP POST requests. \\
+        \code{@PUT} & Specifies that this method should only be used for incoming HTTP PUT requests. \\
+        \code{@Path} & Specifies the path (relative to the \code{@Path} given to the class), that this end--point is located at. \\
+        \code{@Consumes} & Specifies the content--type of the request. \\
+        \code{@Produces} & Specifies the content--type of the result. \\
+        \code{@RolesAllowed} & Specifies which users can use the end--point, from their permissions, as specified in the model. \\
+        \code{@Autowired} & Specifies that the field should be injected by Spring IoC. \\
+        \code{@BASE64} & Specifies that the output should be Base64 encoded (not part of JAX--RS, but made by us). \\
+        \code{@PathParam} & Binds the variable from the \code{@Path} annotation to a method parameter. \\
+        \code{@QueryParam} & Binds a varible given as a query parameter to a method parameter. \\
+    \end{tabularx}
+    \caption{A table showing the most common annotation we use, and a description of them.}\label{table:serviceannotations}
+\end{table}
