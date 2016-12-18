@@ -13,7 +13,7 @@ In \cref{sec:data_normalisation} we described that the ideal place for data norm
 If we were to release the server without a producer client, any potential client would have to develop their own producer client, able to produce the data in a JSON format, as well as a consumer client.
 
 \bigskip
-We envision the producer client as a smartphone app which utilises the phone's GPS and uses bluetooth to communicate with an \ac{OBD} device.
+We envision the producer client as a smartphone app which utilises the phone's GPS and uses Bluetooth to communicate with an \ac{OBD} device.
 The app then normalises the data from the two sources and uses the phone to transmit data to the server.
 This is the most simple solution, as is described later in \cref{sec:fw_server} the client may be expanded to also allow for manual input or request data from other sources, in case such data would be relevant.
 \section{Consumer Client}\fxnote{Same as producer, can expand on specific features but not sure if worthwhile}
@@ -26,9 +26,9 @@ A baseline consumer client supporting features beyond what our proof of concept 
 This requires that a producer client exists and as such the producer client would be the higher priority when it comes to future development.
 \section{Improving the Server}\label{sec:fw_server}
 Both the producer client and consumer client can be viewed as their own systems, and their development would as such not influence the server.
-While developing those two systems would contribute to a complete vehicle fleet management system, improvements to several areas of the server can also be made, some of which might influence the capabilities of a potential consumer client and the requirements for a producer client.
+While the development of those two systems would contribute to a complete vehicle fleet management system, improvements to several areas of the server can also be made, some of which might influence the capabilities of a potential consumer client and the requirements for a producer client.
 This section describes some of the possible improvements that could be made to the server, and also considers their influence on both producer and consumer clients.
-\subsection{Server/Technological Changes}\fxnote{Jesper Plz}
+\subsection{Server/Technological Changes}\fxnote{Jesper/SassyPants/Truls Plz}
 Horizontal scale?
 Back to NoSQL?
 \subsection{More Endpoints}\fxnote{More endpoints is a very simple thing, not quite sure what to expand on here}
@@ -46,7 +46,7 @@ A complete system would implement all the data available from \ac{OBD} however, 
 %
 %
 At the current stage of the server there are no endpoints pertaining to a specific use case or type of fleet.
-In \cref{sec:use_case} we decided to focus our development on lorry drivers, although this had no effect on us.
+In \cref{sec:use_case} we decided to focus our development on lorry drivers, although this had no effect on the resulting system.
 To further expand and support use case specific information, the majority of which would likely be manual input if not input from some other system.
 Considering the various use cases would affect all the constituents of the vehicle fleet management system:
 \begin{description}
@@ -54,10 +54,10 @@ Considering the various use cases would affect all the constituents of the vehic
     \item [The Server] by requiring more endpoints.
     \item [The Consumer Client] by using the information for business intelligence.
 \end{description}
-For lorry drivers an example may be such a thing as cargo weight which can not be acquired from \ac{OBD}, but could be input manually to the producer client, or perhaps acquired from some other existing systems used.
+For lorry drivers an example may be such a thing as cargo weight which can not be acquired from \ac{OBD}, but could be input manually to the producer client, or perhaps acquired from some other existing systems.
 
 As for catering to specific fields there are countless possible data points.
-In order to find these data point having a stakeholder in the given field to produce requirements for data distinct to their field is required.
+In order to find these data point, having a stakeholder in the given field to produce requirements for data distinct to their field is required.
 
 In the end catering to specific fields would enable the production of more specialised consumer clients targeting the field in which the system is to be used.
 For the server specifically as that is our focus, it would require a design that allows us to store data for a variety of fields without storing unwanted information, e.g. cargo weight for a taxi.
