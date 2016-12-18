@@ -2,16 +2,16 @@
 The following points present our findings during system and load testing, and how we tried to mend found faults:
 \begin{description}
     \item[Consistency Errors]\hfill \\
-        As presented in \cref{subsec:nosql_vs._sql}, we discovered that our first choice of type of database system, NoSQL, and especially its implementation through Hibernate OGM, behaived faulty under load.
+        As presented in \cref{subsec:nosql_vs._sql}, we discovered that our first choice of database system type, NoSQL, and especially its implementation through Hibernate OGM, behaved faulty under load.
         The error occurred when two objects were being created at the same time, partly because Hibernate OGM's way of requiring unique ids was not thread safe.
-        This meant that we had to change our persistence layer in order to establish a consistent data handling.
+        This meant that we had to change our persistence layer in order to establish consistent data handling.
 
         Another consistency error found, was that sometimes two different drivers would be made for the same user, something which should not be allowed in our system.
         This error was caused by a fault where the same user would create two routes simultaneously, while having no existing driver, thus resulting in a race condition creating two different drivers.
         Fortunately, this error will never present itself in daily use of our system, since a given user is assigned a driver the first time he/she creates a route;
-        and a real user should only be used by one person, thus making it improbable to be creating two separate routes at the exact same time.
+        and a real user should only be used by one person, thus making it improbable that two separate routes are created at the exact same time.
 
-        After discovering that creating two or more routes for the same user at the same time, could lead to this error, we changed the test plan to reflect the real world more accurately by ensuring that all routes are created by a unique user.
+        After discovering that creating two or more routes for the same user at the same time, could lead to this error, we changed the test plan to reflect the real world more accurately by ensuring that all routes, created simultaneously are done so by a unique user.
     \item[High Response Times]\hfill \\
         When we switched from a NoSQL to SQL database system, we expected to get faster performance throughout the system, because in the NoSQL database we had to aggregate a lot of documents to use the data, which now could be done using joins in the SQL database.
         However, this was the not case, and our new SQL database system had unsatisfactory performance under load, i.e.~nearly identical to the previous NoSQL database system.

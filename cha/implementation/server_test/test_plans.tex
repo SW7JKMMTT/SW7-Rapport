@@ -2,7 +2,7 @@
 When doing system testing we focus on testing the interaction between components in the system.
 For us, this means using the server through its REST API and trying to cover all, or at least the most significant, endpoints.
 Because of this, two test plans are made; one for submitting data to the server, and one for fetching data from the server.
-We do not deem it necessary to include features such as uploading profile images, since these endpoints are insignificant for the business logic.
+We deem it unnecessary to include features such as uploading profile images, since these endpoints are insignificant for the business logic.
 
 \subsection{Submitting Data}
 Our first test plan aims to reach all functional behaviour which is involved in a producer clients typical workflow.
@@ -15,17 +15,17 @@ The test plan can be summarized by the following points, note that $x$, $y$, and
         \item Change the given name of each user.
     \end{enumberate}
     \item Create $n$ vehicles and save their ids.
-    \item Create $x$ routes each with a random vehicle, a unique user, and a randomly selected a center point.
+    \item Create $x$ routes each with a random vehicle, a unique user, and a randomly selected center point.
     \item For each route:
     \begin{enumberate}
         \item Mark route as \code{ACTIVE}
         \item In a loop, create $y$ waypoint and datapoint pairs in random order, with a minimum delay of 1 second between each pair.
-              All waypoints on are placed within a given radius of the route's center point, and the datapoints consists of \textit{current speed} and \textit{fuel level}.
+              All waypoints are placed within a given radius of the route's center point, and the datapoints consists of \textit{current speed} and \textit{fuel level}.
         \item Mark route as \code{COMPLETE}
     \end{enumberate}
 \end{enumberate}
 
-We deem that the most demanding task for our server it to create waypoints and datapoints on a given route, especially waypoints.
+We assume that the most demanding task for our server it to create waypoints and datapoints on a given route, especially waypoints.
 This is due to the fact that every waypoint must be indexed for geospatial queries.
 Additionally, the sheer volume of points to create will affect the performance of the server.
 
@@ -44,14 +44,14 @@ In the test we want to gauge the performance of:
 The following points summarize test plan, where each fetching will be done by several threads in parallel.
 \begin{enumberate}
     \item Fetch all users.
-    \item Find random drivers on users (used for setup of next step).
+    \item Find random drivers on users (used for setup of the next step).
     \item Fetch random routes by driver.
     \item Fetch all routes.
     \item Fetch all vehicles.
-    \item Fetch all routes within radius between 10 and 1000 km of random point.
+    \item Fetch all routes within radius between 10 and 1000 km of a random point.
 \end{enumberate}
 
 The results of this test will not be weighted high when concluding upon the general performance of the server.
-This is because the act fetching data is significantly dependent on the size and amount of the data returned, since the network interface on the physical server will be a bottle neck in the current setup.
-Moreover the performance of geospartial queries is determined by a myriad of factors, such as radius of the search, found waypoints in search, and unique routes those waypoints belong to.
-However, the results of this test will be presented and commented on in the next section.
+This is because the act of fetching data is significantly dependent on the size and amount of the data returned, since the network interface on the physical server will be a bottleneck in the current setup.
+Moreover the performance of geospatial queries is determined by a myriad of factors, such as radius of the search, number of found waypoints in search, and amount of unique routes those waypoints belong to.
+However, the results of this test will be presented and described in the next section.

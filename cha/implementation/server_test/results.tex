@@ -13,6 +13,11 @@ In \cref{fig:submit_test_results} the results of the \textit{Submitting Data} te
 The figure contains two pairs of graphs one for \textit{Normal load}, and one for \textit{Heavy load}.
 Each pair shows the response time distribution of all requests, and number of requests to the server per second.
 
+When looking at \cref{fig:submit_resp_t_dist} we see that the majority of response times lies between 20 and XXX milliseconds --- we consider this good performance.
+Even with the response time distribution seen in \cref{fig:submit_resp_t_dist_heavy}, where the system is under \textit{Heavy load}, we consider it acceptable performance.
+We deem this acceptable because in the case of the producer client, which submits data, the response time only affects how often updates can be made while on route.
+This means that even under \textit{High load} we can guarantee that a datapoint and waypoint can me made every XXX seconds.
+
 \begin{figure}[!htb]
     \centering
     \begin{subfigure}[b]{0.5\textwidth}
@@ -48,8 +53,8 @@ The amount of load is determined by how many threads we use to fetch data in par
 Moreover each thread makes the same request for data to the server ten times sequentially, such that any caching can be caught in the test results.
 Under \textit{Normal load} we use 100 threads, or users, to request data simultaneously and under \textit{Heavy load} we quadruple that number --- giving us 400 users acting in parallel.
 
-Because the network interface is our bottle neck these numbers are significantly lower than in the \textit{Submitting Data} test, where we had 4000 users in parallel.
-We deem it unnecessary to test with higher load, since solving such network limitations not is the focus of this project.
+Because the network interface is our bottleneck these numbers are significantly lower than in the \textit{Submitting Data} test, where we had 4000 users in parallel.
+We deem it unnecessary to test with higher load, since solving such network limitations is not the focus of this project.
 However, it should be noted that the final system could be distributed to avoid bandwidth problems.
 
 \begin{figure}[!htb]
@@ -79,11 +84,11 @@ However, it should be noted that the final system could be distributed to avoid 
 
 \subsection{NoSQL vs. SQL}\label{subsec:nosql_vs._sql}
 During the early development of the server we had chosen a NoSQL database, which was switched out for an SQL database.
-This switch was done partially due to early test runs of the \textit{Submitting Data} test plan, where a short coming of the NoSQL implementation was found.
+This switch was done partially due to early test runs of the \textit{Submitting Data} test plan, where a shortcoming of the NoSQL implementation was found.
 We found that \enquote{duplicate id errors} occurred when the server was under load, because new unique ids not could be generated fast enough.
 
 After switching to an SQL database and Hibernate ORM, we found that the \enquote{duplicate id errors} vanished, but performance remained approximately the same, as can be seen on \cref{fig:same_response_sql}.
-However, after then adding indices to our SQL tables we found that performance increased drastically, even though additional complexity was introduced to the server functionality across the switch from NoSQL to SQL with indices.
+However, after adding indices to our SQL tables we found that performance increased drastically, even though additional complexity was introduced to the server functionality across the switch from NoSQL to SQL with indices.
 This means that queries which used to take upwards of 200 milliseconds, now only takes approximately 5 milliseconds, and the response time distribution reflects a significantly faster server, as can be seen in \cref{fig:fast_response_indices}.
 
 \begin{figure}[!htb]
@@ -103,8 +108,8 @@ This means that queries which used to take upwards of 200 milliseconds, now only
 
 \subsection{General Performance}
 Although it is interesting to measure our servers performance under heavy load, this is not a realistic use case for the system to be in.
-In day--to--day operation the server may see periods of heavy load, which it can handle, as seen in for example \cref{fig:submit_reqs_p_sec_heavy}.
+In day--to--day operation the server may see periods of heavy load, which it can handle, as seen in \cref{fig:submit_reqs_p_sec_heavy}. % chktex 08
 Here we see that the server still responds to requests albeit at a slower rate.
-This means that even under heavy load, the server will not crash and/or refuse to response.
+This means that even under heavy load, the server will not crash and refuse to respond.
 
-We deem that it is fast as balls, when under normal load.
+We discovered through load testing that our current server can handle what we define as \textit{Normal load} without any difficulties, and depending on how fast the user expects a response to arrive, the need for horizontal scaling may only be applicable in cases with over 4000 active routes at a time.
