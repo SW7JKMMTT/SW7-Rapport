@@ -1,3 +1,4 @@
+%vim: tw=80;spell
 %Meta
 \section{Data Provider}
 %Data provider that handles data normalisation to replace sim
@@ -13,6 +14,18 @@
 %Expand support to more vehicles, what does this truly mean, do we even have vehicle specific things at this moment? would it be to produce more services?
 %Are we even specific at this moment, or would vehicle specific data be things to add?(Capacity for trucks perhaps or similar attributes)
 %Danish military logistics division responded to email, expand with security focus in mind. This might require some hardware to handle security issues with OBD hardware.
+\subsection{Long polling}
+During the development we have been mostly focusing on services, and having the
+minimal viable configuration to serve our consumer and provider. To expand on
+the waypoint and route service, it would be useful for the consumer client to
+have support for some event notification system. The easiest to implement, and
+the only one with support in JAX-RS, is long polling. Long polling involves
+having the server hold a connection open, until some event occurs, at that time
+the server will return the event and close the connection. JAX-RS, and RESTEasy,
+support long polling, or what they call ``asynchronous responses'', with the
+\code{@Suspended} annotation. We did experiment with the feature, but found
+a bug with the implementation which we have reported
+upstream\footnote{\url{https://issues.jboss.org/browse/RESTEASY-1225?_sscc=t}}.
 \subsubsection{OG Use cases(mili, post, etc.)}
 %
 %
