@@ -1,4 +1,62 @@
-\section{Testing results}
-In this section we will give some examples of where the testing have paid off, 
+\section{Testing Success Stories} % Kan ikke finde på en bedre titel.
+In this section we will give some examples of where testing have proved useful,
 i.e. concrete examples of tests which have revealed a bug or prevented a regression.
 
+We have previously talked about the types of testing we have performed.
+For the server the most essential are the integration tests,
+during development they have caught a great number of mistakes and faults before deploying code.
+
+% Waypoints sorteret i forkert rækkefølge
+\subsection{Ordering of Waypoints}
+One of the mistakes we discovered by testing during development was bug which would order the waypoint in the wrong order when returning them in the \code{WaypointService}.
+
+This bug was caused by a logical inconsistency in our code.
+First when we defined our waypoints we defined them to be ordered by their timestamp in ascending order, as shown in \cref{lst:routewaypoint}.
+This is done by setting the value of the \code{@OrderBy} property to ``timestamp'', which is ascending by default.
+\begin{listing}
+    \begin{java2}
+@OneToMany(mappedBy = "route", fetch = FetchType.LAZY)
+@OrderBy("timestamp")
+private List<Waypoint> points;
+    \end{java2}
+    \caption{The property storing waypoints on the routes.}
+    \label{lst:routewaypoint}
+\end{listing}
+
+However our method to fetch waypoints by route, shown in \cref{lst:waypointdaobyroute}, with a maximum number of waypoints to return,
+we had ordered it by timestamps descending.
+This inconsistency was caught by an integration test, which tested that the waypoints on the route had the exact same content and ordering, as the waypoints returned by the \ac{DAO}. 
+\begin{listing}
+    \begin{java2}
+public List<Waypoint> byRoute(Route route, int count) {
+    TypedQuery<Waypoint> query = em.createQuery(
+        "SELECT waypoint " +
+            "FROM Waypoint waypoint " +
+            "WHERE waypoint.route = :route " +
+            "ORDER BY waypoint.timestamp DESC", Waypoint.class);
+    query.setParameter("route", route);
+    query.setMaxResults(count);
+    return query.getResultList();
+}
+    \end{java2}
+    \caption{The method in the \code{WaypointDao}, which fetches waypoints on a specific route with a given maximum.}
+    \label{lst:waypointdaobyroute}
+\end{listing}
+
+% Join fetch giver duplicates.
+\subsection{Duplicates When Using Join Fetch}
+We have previously described how we write \ac{HQL} queries to fetch from the database, in our \acp{DAO} in \cref{subsec:fetchfromdb}.
+For example, if a \code{Vehicle} had two \code{Route}s, then fetching all \code{Vehicle}s, would yield said \code{Vehicle} twice.
+When the \ac{DAO} fetched objects with collections, where the collections contained more than one element, the \ac{DAO} would return more than one of the objects.
+This is because that when using a \code{JOIN} in \ac{HQL}, like in \ac{SQL}, the number of rows out is one for each \code{Route} in this case.
+However we are only using this to fetch the object, Hibernate will put all \code{Route}s into the same collection on \code{Vehicle}.
+
+This was unwanted, since one would not expect duplicates when getting all \code{Vehicle}s.
+We discovered this with an integration test, and solved the problem by adding the predicate \code{DISTINCT} to the \ac{HQL} query, as we have on \cref{lst:userDaoGetAllForDisplay} for example.
+
+
+% Hvis vi ønsker flere eksempler så kan vi bruge:
+%   NoSQL -> SQL
+%   waypont/datapoint add til lister
+
+% Men de kræver noget kontekst at forklare ordenligt.
