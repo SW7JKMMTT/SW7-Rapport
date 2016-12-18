@@ -45,11 +45,11 @@ Typically implementing a \ac{POJO} means annotating the various methods and clas
 
 A Bean is a type of \ac{POJO}, but with additional restrictions.
 Beans have to be serializable, implement getters and setters with the property name prefixed with either \code{get} or \code{set}, respectively, and have a noarg constructor.
-Because of the restrictions, a framework like spring can instantiate the class and set the properties without any knowledge of definition.
+Because of the restrictions, a framework like Spring can instantiate the class and set the properties without any knowledge of definition.
 Requiring a no-arg constructor does impose an issue.
 Namely, it means that the object can be instantiated in an invalid state, which requires the programmer to knows which properties he must set to configure the object.
-Strictly speaking a Bean is not a \ac{POJO}, since it has to implement the serializable interface, but since the interface has no methods, the bean is still said to be a \ac{POJO}.
-Spring allows for the no-arg constructor of a bean to have an access level more strict than private.
+Strictly speaking a Bean is not a \ac{POJO}, since it has to implement the serializable interface, but since the interface has no methods, the Bean is still said to be a \ac{POJO}.
+Spring allows for the no-arg constructor of a Bean to have an access level more strict than private.
 We will use that to hide the constructor when it's use would result in a wrongly configured object.
 
 
@@ -188,32 +188,63 @@ Therefore we choose to is for our data persistence.
 
 \subsubsection{Data Persistence Provider}
 Hibernate is another project operated by Red Hat.
-It was originally just a \ac{ORM}, but has since expanded into Hibernate OGM\@.
+It was originally just an \ac{ORM}, but has since expanded into Hibernate \ac{OGM}, which brings the power of Hibernate to NoSQL databases, and other projects.
+Hibernate ORM has been around for a long time and is according to themselves popular and used by ``tens of thousands of Java developers''.\cite{hibernate_pop}
 This means that the Hibernate interface is much more mature and stable than the implementation.
-Since OGM aims to be a drop in replacement for the Hibernate interface, and all that it provides, We will be able to switch over to a relational database model later, if any serious issues should show up.
+Hibernate \ac{ORM} also allows us to change the underlying database easily, which becomes important when we want to run integration tests, without configuring a full database on every development machine.
+Since \ac{OGM} aims to be a drop in replacement, Hibernate allows developers to switch between SQL and NoSQL databases with relative ease.
 
-The power of Hibernate comes from it's ability to persist \acp{POJO} transparently.
-Hibernate exposes its power via either it's native Hibernate API, or a more generic \ac{JPA} implementation.
-The native Hibernate interface has the advantage of being specific to Hibernate, and therefore it provides more direct and nuanced access to the Hibernate persistence engine.
+The power of Hibernate comes from its ability to persist \acp{POJO} transparently.
+Hibernate exposes its power via either its native Hibernate API, or a more generic \ac{JPA} implementation.
+The native Hibernate interface has the advantage of being specific to Hibernate, and therefore it provides more direct and detailed access to the Hibernate persistence engine.
 That is also the biggest shortcoming of the native interface.
 Being specific to Hibernate means that an application using it is deeply dependent on the way Hibernate functions, and its specific implementations.
 Enter the \ac{JPA}, which provides a generic, high level, and well supported interface for persisting objects, mainly based around annotations of the persistence \code{entities}.
-Hibernate has support for the \ac{JPA}, and even allows mixing it with the native api, allowing developers to mix in specific hibernate features when needed.
-An additional nicety of using the \ac{JPA} is that spring has support for configuring \ac{JPA} providers, like hibernate, through the normal \code{Bean Factory}.
+Hibernate has support for the \ac{JPA}, and even allows mixing it with the native API, allowing developers to mix in specific Hibernate features when needed.
+An additional nicety of using the \ac{JPA} is that Spring has support for configuring \ac{JPA} providers, like Hibernate, through the normal \code{Bean Factory}.
+
+The \ac{JPA} works with \code{entity managers}.
+It is through the \code{entity manager} that an application interfaces with the database, whether that be through a query to get data or, or a persist call to persist an entity.
+The update of entities is done transparently by using Java proxies, which injects information about entity changes into the persistence providers, which persists them on transaction close.
+When interfacing with Spring specifically, the \code{entity manager} is injected into a transactional bean, where Spring will manage the transactions.
+The transactions can be managed manually, but letting Spring do it allows the container \fxnote{Write about the Spring IoC container} to figure out when the outermost transaction ends, and therefore minimize the amount of transactions.
+We will be using the \ac{JPA}, since it provides all the features we need, while also being portable between different persistence providers.
+
+\subsubsection{Spatial Querying}
+Since we, as described in \fxnote{Ref til nogle krav}, want to keep track of vehicle positions, we will be storing vehicle location, which is geospatial data.
+To use the data, we need some way of querying for the data, and using it in processing or returning it to the client.
+Spatial data is different from regular data, in that the way you want to query often has to do with distance in a 2--D space, 3--D globe, or points in relation to a polygon.
+
+PostgreSQL, our chosen database system, has an available extension, called PostGIS\footnote{\url{http://www.postgis.net/}}, which adds support for spatial objects/queries.
+PostGIS is a powerful extension, but Hibernate has no support for it.
+The \ac{JPA} does allow for native \ac{SQL} queries to be executed in the underlying databases native dialect, which we could use to run native spatial queries on the PostgreSQL/PostGIS database.
+Since we have to write the \ac{DDL} for the database in hand, we could trivially add the required constraints for PostGIS to function.
+An issue with such a solution however is that it would tie us to PostgreSQL as our database, and negate a lot of the modularity that Hibernate affords us.
+
+An alternative, that does have support in Hibernate, is Hibernate Search, another Hibernate project, specifically for full text search and geospatial querying.
+Hibernate Search uses Lucene\footnote{\url{https://lucene.apache.org/}} to index entites with Hibernate Search specific annotations, and allows you to query for them using either Hibernate Search, or Lucene queries.
+To make integration easy, Hibernate Search allows the developer to get a Hibernate Search Enhanced \code{full text entity manager} from a regular \code{entity manager}.
+Since Hibernate Search requires almost no extra configuration to get going, it is easy to integrate into a project which already uses Hibernate and the \ac{JPA}.
+When querying for data Hibernate Search returns Hibernate managed entites, making a switch from Hibernate Search to Hibernate querying practically transparent.
+By using Lucene, Hibernate Search is practically database agnostic, meaning that it maintains the modularity that Hibernate provides to a project.
+To scale the server in the future, Hibernate Search also allows us to cluster the indexing.
+We have chosen Hibernate Search as it is practically transparent, but also has the power we need.
+The ability to scale out, instead of up, was also an important factor.
+
 
 \subsubsection{Flyway}
 Flyway is a lightweight database migration tool.
 What that means is that is applies database migration scripts in sequence, remembering the current point in the sequence between runs.
 That relatively simple functionality is hugely useful for incrementally keeping a database up to date with a changing codebase.
-Since a bare bones migration tool only keeps track of where it currently is, it's crucial that the old scripts don't change, as that would give an inconsistent version of the database if the scripts was reapplied.
-Flyway helps guard against such problem by storing a checksum for the script, which it checks for every deployment, that way it's immediately obvious if an already deployed script has been changed.
-Should a migration script fail flyway will stop the migration and fail the deployment, prompting the developer to fix the problem manually.
+Since a bare bones migration tool only keeps track of where it currently is, it is crucial that the old scripts don't change, as that would give an inconsistent version of the database if the scripts was reapplied.
+Flyway helps guard against such problem by storing a checksum for the script, which it checks for every deployment, that way it is immediately obvious if an already deployed script has been changed.
+Should a migration script fail Flyway will stop the migration and fail the deployment, prompting the developer to fix the problem manually.
 Such a problem should be avoided, since it takes the production server down until the problem is fixed.
 
-The migration scripts are found at preconfigured paths in the classpath of the java archive.
-Upon deployment flyway will scan the directories for files in the format \code{V(version)\_\_(description).sql}, which it will apply to the database.
+The migration scripts are found at preconfigured paths in the classpath of the Java archive.
+Upon deployment Flyway will scan the directories for files in the format \code{V(version)\_\_(description).sql}, which it will apply to the database.
 The version in front determines in what order the scripts will be applied.
-Once again it is of utmost importance that the list of scripts is only appended to, if a script is inserted anywhere but the end, flyway will fail the deployment, since the state of the database can not be guaranteed.
+Once again it is of utmost importance that the list of scripts is only appended to, if a script is inserted anywhere but the end, Flyway will fail the deployment, since the state of the database can not be guaranteed.
 
 A migration script is an SQL script, which will migrate the \ac{DDL} and the data forwards, to a new schema.
 It is important that the data inside the database is migrated correctly to the new \ac{DDL}, since otherwise customers might lose their data.
