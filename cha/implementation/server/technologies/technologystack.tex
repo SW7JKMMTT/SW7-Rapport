@@ -249,12 +249,12 @@ When querying for data Hibernate Search returns Hibernate managed entites, makin
 By using Lucene, Hibernate Search is practically database agnostic, meaning that it maintains the modularity that Hibernate provides to a project.
 To scale the server in the future, Hibernate Search also allows us to cluster the indexing.
 We have chosen Hibernate Search as it is practically transparent, but also has the power we need.
-The ability to scale out, as well as of up, was also an important factor.
+The ability to scale out as well as up was also an important factor.
 
 
 \subsubsection{Flyway}
 Flyway is a lightweight database migration tool.
-Meaning that is applies database migration scripts in sequence, remembering the current point in the sequence between runs.
+Meaning that it applies database migration scripts in sequence, remembering the current point in the sequence between runs.
 That relatively simple functionality is hugely useful for incrementally keeping a database up to date with a changing codebase.
 Since a bare bones migration tool only keeps track of where it currently is, it is crucial that the old scripts do not change, as that would give an inconsistent version of the database if the scripts were reapplied.
 Flyway helps guard against such problem by storing a checksum for the script, which it checks for every deployment, that way it is immediately obvious if an already deployed script has been changed.
