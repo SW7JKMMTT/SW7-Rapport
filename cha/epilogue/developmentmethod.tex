@@ -2,8 +2,12 @@
 %Meta shit%
 Our 6\textsuperscript{th} semester was a multi--group project collaboration heavily focused on the development process.
 This focus gave us a clear idea of how we wanted the development process to be shaped for this semester project.
-Ideally we wanted to reduce the overhead from Scrum by using only a few Scrum methods, while maintaining some of the additional processes such as code--review.
-Firstly we describe our initial plan for the development process and subsequently describe how we ended up using the tools in reality.
+Previously we had used several tools and methods alongside Scrum for development.
+While Scrum generally has a low overhead the sprint start and end meetings does produce some overhead. 
+They also require the group to be gathered for discussion and evaluation, which as described later, would be an issue.
+We wanted to avoid this while maintaining additional processes not in the Scrum toolkit, such as code--review.
+
+This section described how we planned our development process compared to how we executed it, and lastly reflect on our method.
 %%%%%%%%%%%
 \subsection{Planned Development Process}
 %Meta Shit%
@@ -27,7 +31,7 @@ The Scrum Board contains user stories and tasks that divide the development proc
 %Step down
 %hard scrum to a few elements
 %Board+Daily
-\subsubsection{Phabricator \& Code--Review}
+\subsubsection{Code--Review}
 In order to implement some quality control we decided to use a tool called Phabricator\footnote{\url{https://www.phacility.com/phabricator/}}, which is a software development tool.
 Phabricator facilitates an environment designed for code--review which is another method we wanted to use.
 Phabricator also works with Git\footnote{\url{https://git-scm.com/}}, which is our version control system of choice.
@@ -38,7 +42,7 @@ Whenever something is completed in a \textbf{development} or \textbf{bugfix} bra
 
 The review process helps reduce the amount of iterations a task would go through, i.e. number of \textbf{bugfix} branches we would create.
 The review process consists of a linter, unit tests, and reviews by other group members.
-We decided that the review process should require at least two reviewers.
+We decided that the review process should require at least two reviewers, thereby including three members, one writer and two reviewers.
 This was also intended to help with knowledge sharing even further than the Daily Scrum, as anything pushed to the \textbf{release} branch would have involved at least three group members.
 We had used a similar process on the 6\textsuperscript{th} semester, however review had been strict and rigid which meant it could take over a week to get anything through the review phase.
 The code written during our 6\textsuperscript{th} semester would become a codebase for new students at a later point, which is why we chose to be so strict and rigid with out review.
@@ -64,7 +68,7 @@ Our plan to use elements of Scrum was the point we deviated from the most.
 The scheduling of our time this semester is what caused us to deviate from our plans, in particular for Scrum.
 The scheduling issues were caused by the amount of time spend on courses this semester, in particular on mini-projects which all the courses had.
 Since the group members had different courses this semester, only about one day a week the entirety of the group would be together in the group room.
-This issues is expanded upon in \cref{sub:time_scheduling}.
+This issue is expanded upon in \cref{sub:time_scheduling}.
 %%%%%%%%%%%
 \subsubsection{Scrum}
 Despite wanting to use the Daily Scrum and Scrum Board tools, the Daily Scrum ended up being more of a weekly thing.
@@ -74,12 +78,13 @@ Working weekends made Monday the ideal day to do our weekly Scrum; despite Monda
 In the later months of the project the courses started to fade out and the mini-projects were ending, this meant we had more time in the group room to work which in turn allowed us to revive our Daily Scrum meetings.
 %Scrum? Not. Daily scrum, 2 times a week at best. Scheduling issues, 1.5 - 2 days a week for majority, Hours available graph?
 %Realizing we need to work weekends4graph.
-\subsubsection{Phabricator \& Code--Review}
+\subsubsection{Code--Review}
 Unlike our Scrum tools, the use of Phabricator and code--reviews went well, although a few changes were made to code--review.
 Originally not wanting reviews to take too long as we were expecting to iterate upon things, we ended up doing rigid code--reviews anyway.
 Doing several iterations, while effective is also blocking, since you can not iterate on something until it has been done the first time.
 With the majority of our time being stacked in the end of the semester and we have six group members, waiting on iterations would be blocking.
-As such ensuring high quality through a rigid review structure meant less iterations and in turn a workload better suited for parallel development.
+As such ensuring high quality through a rigid review structure would result in less iterations, and thereby less blocking tasks leading to a workload better suited for parallel development.
+
 %Changins course to a more rigid review structure
 %Phab workflow, Review process
 %Test focused development, review+test relly handy with exponential workload as several iterations would block too much
@@ -146,13 +151,12 @@ Regression tests also ties in closely with our continuous integration setup whic
 \bigskip
 Testing that the functionality within the system works is important, but it also has to work for the clients using the system.
 In order to test that the system works for clients we used system testing as described in \cref{cha:testing}.
-The system tests, test that the API acts as the user expects it to, which would be as the API specification describes it, as the Enunciate documentation at refhere\fxnote{Insert ref to enunciate documentation!} describes.
+The system tests, test that the API acts as the API specification describes it, i.e. as the Enunciate documentation described.%I assume we have explained Enunciate
 In order to find as many errors as possible we also used smoke testing for the API which helped find some errors that the system tests did not.\fxnote{Eksempel?(Truls/Sass)}
 With scalability being of importance to our project we decided to test this as well through load testing, the load test helped us identify bottlenecks in the server, which we in turn could act upon.\fxnote{Troels/Jesper add example for system test yield, evt. om SQL Query rewrite coz bottleneck}
 
 While testing is a time consuming endeavor, the time we spend testing is at least equal to that we have spend developing, it is also a tool required in order to prove some measure of quality for the system.
 Collectively all the tests have enabled us to attain a high internal quality within the code with use of good code practice methods like smoke tests, a test framework and extensive regression tests, while also having a high external quality to potential users of the API with a thoroughly tested API.
-
 
 %1/3 test writing found a logical error.
 %test makes u think also revealing errors
@@ -161,14 +165,15 @@ Collectively all the tests have enabled us to attain a high internal quality wit
 %System test finds bottlenecks // revealed, not acted upon - improvements ---
 
 \subsection{Jenkins/CI}\fxnote{this needs writing}
-\subsection{Splitting the System/Project Focus}
+\subsection{Project Focus}
 In \cref{cha:requirements_elicitation} we made the choice to focus on the server component.
 While choosing to focus on the server, we still made a proof of concept version of a consumer client and emulated a producer client.
 We did this in order to prove that the server we produced is compatible with arbitrary producer clients and consumer clients systems, as well as to testing scalability measures.
 
 Having no stakeholder meant we had no one producing requirements for the server such as what services should be available through our server.
-The consumer client development, while not strictly producing requirements, helped us figure out which services one might require and also worked as an integration test, finding numerous design faults that were subsequently rectified.
-This was an unexpected advantage of having the the consumer client proof of concept development act like a user, that is a consumer client developer, as this is exactly whom our server is designed to interact with.
+Developing the proof of concept consumer client also gave us a new point of view.
+Through that development and integration tests with the consumer client, we found numerous design faults which were subsequently rectified.
+This was an unexpected advantage of having the the consumer client proof of concept development act like a user, i.e. consumer client developer, as this is exactly whom our server is designed to interact with.
 This interaction within the group has resulted in a more complete server with a wider range of services available to possible consumer client developers.
 
 %Developer split, postive outcome
