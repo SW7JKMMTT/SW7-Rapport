@@ -1,0 +1,16 @@
+\begin{table}[ht]
+    \centering
+    \small
+    %\rowcolors{2}{white}{GoogleGrey!20}
+    \setlength\extrarowheight{1pt}
+    \begin{tabularx}{0.9\textwidth}{l l l l}
+        \textbf{HTTP Methods} & \textbf{End--Point}                 & \textbf{Service}                              & \textbf{Method--name}  \\ \hline
+        \texttt{GET}          & \texttt{/vehicle}                   & \multirow{6}{*}{\texttt{VehicleService}}      & \code{getAllVehicles} \\
+        \texttt{POST}         & \texttt{/vehicle}                   &                                               & \code{addVehicle} \\
+        \texttt{GET}          & \texttt{/vehicle/\{vid\}}           &                                               & \code{getVehicleById} \\
+        \texttt{PUT}          & \texttt{/vehicle/\{vid\}}           &                                               & \code{modifyVehicle} \\
+        \texttt{GET}          & \texttt{/vehicle/\{vid\}/icon}      &                                               & \code{getVehicleIcon} \\ 
+        \texttt{PUT}          & \texttt{/vehicle/\{vid\}/icon}      &                                               & \code{setVehicleIcon} \\ 
+    \end{tabularx}
+    \caption{A table of the end--points in the \code{VehicleService}.}\label{table:endpointvehicleservice}
+\end{table}
