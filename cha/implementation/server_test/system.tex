@@ -1,0 +1,31 @@
+\chapter{System \& Load Testing}\label{cha:system_and_load_testing}
+In this chapter we describe how we perform system and load testing on our server;
+then we present results of said tests and conclude upon them.
+Lastly we reflect on what these results mean going forward, and what they can do for us.
+
+Throughout this chapter we comment on and evaluate the \textit{performance} of the server.
+We define \textit{performance} of the server as a measure for both response time of requests and how many requests per second the server can handle.
+To gauge performance we also use the term \textit{load}, which we define as follows;
+if a system is \textit{under heavy load} it means that a significantly larger number of users are using it, compared to \textit{under normal load}, which is when a realistic number of users are using the system.
+When we use the term \textit{under load} without any quantifier, we mean usage such that the system is not idle.
+
+\bigskip
+Because scalability is a significant non--functional requirement for our system, as described in \cref{sec:requirements}, we want to gauge the load scalability of our system, such that we can identify what kind of load a single instance of our server can handle --- this is done with load testing. % chktex 08
+It would be possible to configure a second instance of the server and use load balancer to distribute traffic, i.e.~horizontal scaling, but due to time constraints this test remains undone.
+
+The system testing is used to both determine faults in the system's functionality, and to ensure that the implementation of the specification for API usage is correct.
+
+\bigskip
+To test our server application as a whole, we use \textbf{Apache JMeter}\footnote{\url{http://jmeter.apache.org/}} which is an open source application designed for testing web services and other services.
+This tool allows us to simulate a typical workflow of our REST API, while gathering various data about the performance and results of specific requests to the server.
+
+Because JMeter can be used to simulate the workflow, we are testing both the performance and the functional behaviour of the server.
+Meaning that this test is also a system test --- and by increasing the amount of requests we send to the server in any given test, we can shift focus towards load testing.
+
+Moreover, JMeter can also distribute tests such that multiple computers can be used to load test the server.
+By utilising this feature we can assure that the machine executing the test is not the bottleneck, and the outcome of any test will reflect the performance of the server.
+
+\bigskip
+To better understand the results of our system and load tests, we use various profiling tools on the server.
+These tools are capable of measuring which parts of the system are most critical when under load, and can therefore give an insight in where changes potentially can increase performance.
+Additionally we monitor server logs and use debugging tools to identify any faults which may surface during testing.

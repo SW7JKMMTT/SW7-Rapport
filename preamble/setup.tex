@@ -11,6 +11,7 @@
 \usepackage{microtype}
 \usepackage[inline]{enumitem}
 \usepackage{csquotes}
+\usepackage{graphicx}
 \usepackage[english]{varioref}
 \usepackage{hyperref}
 \hypersetup{%
@@ -58,7 +59,12 @@
 ]{geometry}
 
 \usepackage{caption}
+\usepackage{subcaption}
 \captionsetup{%
+    font=footnotesize,% set font size to footnotesize
+    labelfont=bf % bold label (e.g., Figure 3.2) font
+}
+\captionsetup[sub]{%
     font=footnotesize,% set font size to footnotesize
     labelfont=bf % bold label (e.g., Figure 3.2) font
 }
@@ -149,11 +155,11 @@
 \definecolor{GoogleRed}{HTML}{F44336}
 \definecolor{GooglePurple}{HTML}{9C27B0}
 \definecolor{GoogleDeepPurple}{HTML}{673AB7}
-\definecolor{GoogleIndigo}{HTML}{3F51B5}   
-\definecolor{GoogleBlue}{HTML}{2196F3}   
-\definecolor{GoogleLightBlue}{HTML}{03A9F4}   
-\definecolor{GoogleCyan}{HTML}{00BCD4}   
-\definecolor{GoogleTeal}{HTML}{009688}   
+\definecolor{GoogleIndigo}{HTML}{3F51B5}
+\definecolor{GoogleBlue}{HTML}{2196F3}
+\definecolor{GoogleLightBlue}{HTML}{03A9F4}
+\definecolor{GoogleCyan}{HTML}{00BCD4}
+\definecolor{GoogleTeal}{HTML}{009688}
 \definecolor{GoogleLightGreen}{HTML}{8BC34A}
 \definecolor{GoogleLime}{HTML}{CDDC39}
 \definecolor{GoogleYellow}{HTML}{FFEB3B}
@@ -162,7 +168,7 @@
 \definecolor{GoogleDeepOrange}{HTML}{FF5722}
 \definecolor{GoogleBrown}{HTML}{795548}
 \definecolor{GoogleGrey}{HTML}{9E9E9E}
-\definecolor{GoogleBlueGrey}{HTML}{607D8B}   
+\definecolor{GoogleBlueGrey}{HTML}{607D8B}
 
 %Listing & Minted
 \usepackage{shellesc}

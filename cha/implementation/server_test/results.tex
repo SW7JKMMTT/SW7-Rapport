@@ -1,0 +1,128 @@
+\section{Results}
+All system and load tests were performed on our server application running on an Intel i7 2600 CPU, with 16 GB RAM and an SSD for storage.
+Running our tests produce test result summaries, which contains statistics such as error rate and average response time about the given test, and various graphs;
+the most interesting graphs being the response time distribution and requests per second graphs.
+These two graphs represent the performance of the server in different tasks, such as \textit{create user} and \textit{add datapoint to route}.
+
+In the \textit{Submitting Data} test we create 1000 routes and unique users, 500 vehicles, and 400 waypoints and datapoints on every route --- we define this as our \textit{Normal load}.
+We then compare the results of that test with a distributed version using four computers --- thereby quadrupling the amount of requests, bringing the total number of waypoints and datapoints created during the test up to $1.6$ million.
+We define this as our \textit{Heavy load}.
+
+\bigskip
+Results for the \textit{Submitting Data} test plan can be seen in \cref{fig:submit_test_results_normal} for \textit{Normal load} and \cref{fig:submit_test_results_heavy} for \textit{Heavy load}.
+Each figure shows the response time distribution of all requests, and number of requests to the server per second.
+
+When looking at \cref{fig:submit_resp_t_dist_normal} we see that the majority of response times lies between 10 and 40 milliseconds --- we consider this good performance.
+Even with the response time distribution seen in \cref{fig:submit_resp_t_dist_heavy}, where the system is under \textit{Heavy load}, we consider it acceptable performance.
+We deem this acceptable because in the case of the producer client, which submits data, the response time only affects how often updates can be made while on route.
+This means that even under \textit{Heavy load} we can guarantee that a datapoint and waypoint can me made every second second.
+
+We see in \cref{fig:submit_reqs_p_sec_normal} that the number of requests per seconds seems capped at 1000, this is because we only use 1000 threads to make routes under \textit{Normal load}.
+Therefore the server is not restricting the requests per second, but the delay in the test plan is.
+This becomes even more apparent when looking at \cref{fig:submit_reqs_p_sec_heavy}, where we see the number of requests per second under \textit{Heavy load}.
+Here the delay in the test plan, does not play a significant role in the requests per seconds, meaning that the performance of the server is the bottleneck.
+This is also reflected in the response time distribution seen in \cref{fig:submit_resp_t_dist_heavy}, where we see a significant wider distribution than that of a system under \textit{Normal load}.
+
+\begin{figure}[!htb]
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \footnotesize
+        \centering
+        \subimport{graphs/}{resp_dist_normal.tex}
+        \caption{Response time distribution}\label{fig:submit_resp_t_dist_normal}
+    \end{subfigure}\\
+    \begin{subfigure}[b]{\textwidth}
+        \footnotesize
+        \centering
+        \subimport{graphs/}{reqs_normal.tex}
+        \caption{Requests per second}\label{fig:submit_reqs_p_sec_normal}
+    \end{subfigure}
+    \caption{Submitting test plan results --- Normal load}\label{fig:submit_test_results_normal}
+\end{figure}
+\begin{figure}[!htb]
+    \begin{subfigure}[b]{\textwidth}
+        \footnotesize
+        \centering
+        \subimport{graphs/}{resp_dist_heavy.tex}
+        \caption{Response time distribution}\label{fig:submit_resp_t_dist_heavy}
+    \end{subfigure}\\
+    \begin{subfigure}[b]{\textwidth}
+        \footnotesize
+        \centering
+        \subimport{graphs/}{reqs_heavy.tex}
+        \caption{Requests per second}\label{fig:submit_reqs_p_sec_heavy}
+    \end{subfigure}
+    \caption{Submitting test plan results --- Heavy load}\label{fig:submit_test_results_heavy}
+\end{figure}
+
+\bigskip
+\cref{fig:fetch_test_results_normal} and \cref{fig:fetch_test_results_heavy} shows the results of the \textit{Fetching Data} test plan under \textit{Normal load} and \textit{Heavy load} respectively.
+This test is run after cleaning the database and then running the \textit{Submitting Data} test plan under \textit{Normal load}.
+However, the coordinates of waypoints are limited to between $-10$ and $10$ in latitude and $-20$ and $20$ in longitude, which is done to make sure the geospatial queries can find data.
+
+Identically to the \textit{Submitting Data} test, we run this test under \textit{Normal load} and \textit{Heavy load}.
+The amount of load is determined by how many threads we use to fetch data in parallel.
+Moreover each thread makes the same request for data to the server ten times sequentially, such that any caching can be caught in the test results.
+Under \textit{Normal load} we use 100 threads, or users, to request data simultaneously and under \textit{Heavy load} we quadruple that number --- giving us 400 users acting in parallel.
+
+Because the network interface is our bottleneck these numbers are significantly lower than in the \textit{Submitting Data} test, where we had 4000 users in parallel.
+We deem it unnecessary to test with higher load, since solving such network limitations is not the focus of this project.
+However, it should be noted that the final system could be distributed to avoid bandwidth problems.
+
+\begin{figure}[!htb]
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \footnotesize
+        \centering
+        \subimport{graphs/}{fetch_resp_dist_normal.tex}
+        \caption{Response time distribution}\label{fig:fetch_resp_t_dist_normal}
+    \end{subfigure}\\
+    \begin{subfigure}[b]{\textwidth}
+        \footnotesize
+        \centering
+        \subimport{graphs/}{fetch_reqs_normal.tex}
+        \caption{Requests per second}\label{fig:fetch_reqs_p_sec_normal}
+    \end{subfigure}
+    \caption{fetchting test plan results --- Normal load}\label{fig:fetch_test_results_normal}
+\end{figure}
+\begin{figure}[!htb]
+    \begin{subfigure}[b]{\textwidth}
+        \footnotesize
+        \centering
+        \subimport{graphs/}{fetch_resp_dist_heavy.tex}
+        \caption{Response time distribution}\label{fig:fetch_resp_t_dist_heavy}
+    \end{subfigure}\\
+    \begin{subfigure}[b]{\textwidth}
+        \footnotesize
+        \centering
+        \subimport{graphs/}{fetch_reqs_heavy.tex}
+        \caption{Requests per second}\label{fig:fetch_reqs_p_sec_heavy}
+    \end{subfigure}
+    \caption{Fetching test plan results --- Heavy load}\label{fig:fetch_test_results_heavy}
+\end{figure}
+
+\subsection{NoSQL vs. SQL}\label{subsec:nosql_vs._sql}
+During the early development of the server we had chosen a NoSQL database, which was switched out for an SQL database.
+This switch was done partially due to early test runs of the \textit{Submitting Data} test plan, where a shortcoming of the NoSQL implementation was found.
+We found that \enquote{duplicate id errors} occurred when the server was under load, because new unique ids not could be generated fast enough.
+
+After switching to an SQL database and Hibernate ORM, we found that the \enquote{duplicate id errors} vanished, but performance remained approximately the same.
+However, after adding indices to our SQL tables we found that performance increased drastically, even though additional complexity was introduced to the server functionality across the switch from NoSQL to SQL with indices.
+This means that queries which used to take upwards of 200 milliseconds, now only takes approximately 10 milliseconds, and the response times reflect a significantly faster server, as can be seen in \cref{fig:nosql_vs_sql}.
+Note that the \textit{Submitting Data} test plan was adapted in the comparison seen in \cref{fig:nosql_vs_sql}, such that no datapoints was submitted and the route states was not changed.
+This was done to accommodate for missing features in the NoSQL version of our server.
+
+\begin{figure}[!htb]
+    \centering
+    \footnotesize
+    \subimport{graphs/}{resp_sql_war.tex}
+    \caption{Average response times over time (granularity 1 sec.)}\label{fig:nosql_vs_sql}
+\end{figure}
+
+\subsection{General Performance}
+Although it is interesting to measure our servers performance under heavy load, this is not a realistic use case for the system to be in.
+In day--to--day operation the server may see periods of heavy load, which it can handle, as seen in \cref{fig:submit_reqs_p_sec_heavy}. % chktex 08
+Here we see that the server still responds to requests albeit at a slower rate.
+This means that even under heavy load, the server will not crash and refuse to respond.
+
+We discovered through load testing that our current server can handle what we define as \textit{Normal load} without any difficulties, and depending on how fast the user expects a response to arrive, the need for horizontal scaling may only be applicable in cases with over 4000 active routes at a time.
