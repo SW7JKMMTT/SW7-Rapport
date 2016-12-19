@@ -10,7 +10,7 @@ The current implementation only emulates a producer client.
 This works for testing and demonstrating that the server works as intended, but the server also relies on the producer client.
 We emulate data in a JSON format, which is the only format the server supports.
 In \cref{sec:data_normalisation} we described that the ideal place for data normalisation would be on the producer client.
-If we were to release the server without a producer client, any potential client would have to develop their own producer client, able to produce the data in a JSON format, as well as a consumer client.
+If we were to release the server without a producer client, any potential client would have to develop their own producer client, able to produce the data in a JSON format and normalise it, as well as a consumer client.
 
 \bigskip
 We envision the producer client as a smartphone app which utilises the phone's GPS and uses Bluetooth to communicate with an \ac{OBD} device.
