@@ -1,7 +1,7 @@
 %!TEX root = ../../main.tex
 \section{Data normalisation}\label{sec:data_normalisation}
 As seen in \cref{cha:architectural_design} the data from the vehicles is provided by a generic data provider.
-This generic data provider can be a arbitrary piece of equipment, for instance a smartphone.
+This generic data provider can be an arbitrary piece of equipment, for instance a smartphone.
 Since it is different types of vehicles the data is extracted from, the data format can differ.
 Therefore the data needs to be normalised before the back--end can properly use the data.
 The process of normalising the data is to unify the format, which could differ in units, have a lack of some data or the data could be corrupted.
@@ -25,10 +25,10 @@ The way the system is split up, as seen in \cref{cha:architectural_design}, ther
 Both ways of normalising the data is possible to do in our system.
 A disadvantage of a centralised normalisation is a extra workload on the back--end.
 The extra workload will probably not be a problem with a small amount of vehicles sending data.
-In the case of many vehicles, for instance 100.000, sending simultaneously, the back--end could have problems with handling all of the data,
+In the case of many vehicles sending simultaneously, the back--end could have problems with handling all of the data,
 and its other tasks, thus creating a bottleneck in the system.
 This bottleneck will impair the load scalability of the system, which is defined in \cref{sec:scalability},
-since it can have negative effect on how many data-providers and clients that can communicate with the back--end.
+since it can have a negative effect on how many data-providers and clients that can communicate with the back--end.
 
 This problem does not occur with a distributed normalisation, since the data provider in each vehicle deals with the normalisation.
 The data provider in the vehicle only deals with relaying the data from the vehicle,
@@ -38,7 +38,7 @@ Another advantage of a distributed system is that the interface of the back--end
 The server interface will not need to have a lot of edge cases,
 these will be kept at the individual vehicle that needs them,
 thus giving the system, in regard to normalising the data, a more logical structure.
-Keeping the edge cases at the vehicles and keeping the back--end interface clean improves also the device scalability,
+Keeping the edge cases at the vehicles and keeping the back--end interface clean also improves the device scalability,
 as mentioned in \cref{sec:scalability}.
 In a centralised system, the edge cases can risk creating conflicts, but that is eliminated in a distributed system,
 thus improving the device scalability and making it easier to extend support for different types of vehicles.
