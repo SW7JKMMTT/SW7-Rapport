@@ -57,7 +57,14 @@ Another criteria for the server is several scalability measures, while most of t
 This led us to require load testing, system tests and integration tests.
 %Systematic Integration tests(JUnit) not interesting if no interaction with DB, thus Integration > Unit
 %Load testing, system test(testing all services) JMeter
-\subsubsection{Jenkins/CI}\fxnote{This needs writing}
+\subsubsection{Build Automation}
+We decided to use build automation, and continuous integration, in order to automatically verify that our changes was working and did not break existing functionality.
+We set this up both for our documentation, i.e. this paper, and the server.
+To monitor if all builds and test were succeeding, we set up a monitor with a Raspberry Pi\footnote{\url{https://www.raspberrypi.org/}}, which displays the current build status.
+
+For build automation we choose to use Jenkins CI\footnote{\url{https://jenkins.io/}}, as it is open source, free, easy to use, and well integrated.
+Not only should Jenkins CI check if the build succeeds, but also if it passes the tests in place for it. 
+
 %May not be written
 %Finds errors that may not occur on a single computer but would not occur on others.
 %Working version, always
@@ -93,7 +100,12 @@ As such ensuring high quality through a rigid review structure would result in l
 As documented in \cref{cha:testing} we managed to successfully thoroughly test the system in various ways, integration testing with JUnit and Hamcrest, load testing with Apache JMeter and system tests also trough Apache JMeter.
 %Systematic Integration tests(JUnit) not interesting if no interaction with DB, thus Integration > Unit
 %Load testing, system test(testing all services) JMeter
-\subsubsection{Jenkins/CI}\fxnote{this needs writing}
+\subsubsection{Build Automation}
+We followed the plan, and setup build automation and continuous integration right when starting the project. 
+Additionally we realized that the process of deploying code could get automated as it was a bothersome process.
+Therefore we also setup continuous deployment if all tests ran successfully.
+This reduced the turnaround time of development, which is an improvement in an agile environment.
+
 %May not be written
 \section{Process Reflection}
 %Meta Shit%
