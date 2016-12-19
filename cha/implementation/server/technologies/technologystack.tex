@@ -52,6 +52,26 @@ Strictly speaking a Bean is not a \ac{POJO}, since it has to implement the seria
 Spring allows for the no-arg constructor of a Bean to have an access level more strict than private.
 We will use that to hide the constructor when it's use would result in a wrongly configured object.
 
+\subsubsection{Spring IoC Container}
+Large projects, in object oriented languages, often have dependencies between objects.
+The naive approach to resolve dependencies is to let an object instantiate, or find, its own dependencies.
+Often called \textit{hardcoded dependencies}, they have a significant issue.
+The class which declares the dependency has also decided what object will fulfil the dependency.
+With the rise of mock based unit testing, where an instance of an object is swapped out for a mock object, hardcoding those dependencies is not possible, since it prevents mocking.
+
+The solution often employed is the dependency injection pattern, which relies on letting the object doing the instantiation, resolve the dependencies.
+By doing so, the calling object, instead of the callee, retains control over the dependencies, and can inject different dependencies for different usecases, such as mock objects for unit testing.
+
+The Spring \ac{IoC} container takes the concept a step further.
+Instead of the caller retaining control, the \ac{IoC} container controls all dependencies.
+It instantiates and configures them according to metadata specified with either XML, code, or annotations.
+Spring heavily relies on the concept of Beans described above, but also includes support for managing \acp{POJO} as if they were Beans.
+Although the main configuration in Spring is done with XML, allowing the programmer to instantiate object into the \code{ApplicationContext}, it is also possible to get dependencies injected by using the \code{Autowired} annotation.
+When Spring instantiates a Bean it first looks though it and injects dependencies into all the fields having the \code{Autowired} annotation, by resolving the dependency class/interface.
+If the application includes advanced Beans, that need some form of lifetime management, Spring supports factory Beans, which are factories that create a specific type of Bean.
+
+By inverting control to the container, instead of the objects, Spring makes it possible to switch out a large part of an application, by only changing XML.
+We will be relying heavily on the Spring \ac{IoC} container in the server.
 
 \subsubsection{Communication}
 \label{subsec:tech_communication}
