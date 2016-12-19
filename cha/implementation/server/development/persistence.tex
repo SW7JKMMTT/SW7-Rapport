@@ -6,7 +6,7 @@ We have also chosen to use PostgreSQL as our database system, and the \ac{JPA}, 
 
 This section will explain the abstraction we have employed in order to make the persistence and access of data easy in later parts of our system.
 
-\subsubsection*{\acp{DAO}}
+\subsubsection*{\acp{DAO}}\label{subsubsec:dao}
 In order to access the database system we construct a series of \acp{DAO}.
 A \ac{DAO}, is an architectural design pattern which provides an interface to the database or other data stores\cite{oracle_dao}.
 This pattern uses the single responsibility principle, meaning that the only way to access the database is though these \acp{DAO}.

@@ -22,7 +22,7 @@
 %Our data collecntion part is essentialyl a reverse client-server architecture where multiple clients provide data to the server.
 
 \chapter{Architectural Design}\label{cha:architectural_design}
-As per the requirements elicitation, \cref{cha:requirements_elicitation}, the system we develop must be able to receive data from multiple devices, normalize and collect data and then provide a view of the normalised data to a number of clients.
+As per the requirements elicitation, \cref{cha:requirements_elicitation}, the system we develop must be able to receive data from multiple devices, normalise and collect data and then provide a view of the normalised data to a number of clients.
 In order to allow this, first an appropriate architecture that should be established as to avoid restructuring the system later on.
 
 \section{Client--Server}
@@ -62,12 +62,13 @@ Choosing to emulate does remove some options for load scalability, these are cov
 \subsection{Server}
 For the server component we use a layered architecture consisting of three layers.
 \begin{description}
-    \item [Core], this layer contains both data model and business logic, an UML diagram for this layer is shown in \fxnote{ref to impl sec where this is done}.
-    \item [Persistence], this layer contains \aclp{DAO}.
+    \item [Core] This layer contains both data model and business logic, an UML diagram for this layer is shown in \cref{fig:model_class_diagram}.
+    \item [Persistence] This layer contains \aclp{DAO}.
     \acsp{DAO} determine how an object may be accessed and what data operations are allowed on the data, protecting the database details.
-    \item [Service], this layer contains the code which handles requests.
+    They are further explained in \cref{subsubsec:dao}.
+    \item [Service] This layer contains the code which handles requests.
     The service layer is the layer which the clients communicate with when they wish to make requests to the application.
-    It contains endpoints for each available request, if the request from a client is legitimate, the endpoint makes use of the \acsp{DAO} to manipulate or retrieve data.
+    It contains end--points for each available request, if the request from a client is legitimate, the endpoint makes use of the \acsp{DAO} to manipulate or retrieve data.
 \end{description}
 As mentioned this helps hide server details that neither client needs to know about.
 The only layer that clients interact with directly is the service layer, having the layers be separate also helps in case the model needs altering for some reason, as only the core would have to be refined.
@@ -96,7 +97,7 @@ For the consumer, essentially any arbitrary architecture could be chosen as long
 With scalability being a central requirement for our system, we evaluate how our choice of architecture affects this.
 First we consider version and device scalability.
 Both of these scalability measures are affected by the communication between client and server rather than their internal architectures.
-In order to attain device scalability the dataformat must be neutral.
+In order to attain device scalability the data format must be neutral.
 The client--server pattern only concerns itself with the seperation of client and server leaving the communication between the two up to the developer.
 Due to the choice of communication being our decision, simply deciding to use a device neutral format such as JSON will make the system support device scalability.
 As for version scalability this is only relevant for the producer client and server as the consumer client has no need to know what version of \ac{OBD} is used.
