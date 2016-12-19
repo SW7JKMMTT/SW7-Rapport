@@ -1,45 +1,84 @@
 \subsection{Structure of the consumer client}\label{ssec:consumer_client_structure}
-The consumer client is a working test case of the RestAPI in use.
-It is build to showcase the different functionalities and the different types of data the RestAPI can produce.
-When a user is logged in he is firstly presented for an overview of the dashboard.
+The consumer client is a proof of concept of implementing the use of the REST API.
+The consumer client also helped in the process of discovering errors and missing functionalities.
+It is build to showcase the different functionalities and the different types of data the REST API can produce.
 
-\fxnote{insæt billede af dasbboard}
+\subimport{../}{consumer_client_fig.tex}
 
-As can be seen in \fxnote{FIG}, the user can see the users own user information in the top left corner, this information is imported through the RestAPI.
-The consumer client fetches the users name, username and status, which in the example version can be the following states (User, Super User).
-The users image is also downloaded through the RestAPI, this image is base64 encoded and represented as a background image, however if the user has not image, a default image will be shown.
+In \cref{fig:consumer_client} the overall layout of the consumer client can be seen.
+When a user first enters the consumer client, a login screen will be presented as can be seen in \cref{fig:ConsumerClientLogin}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{img/ConsumerClientLogin.png}
+    \caption{asdf.}
+    \label{fig:ConsumerClientLogin}
+\end{figure}
 
 \bigskip
-Beneath the user information small menu can be seen, this menu is used to navigate between two lists, a list containing all the employees of the designated company, and another list which represents all the vehicles which is connected to the company.
+When a user is logged in he is firstly presented for an overview of the dashboard.
 
-\fxnote{insæt billede af vehicle og employee menuer}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{img/ConsumerClientWText.png}
+    \caption{asdf.}
+    \label{fig:ConsumerClientLayout}
+\end{figure}
 
-In the list of all the employees some data can be seen, the name, username, image and the current status of the driver.
-This status is not like the status shown in the user information area, this status is whether the users is currently driving or parked.
-If a user is currently driving a image of the vehicle will be shown next to the users image.
-The list of users is automatically to fit to the newest data from the RestAPI.
+As can be seen in \cref{fig:ConsumerClientLayout}, the user can see his/her user information in the top left corner, this information is fetched through the REST API.
+More precisely the the users name, username and status is fetched.
+In the example the users status can be the following states (User, Super User).
+The user's image is also fetched through the REST API, the image is Base64 encoded and represented as a background image, however if the user has no image, a default image will be shown.
+
+\bigskip
+Beneath the user information a small menu can be seen, this menu is used to navigate between two lists, a list containing all the employees of the designated company, and another list which represents all the vehicles which is connected to the company.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{img/displayOfMenuesInConsumerClient.png}
+    \caption{asdf}
+    \label{fig:ConsumerClientMenus}
+\end{figure}
+
+In the list of all the employees, the name, username, image and the current status of the driver can be seen.
+This status is not like the status shown in the user information area, this status is whether the users are currently driving or parked.
+If a user is currently driving, an image of the vehicle will be shown next to the users image.
+The list of users is automatically to fit to the newest data from the REST API.
 
 Likewise in the list of vehicles, some information can be seen of each vehicle.
-This information consists of the make and model of the vehicle, an image of the vehicle and whether the vehicle is currently driving or parked.
+This information consists of the make and model, an image of the vehicle and whether the vehicle is currently driving or parked.
 If the vehicle is currently driving, a small image of the driver will be shown next to the image of the vehicle.
 
 If the user of the dashboard clicks on either a vehicle or a driver, which is currently driving, the map will automatically center the map around the currently active route the vehicle is driving.
 
 \bigskip
-The dashboard also contains a interactive map, the user is able to zoom and move the map, and through the RestAPI, the consumer client is able to show the currently active vehicles within the currently visible part of the map.
+The dashboard also contains a interactive map, the user is able to zoom and move the map, and through the REST API, the consumer client is able to show the currently active vehicles within the currently visible part of the map.
 All the routes which are shown will continually be updated, and movement can be shown in real time.
-All vehicles on the map will be by default be represented by a small yellow truck, however if the vehicle has a custom image, the image will be loaded and shown instead of the yellow truck.
+All vehicles on the map will by default be represented by a small yellow truck, however if the vehicle has a custom image, the image will be loaded and shown instead of the yellow truck.
 
-\fxnote{indsæt billede af gul truck}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{img/Truck_Yellow.png}
+    \caption{asdf}
+    \label{fig:ConsumerClientYellowTruck}
+\end{figure}
 
-All the routes which are drawn on the map are polypaths which is drawn between the different GPS coordinates which the vehicle it self sends to the RestAPI.
+All the routes which are drawn on the map are polypaths which is drawn between the different GPS coordinates which the vehicle it self sends to the REST API.
+A polypath is a line drawn on the interactive map, between an ordered list of GPS coordinates.
+
 
 \bigskip
-\fxnote{indsæt billede af map}
-When a vehicle is clicked a menu in the right side will be shown, this menu currently contains anything, but could be used to show more advanced vehicle information, live vehicle data, and previous routes the vehicle has driven.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{img/ConsumerClientMap.png}
+    \caption{asdf}
+    \label{fig:ConsumerClientMap}
+\end{figure}
+When a vehicle is clicked, a menu in the right side will be shown, this menu currently contains nothing, but could be used to show more advanced vehicle information, for instance live vehicle data, and previous routes the vehicle has driven.
 
 \bigskip
 This consumer client allows for a fast overview of the entire fleet, while also grants the company an opportunity to track at each of the vehicles on the map and show live information of it in the same time.
-Since the company is able to track the vehicles in real time, the tool could be used to help prevent future damages to the vehicles, by looking at either the real time data, or by looking for anomalies in the data from previous routes.
+
+Since the company is able to track the vehicles in real time, the tool could be used to help prevent future damages to the vehicles.
+This can be done by analysing either the real time data, or by looking for anomalies or deviations in the data from previous routes.
 
 \fxnote{vise noget kode i løbet af afsnittet?}
