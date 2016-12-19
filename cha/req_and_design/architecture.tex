@@ -94,15 +94,15 @@ Alternatively there could be a fifth layer that does that, and then stores data 
 For the consumer, essentially any arbitrary architecture could be chosen as long as it supports communicating with the server; the choice would depend on the specific use case and needs of the client, \cref{fig:consumer_client} is merely an example for how we have developed our proof of concept front--end.
 
 \section{Scalability Concerns}
-With scalability being a central requirement for our system we evaluate how our choice of architecture affects this.
+With scalability being a central requirement for our system, we evaluate how our choice of architecture affects this.
 First we consider version and device scalability.
 Both of these scalability measures are affected by the communication between client and server rather than their internal architectures.
-In order to attain device scalability the format communicated over must be neutral.
+In order to attain device scalability the dataformat must be neutral.
 The client--server pattern only concerns itself with the seperation of client and server leaving the communication between the two up to the developer.
-Due to the communication choice being our decision, simply deciding to use a device neutral format such as JSON will make the system support device scalability.
+Due to the choice of communication being our decision, simply deciding to use a device neutral format such as JSON will make the system support device scalability.
 As for version scalability this is only relevant for the producer client and server as the consumer client has no need to know what version of \ac{OBD} is used.
 In our case version scalability is tied heavily to functional scalability, as for the server it would be expanding what information it can receive.
 As for functional scalability the choice of client--server architecture does not affect this, as this is acquired by having low coupling within the server component.
-This results in both version and functional scalability realying on the server's internal architecture, which happens to be a layered architecure which faciliates low coupling and through low coupling functional scalability.
+This results in both version and functional scalability relying on the server's internal architecture, which happens to be a layered architecure which faciliates low coupling and through low coupling functional scalability.
 
 The last scalability measure we have established is load scalability, for this measure the client--server architecture allows the client to communicate so some server, without knowing which one; thereby allowing us to introduce horizontal scalability.
