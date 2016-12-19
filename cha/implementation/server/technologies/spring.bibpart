@@ -1,0 +1,15 @@
+@MISC{spring_pojo,
+  author = {Pivotal Software Inc},
+  publisher = {spring.io},
+  title = {Unserstanding POJOs},
+  lastchecked = {30-11-2016},
+  howpublished = {\url{https://spring.io/understanding/POJO}}
+}
+
+@MISC{hibernate_pop,
+  author = {Hibernate},
+  publisher = {Hibernate},
+  title = {Hibernate Front Page},
+  lastchecked = {30-11-2016},
+  howpublished = {\url{http://hibernate.org/orm/}}
+}

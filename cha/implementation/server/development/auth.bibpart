@@ -1,0 +1,8 @@
+@MISC{http_basic,
+  title = {{HTTP Authentication: Basic and Digest Access Authentication}},
+  author = {Franks, et al.},
+  month = {June},
+  year = {1999},
+  url = {https://www.ietf.org/rfc/rfc2617.txt},
+  lastchecked = {20-10-2016},
+}
