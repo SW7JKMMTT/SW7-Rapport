@@ -1,46 +1,52 @@
 \section{Results}
+All system and load tests were performed on our server application running on a Intel i7 2600, with 16 GB RAM and a SSD for storage.
 Running our tests produce test result summaries, which contains statistics such as error rate and average response time about the given test, and various graphs;
 the most interesting graph being the response time distribution and requests per second graphs.
 These two graphs represent the performance of the server in different tasks, such as \textit{create user} and \textit{add datapoint to route}.
 
-Results for the \textit{Submitting Data} test plan can be seen in \cref{fig:submit_test_results}.
-In this test we create 1000 routes and unique users, 500 vehicles, and 400 waypoints and datapoints on every route --- we define this as our \textit{Normal load}.
+In the \textit{Submitting Data} test we create 1000 routes and unique users, 500 vehicles, and 400 waypoints and datapoints on every route --- we define this as our \textit{Normal load}.
 We then compare the results of that test with a distributed version using four computers --- thereby quadrupling the amount of requests, bringing the total number of waypoints and datapoints created during the test up to $1.6$ million.
 We define this as our \textit{Heavy load}.
 
 \bigskip
-In \cref{fig:submit_test_results} the results of the \textit{Submitting Data} test plan can be seen.
-The figure contains two pairs of graphs one for \textit{Normal load}, and one for \textit{Heavy load}.
-Each pair shows the response time distribution of all requests, and number of requests to the server per second.
+Results for the \textit{Submitting Data} test plan can be seen in \cref{fig:submit_test_results_normal} for \textit{Normal load} and \cref{fig:submit_test_results_heavy} for \textit{Heavy load}.
+Each figure shows the response time distribution of all requests, and number of requests to the server per second.
 
-When looking at \cref{fig:submit_resp_t_dist} we see that the majority of response times lies between 20 and XXX milliseconds --- we consider this good performance.
+When looking at \cref{fig:submit_resp_t_dist_normal} we see that the majority of response times lies between 20 and XXX milliseconds --- we consider this good performance.
 Even with the response time distribution seen in \cref{fig:submit_resp_t_dist_heavy}, where the system is under \textit{Heavy load}, we consider it acceptable performance.
 We deem this acceptable because in the case of the producer client, which submits data, the response time only affects how often updates can be made while on route.
 This means that even under \textit{High load} we can guarantee that a datapoint and waypoint can me made every XXX seconds.
 
 \begin{figure}[!htb]
     \centering
-    \begin{subfigure}[b]{0.5\textwidth}
+    \begin{subfigure}[b]{\textwidth}
+        \footnotesize
         \centering
-        \rule{5cm}{5cm}
-        \caption{Response time distribution --- Normal load}\label{fig:submit_resp_t_dist}
-    \end{subfigure}\hfill%
-    \begin{subfigure}[b]{0.5\textwidth}
-        \centering
-        \rule{5cm}{5cm}
-        \caption{Requests per second --- Normal load}\label{fig:submit_reqs_p_sec}
+        \subimport{graphs/}{resp_dist_normal.tex}
+        \caption{Response time distribution}\label{fig:submit_resp_t_dist_normal}
     \end{subfigure}\\
-    \begin{subfigure}[b]{0.5\textwidth}
+    \begin{subfigure}[b]{\textwidth}
+        \footnotesize
         \centering
-        \rule{5cm}{5cm}
-        \caption{Response time distribution --- Heavy load}\label{fig:submit_resp_t_dist_heavy}
-    \end{subfigure}\hfill%
-    \begin{subfigure}[b]{0.5\textwidth}
-        \centering
-        \rule{5cm}{5cm}
-        \caption{Requests per second --- Heavy load}\label{fig:submit_reqs_p_sec_heavy}
+        \subimport{graphs/}{reqs_normal.tex}
+        \caption{Requests per second}\label{fig:submit_reqs_p_sec_normal}
     \end{subfigure}
-    \caption{Submitting test plan results}\label{fig:submit_test_results}
+    \caption{Submitting test plan results --- Normal load}\label{fig:submit_test_results_normal}
+\end{figure}
+\begin{figure}[!htb]
+    \begin{subfigure}[b]{\textwidth}
+        \footnotesize
+        \centering
+        \subimport{graphs/}{resp_dist_heavy.tex}
+        \caption{Response time distribution}\label{fig:submit_resp_t_dist_heavy}
+    \end{subfigure}\\
+    \begin{subfigure}[b]{\textwidth}
+        \footnotesize
+        \centering
+        \subimport{graphs/}{reqs_heavy.tex}
+        \caption{Requests per second}\label{fig:submit_reqs_p_sec_heavy}
+    \end{subfigure}
+    \caption{Submitting test plan results --- Heavy load}\label{fig:submit_test_results_heavy}
 \end{figure}
 
 \bigskip
