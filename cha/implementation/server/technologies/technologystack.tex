@@ -82,13 +82,16 @@ In choosing the data persistence technologies these three criteria are the most 
 \begin{eletterate}
     \item High performance storage and retrieval of data.
     \item Making geospatial queries, i.e.~queries which finds data with locational delimiters.
-    \item Solid and supported integration with Hibernate ORM\footnote{\url{http://hibernate.org/orm/}}.
+    \item Solid and supported integration with Java.
 \end{eletterate}
+
 
 \bigskip
 There exists numerous categories of database systems or paradigms, but the most prevalent are SQL and NoSQL.
 Furthermore there exists NewSQL database systems, which are relational but with the scalability of NoSQL;
 however, as this is a relatively new concept the support and integration into our Java environment is lackluster, so we will ignore these specific NewSQL database systems.
+
+\subsubsection*{SQL}
 
 SQL database systems are relational and data is stored in a number of tables, some examples of popular SQL database systems are MySQL\footnote{\url{https://www.mysql.com/}}, PostgreSQL\footnote{\url{https://www.postgresql.org/}}, and IBM DB2\footnote{\url{http://www.ibm.com/analytics/us/en/technology/db2/}}.\cite{DB_RANKINGS}
 
@@ -100,7 +103,7 @@ Popularity is an important factor when discussing database systems, since it sho
 A widely used database system gives a indicator of that it is reliable and have good integration options,
 since unreliable systems with bad integration options will not be very popular. 
 
-\bigskip
+\subsubsection*{NoSQL}
 NoSQL database systems is a term used to describe a myriad of different database back--ends.
 Some of these are; key--value stores, document stores, and graph based systems.
 Common for the majority of NoSQL database systems is that they value simplicity of design, scalability and speed over consistency.
@@ -113,6 +116,23 @@ This makes expanding the system significantly easier, since adding a new propert
 
 \bigskip
 As mentioned earlier, we want to use a solid and widely used database system, and therefore we choose to use a SQL database.
+
+\subsubsection*{Interfacing With the Database System} % AKA Data Persistence Provider
+
+The database system we choose must be compilable with Java.
+There are several systems which can act as an interface between the program and the database system.
+We would prefer a mature and well tested system, which is also relatively easy to operate, while having full control for performance and customization.
+We looked at Spring Data JPA\footnote{\url{https://spring.io/}}, jOOQ\footnote{\url{http://www.jOOQ.org/}}, and Hibernate ORM\footnote{\url{http://hibernate.org/orm/}}.
+All three of them implement the \ac{JPA}--standard\cite{JavaPersistenceAPI}, which is an \ac{API} that describes the management of data. 
+
+Spring Data JPA is a layer on top of Hibernate ORM which provides some abstraction, and can auto--generate some queries, however we would have less control over how the persistence would occur, and this can be to our disadvantage.
+jOOQ is an attempt to simplify persistence in Java, it has most of the same features as Hibernate ORM.
+jOOQ points to Hibernate ORM as the de--facto standard in the Java ecosystem\cite{JOOQvsHIBERNATE},
+Hibernate ORM is also a mature and stable system which is well supported. 
+
+We therefore choose Hibernate ORM to act as a Data Persistence Provider. 
+
+\subsubsection*{Selecting a Database System}
 
 The top four popular SQL database systems are\cite{DB_RANKINGS}: 
 \begin{enumerate}

@@ -1,0 +1,20 @@
+% https://blog.jooq.org/2015/03/24/jooq-vs-hibernate-when-to-choose-which/
+
+@MISC{JOOQvsHIBERNATE,
+  author = {jOOQ},
+  publisher = {blog.jooq.org},
+  title = {jOOQ vs. Hibernate: When to Choose Which},
+  year = {2015},
+  lastchecked = {19-12-2016},
+  howpublished = {\url{https://blog.jooq.org/2015/03/24/jooq-vs-hibernate-when-to-choose-which/}}
+}
+
+% http://www.oracle.com/technetwork/java/javaee/tech/persistence-jsp-140049.html
+
+@MISC{JavaPersistenceAPI,
+  author = {Oracle},
+  publisher = {Oracle},
+  title = {Java Persistence API},
+  lastchecked = {19-12-2016},
+  howpublished = {\url{http://www.oracle.com/technetwork/java/javaee/tech/persistence-jsp-140049.html}}
+}
