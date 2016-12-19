@@ -24,7 +24,7 @@ parallel (
                     }
                 } finally {
                     if(log.contains("Latexmk: Errors, so I did not complete making targets")) {
-                        def reason = make "errors"
+                        def reason = make "debug"
                         writeFile file: '.phabricator-file', text: reason
                         currentBuild.result = "Failure"
                     }
