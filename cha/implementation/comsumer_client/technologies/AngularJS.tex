@@ -1,13 +1,19 @@
 \subsection{AngularJS} \label{ssec:angular}
-AngularJS is a front-end framework developed and maintained by Google, which generates a single-page web application.
-It is open-source and uses components written in Javascript to generate its content.
-One of the AngularJS goals of AngularJS is to ease the development and testing of such a web application, this is done by producing a Javascript framework which assists the MVC and the MVVM design patterns.
+AngularJS\footnote{\url{https://angularjs.org/}} is a front--end framework developed and maintained by Google, which generates a single--page web application.
+It is open-source and uses components written in JavaScript to generate its content.
 
+\bigskip
+There is currently two different major versions of AngularJS available, version 1 and version 2\footnote{\url{https://angular.io/docs/ts/latest/cookbook/a1-a2-quick-reference.html}}.
+Some of the major differences between these two versions are that Angular 2 was build towards mobile support, and was build with modularity in mind.
+This meaning that in Angular 1 the different modules are relying on controllers and \code{\$scope} in order to get the current context of the page.
+In Angular 2 the different modules are divided into different modules called components, theses components allow access to the context of the current module only, while still allow for communication through two--way bindings with parent components.
+One of the AngularJS goals is to ease the development and testing of a web application, this is done by producing a JavaScript framework which assists the MVC and the MVVM design patterns.
+
+\bigskip
 When compiling the AngularJS project, the compiler firstly reads through the HTML page looking for embedded tags with custom attributes, which is interpreted.
 Then these attributes are used to directly bind data from the defined components into those HTML tags, thereby representing the defined variables in the HTML view.
-AngularJS is an consists of a MEAN stack, which means it consists of a database which is MongoDB, a web application which is Express.js, AngularJS it self, and a runtime environment which is Node.js.
 
-The framework it self extends the HTML in order for it to present the bound data through two-way data-bindings which allows it to make automatic synchronization between the models and views.
-This makes it possible for AngularJS to decrease the amount of explicit DOM manipulation which allows for improved performance.
+The framework it self extends the HTML in order for it to present the bound data through two--way data--bindings which allows it to make automatic synchronization between the models and views.
+This makes it possible for AngularJS to decrease the amount of explicit \ac{DOM} manipulation which allows for improved performance.
 
 According to AngularJS some of the design goals is to decentralize the manipulation of the HTML files from the applications logic it self, and for the client side and the server side to be deployed separately.
