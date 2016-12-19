@@ -145,6 +145,7 @@ however, as this is a relatively new concept the support and integration into ou
 SQL database systems are relational and data is stored in a number of tables, some examples of popular SQL database systems are MySQL\footnote{\url{https://www.mysql.com/}}, PostgreSQL\footnote{\url{https://www.postgresql.org/}}, and IBM DB2\footnote{\url{http://www.ibm.com/analytics/us/en/technology/db2/}}.\cite{DB_RANKINGS}
 
 A key property of SQL database systems is that they use transactions which are ACID--compliant\cite{Haerder:1983:PTD:289.291}, making them ideal for use in environments where it is critical transactions only have expected or recoverable effects, e.g.~the financial world.
+A critical transaction is a transaction which must not go wrong and leave the database in an inconsistent state, for instance the transfer of money.
 
 SQL database systems are the primary choice for commercial use\cite{dbs_concepts}.
 This is supported with the fact that 7 out of the top 10 most popular database systems in December 2016 are SQL database systems\cite{DB_RANKINGS}.

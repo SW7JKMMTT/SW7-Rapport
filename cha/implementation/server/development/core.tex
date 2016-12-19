@@ -45,36 +45,60 @@ The \code{Permission}--class is used to grant permissions to which endpoints in 
 The \code{AuthToken}--class is a session token which is sent with each request to identify which user sent the request. 
 Lastly the \code{UserIcon}--class which inherits from the abstract class \code{PersistFileHandle}--class is used to optionally give a profile picture to each user, for the use in a consumer. 
 
+%Omskrive route
+%Route bruges til at samle, holder ikke på meget info direkte men samler det. 
+%En route er en samling af en driver og et vehicle og tilhørende vehicle data og waypoints. 
+%Routen afhæner af driver og vehicle.
+%Waypoint og vehicle data afhænger af routen.
+%VehicleData -> Misc data
+
 \paragraph*{Route}
-The \code{Route}--class is an aggregate of its constituents, they are \code{Driver}, \code{Waypoint}s, \code{Vehicle}, and \code{VehicleData}. 
+The \code{Route}--class is used to combine the \code{Driver}--class, the \code{MiscData}--class, and the \code{Vehicle}--class.
+Furthermore the \code{Route}--class have \code{Waypoint}s.
+The \code{Route}--class do not contain much information directly, only the \code{routestate}, but it collects information.
+
 The \code{Waypoint}--class is the spatial part of the model, it contains latitude, longitude, and a timestamp.
 The \code{Vehicle}--class is our abstraction of a vehicle, on it we have the simple data which is general for all vehicles, and optionally an icon via the \code{VehicleIcon}--class.
+
+A \code{Route} is a class which depends on a \code{Driver} and a \code{Vehicle} and contains collections of \code{MiscData} and \code{Waypoint}s.
+The \code{Route} depends on the \code{Driver} and \code{Vehicle}, since a \code{Route} must have a \code{Driver} and \code{Vehicle}.
+The \code{Waypoint}s and \code{MiscData} depend on the \code{Route} since the \code{Waypoint}s and \code{MiscData} cannot exist without a \code{Route}.
+
+A use case, which is not supported by the model as it is now, is the collection of data via the \code{MiscData}--class when the vehicle is not on a route.
+An example of this could be the collection of maintenance data during maintenance.
+For the model to be able to support this use case a new class could be made, for instance \code{Maintenance}.
+Then \code{MiscData} would be an aggregate of the \code{Maintenance}--class, just like \code{Route}.
+This would allow \code{MiscData} to be used in other contexts than a \code{Route}.
+
+The \code{Route}--class is used to bind the classes together, since \code{Vehicle}s can have different \code{Driver}s and vice versa.
+That is the reason why \code{Driver} and \code{Vehicle} is not directly related. 
+
 If we wanted to support different kind of vehicles, which has additional attributes, they should inherit from the \code{Vehicle}--class.
 For example a bus could contain information about how many people it could carry, while for a truck the amount of load it can take would be useful. 
 
-\paragraph*{VehicleData}\label{par:vehicledata}
-The last part of the \code{Route}--class is the \code{VehicleData}--class. 
-The \code{VehicleData}--class is used to store the information gathered by the DataProvider which is not spatial, i.e. \ac{OBD}--data.
-We placed this as a part of the \code{Route}--class since it makes sense for the other parts of the system, i.e. the Producer and the Consumer. 
-As the name suggests one could have made this a constituent of the \code{Vehicle}--class instead, or placed a relation between them.
+\paragraph*{MiscData}
+The last part of the \code{Route}--class is the \code{MiscData}--class. 
+The \code{MiscData}--class is used to store the information gathered by the DataProvider which is not spatial, i.e. \ac{OBD}--data.
+We placed this as a part of the \code{Route}--class since the data in the \code{MiscData}--class is not directly related to the \code{Vehicle} or \code{Driver}. 
+We could have made this a constituent of the \code{Vehicle}--class instead, or placed a relation between them.
 However they already have an indirect relationship via the \code{Route}--class, 
-thus we can find all \code{VehicleData}--instances which are related to a given \code{Vehicle}--instance, even though they do not have a direct relation. 
-We do not attach the \code{VehicleData}--class to the \code{Waypoint}--class, 
+thus we can find all \code{MiscData}--instances which are related to a given \code{Vehicle}--instance, even though they do not have a direct relation. 
+We do not attach the \code{MiscData}--class to the \code{Waypoint}--class, 
 since we want to give the flexibility to the DataProvider that it can send those two pieces of information separately, as they may not be wanted at the same frequency. 
 
-The \code{VehicleData}--class has a one--to--many relationship with \code{VehicleDataPoint}, moreover one \code{VehicleData} has at least one \code{VehicleDataPoint}. 
-The \code{VehicleDataPoint}--class is an abstract class, and from it another abstract class, \code{FloatVehicleDataPoint}, inherit. 
+The \code{MiscData}--class has a one--to--many relationship with \code{MiscDataPoint}, moreover one \code{MiscData} has at least one \code{MiscDataPoint}. 
+The \code{MiscDataPoint}--class is an abstract class, and from it another abstract class, \code{FloatMiscDataPoint}, inherit. 
 Each data point which has the value of the type float, can inherit from this class, and reuse the \code{value} field on it, to store its data.
-As an example of these we have made \code{CurrentSpeedDataPoint}, and \code{FuelLevelDataPoint}, which both inherit from \code{FloatVehicleDataPoint}. 
-The two classes only consist of a constructor which sets the \code{value} they inherit from \code{FloatVehicleDataPoint}.
-While designing this we have functional scalability, i.e. expandability, in mind, meaning that adding a third type of \code{FloatVehicleDataPoint} should be easy. 
+As an example of these we have made \code{CurrentSpeedDataPoint}, and \code{FuelLevelDataPoint}, which both inherit from \code{FloatMiscDataPoint}. 
+The two classes only consist of a constructor which sets the \code{value} they inherit from \code{FloatMiscDataPoint}.
+While designing this we have functional scalability, i.e. expandability, in mind, meaning that adding a third type of \code{FloatMiscDataPoint} should be easy. 
 In order to add a new data point which uses a floating value, all that would have to be done is: 
 \begin{enumerate}
     \item Create the class 
-    \item Make it inherit from \code{FloatVehicleDataPoint}.
+    \item Make it inherit from \code{FloatMiscDataPoint}.
     \item Set the appropriate annotations for Hibernate in it.
-    \item Set the appropriate annotations for Jackson in \code{VehicleDataPoint}.
+    \item Set the appropriate annotations for Jackson in \code{MiscDataPoint}.
 \end{enumerate}
 
-Adding a \code{VehicleDataPoint} which would store a string, for example, would involve a similar procedure.
+Adding a \code{MiscDataPoint} which would store a string, for example, would involve a similar procedure.
 % Ved ikke helt hvordan jeg skal afslutte det her?

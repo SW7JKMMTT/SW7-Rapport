@@ -67,7 +67,7 @@
 }{
 }
 
-\umlclass[x=5, y=-7.0]{VehicleData}
+\umlclass[x=5, y=-7.0]{MiscData}
 { 
 -timestamp
 }{
@@ -79,12 +79,12 @@
 }{
 }
 
-\umlclass[x=5, y=-10.0, type=abstract]{VehicleDataPoint}
+\umlclass[x=5, y=-10.0, type=abstract]{MiscDataPoint}
 { 
 }{
 }
 
-\umlclass[x=5, y=-12.0, type=abstract]{FloatVehicleDataPoint}
+\umlclass[x=5, y=-12.0, type=abstract]{FloatMiscDataPoint}
 { 
 -value
 }{
@@ -100,9 +100,6 @@
 }{
 }
 
-\umlassoc[mult1=1, mult2=0..*]{Driver}{Route}
-\umlassoc[arg1=0..*, arg2=1]{Route}{Vehicle}
-
 \umlaggreg[mult1=1, mult2=0..*]{Route}{Waypoint}
 \umlHVaggreg[mult1=1, mult2=1, anchor1=-45, pos2=1.8]{Vehicle}{VIN}
 \umlHVaggreg[arg1=1, arg2=0..1, anchor1=45, anchor2=-130, pos2=1.72]{User}{UserIcon}
@@ -110,14 +107,17 @@
 \umlaggreg[mult1=1, mult2=0..*]{User}{AuthToken}
 \umlaggreg[arg1=1, arg2=0..1]{Vehicle}{VehicleIcon}
 \umlaggreg[mult1=1, mult2=0..1]{User}{Driver}
-\umlHVHaggreg[mult1=1, mult2=0..*, anchor1=-25, pos1=0.4, pos2=2.5]{Route}{VehicleData}
-\umlaggreg[mult1=1, mult2=1..*]{VehicleData}{VehicleDataPoint}
+\umlHVHaggreg[mult1=1, mult2=0..*, anchor1=-25, pos1=0.4, pos2=2.5]{Route}{MiscData}
+\umlaggreg[mult1=1, mult2=1..*]{MiscData}{MiscDataPoint}
+\umlaggreg[mult1=1, mult2=0..*]{Driver}{Route}
+\umlaggreg[mult1=1, mult2=0..*]{Vehicle}{Route}
+
 
 \umlinherit[]{UserIcon}{PersistFileHandle}
 \umlinherit[]{VehicleIcon}{PersistFileHandle}
-\umlinherit[]{CurrentSpeedDataPoint}{FloatVehicleDataPoint}
-\umlinherit[]{FuelLevelDataPoint}{FloatVehicleDataPoint}
-\umlinherit[]{FloatVehicleDataPoint}{VehicleDataPoint}
+\umlinherit[]{CurrentSpeedDataPoint}{FloatMiscDataPoint}
+\umlinherit[]{FuelLevelDataPoint}{FloatMiscDataPoint}
+\umlinherit[]{FloatMiscDataPoint}{MiscDataPoint}
 
 
 \end{tikzpicture}
