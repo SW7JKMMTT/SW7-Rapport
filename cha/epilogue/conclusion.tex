@@ -7,10 +7,13 @@
 %Meta introduction to choice of project focus
 The goal for this project was to construct a scalable system that could receive geospatial and vehicle relevant data from a disjoint vehicle fleet and present this data to an arbitrary user.
 Through our analysis of existing systems we found that current systems on the market revealed very little information to potential users before buying their software.
-Through our initial analysis of how a system may be constructed we knew that constructing a complete system with data provider, server and front--end client was not feasible.
+The subsequent analysis of how a system may be constructed we knew that constructing a complete system with data provider, server and front--end client was not feasible.
 With our newfound information about the market focusing on developing a server which could receive data from a data provider and present this data to a front--end client through an API, would allow a company to develop their own front--end client to suit their exact needs rather than invest in a system with insufficient or redundant features.
 With our newfound focus we created the list of requirements detailed in \cref{sec:requirements}.
 The server we have developed uses a client--server architecture with the server providing a REST API for clients, both data providers and front--end, to communicate with.
+With developers being the users of said REST API, an appropriate UI is established in the form of API documentation.
+This documentation enables developers of an arbitrary client to utilise our server even with no insight as to how our server is constructed, by providing a description of what requests are available, what parameters they require, and what response can be expected. 
+The API documentation is provided through Enunciate, as described in \cref{documenting_services}.
 
 \bigskip
 %Discussion --- Make these segments into sections rather than just split them under the same chap?
