@@ -84,7 +84,6 @@ How this further helps scalability is described in more detail in the implementa
 %If high wished, then a layered/MVC Pattern may be wanted
 \subsection{Consumer--Client}
 The data provided by the system we are developing makes it such that any company can have a system built that suits their exact needs; this also means that the architecture for said system will be whatever they need.
-As an example a consumer client could use a layered architecture as shown on \cref{fig:consumer_client}.
 A generic layered architecure might have the four following layers, as described by Ian Sommerville in \cite{software_engineering}:
 \begin{itemize}
     \item User Interface.
@@ -93,9 +92,10 @@ A generic layered architecure might have the four following layers, as described
     \item System support (OS, database, etc.)
 \end{itemize}
 %\subimport{}{consumer_client_fig.tex}
-For a consumer client to communicate with the server, the fourth layer may be a dedicated layer to do so as represented on \cref{fig:consumer_client}.
+For a consumer client to communicate with the server, the fourth layer may be a dedicated layer to do so.
 Alternatively there could be a fifth layer that does that, and then stores data locally to reduce the number of requests.
-For the consumer, essentially any arbitrary architecture could be chosen as long as it supports communicating with the server; the choice would depend on the specific use case and needs of the client, \cref{fig:consumer_client} is merely an example for how we have developed our proof of concept front--end.
+For the consumer, essentially any arbitrary architecture could be chosen as long as it supports communicating with the server; 
+the choice would depend on the specific use case and needs of the client.
 
 \subimport{}{data_norm.tex}
 

@@ -237,6 +237,9 @@ Still Service have a method coverage on 95 \%, as seen in \cref{tab:test_cov}.
 As with Persistence, we test the Service component under different use cases, for instance with different input parameters,
 with the database containing different data, and also tests with malicious input, to see if the system handles it.
 
+It should also be noted that the \acp{DAO} are also tested by other tests than the only made directly for them, 
+as they are integration tests.
+
 \begin{table}
     \center
     \begin{tabular}{l|l|l}
@@ -244,24 +247,24 @@ with the database containing different data, and also tests with malicious input
         \toprule
         Persistence             & 94.7  & 54 \\
         \toprule
-        AuthTokenDaoImpl        & 75    & \multirow{9}{*}{N/A} \\
-        BaseDaoImpl             & 80    & \\
-        DriverDaoImpl           & 100   & \\
-        PermissionDaoImpl       & 100   & \\
-        RouteDaoImpl            & 72.7  & \\
-        UserDaoImpl             & 85.7  & \\
-        VehicleDaoImpl          & 100   & \\
-        MiscDataDaoImpl      & 100   & \\
-        WaypointDaoImpl         & 100   & \\
+        AuthTokenDaoImpl        & 75    & 5 \\
+        BaseDaoImpl             & 80    & All\\
+        DriverDaoImpl           & 100   & 4\\
+        PermissionDaoImpl       & 100   & 0\\
+        RouteDaoImpl            & 72.7  & 17\\
+        UserDaoImpl             & 85.7  & 1\\
+        VehicleDaoImpl          & 100   & 7\\
+        MiscDataDaoImpl         & 100   & 1\\
+        WaypointDaoImpl         & 100   & 18\\
         \midrule
         Services                & 95    & 100 \\
         \toprule
-        AuthenticationService   & 66.7  & \multirow{6}{*}{N/A} \\
-        RouteService            & 75    & \\
-        UserService             & 71.4  & \\
-        MiscDataService      & 100   & \\
-        VehicleService          & 100   & \\
-        WaypointService         & 100   & \\
+        AuthenticationService   & 66.7  & 11 \\
+        RouteService            & 75    & 35\\
+        UserService             & 71.4  & 20\\
+        MiscDataService         & 100   & 5\\
+        VehicleService          & 100   & 22\\
+        WaypointService         & 100   & 9\\
         \bottomrule
     \end{tabular}
     \caption{Test coverage of Persistence and Services.}\label{tab:test_cov}
