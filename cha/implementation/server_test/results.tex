@@ -107,7 +107,7 @@ This switch was done partially due to early test runs of the \textit{Submitting 
 We found that \enquote{duplicate id errors} occurred when the server was under load, because new unique ids not could be generated fast enough.
 
 After switching to an SQL database and Hibernate ORM, we found that the \enquote{duplicate id errors} vanished, but performance remained approximately the same.
-However, after adding indices to our SQL tables we found that performance increased drastically, even though additional complexity was introduced to the server functionality across the switch from NoSQL to SQL with indices.
+However, after adding indices to our SQL tables we found that performance improved drastically, even though additional complexity was introduced to the server functionality across the switch from NoSQL to SQL with indices.
 This means that queries which used to take upwards of 200 milliseconds, now only takes approximately 10 milliseconds, and the response times reflect a significantly faster server, as can be seen in \cref{fig:nosql_vs_sql}.
 Note that the \textit{Submitting Data} test plan was adapted in the comparison seen in \cref{fig:nosql_vs_sql}, such that no datapoints was submitted and the route states was not changed.
 This was done to accommodate for missing features in the NoSQL version of our server.
