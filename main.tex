@@ -28,27 +28,7 @@
 %IMPORTS
 %\subimport{path}{name}
 \subimport{cha/}{index.tex}
-
-%%%%%%%%%%%%%%%%%%%
-%Appendices
-\titleformat{\part}[display]{%
-\fontsize{38pt}{8pt}\filcenter\sffamily\selectfont\thispagestyle{empty}}
-{}
-{0pt}
-{}
-\begingroup
-    \part*{Bibliography}
-    \bibliographystyle{plainurl}
-    \renewcommand{\addcontentsline}[3]{}%
-    \renewcommand{\section}[2]{}%
-    \renewcommand{\chapter}[2]{}%
-    \bibliography{bibtex}
-    \label{biblo:mybiblio}
-\endgroup
-
-\appendix
-    \part*{Appendices}
-    \subimport{appendix/}{moscow}
+\subimport{appendix/}{index.tex}
 
 %%%%%%%%%%%%%%%%%%%
 \end{document}
