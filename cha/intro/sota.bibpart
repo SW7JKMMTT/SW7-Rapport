@@ -57,3 +57,35 @@
   url = {https://en.wikipedia.org/wiki/OBD-II_PIDs},
   lastchecked = {03-10-2016},
 }
+
+@MISC{geotab_str,
+  author = {GeoTab Inc},
+  title = {GeoTab},
+  year = {2016},
+  url = {https://www.geotab.com/},
+  lastchecked = {03-10-2016},
+}
+
+@MISC{fleetms4,
+  author = {Vinity Soft Inc},
+  title = {Vinity Soft Business Solutions},
+  year = {2016},
+  url = {https://www.vinitysoft.com/fleet-management-software-4-0/},
+  lastchecked = {03-10-2016},
+}
+
+@MISC{fuckemtomtom,
+  author = {TomTom Telematics BV},
+  title = {WEBFLEET},
+  year = {2016},
+  url = {https://telematics.tomtom.com/en_gb/webfleet/products/webfleet/},
+  lastchecked = {03-10-2016},
+}
+
+@MISC{teletrac,
+  author = {Teletrack Navman Group},
+  title = {Teletrack Navman},
+  year = {2016},
+  url = {http://www.teletracnavman.co.nz/},
+  lastchecked = {03-10-2016},
+}

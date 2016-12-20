@@ -20,9 +20,9 @@ For this, our 7\textsuperscript{th}, semester we decided that using Scrum with s
 These tools are Daily Scrum and a Scrum Board.
 The Daily Scrum is a short meeting in the beginning of the day where each member answers three questions:
 \begin{itemize}
-    \item \textit{What have you done since the last meeting?}
-    \item \textit{What do you intent to do today?}
-    \item \textit{Is there anything stopping you?}
+    \item What have you done since the last meeting?
+    \item What do you intent to do today?
+    \item Is there anything stopping you?
 \end{itemize}
 These three questions allow for a quick overview of what others are doing and also provides an opportunity each day to ask for help if there are any uncertainties about a task.
 We wanted to use Daily Scrum in order to synchronise the team, i.e. share information such that everyone knows what is going on.
@@ -58,7 +58,7 @@ This led us to require load testing, system tests and integration tests.
 %Systematic Integration tests(JUnit) not interesting if no interaction with DB, thus Integration > Unit
 %Load testing, system test(testing all services) JMeter
 \subsubsection{Build Automation}
-We decided to use build automation, and continuous integration, in order to automatically verify that our changes was working and did not break existing functionality.
+We decided to use build automation, and continuous integration, in order to automatically verify that our changes were working and did not break existing functionality.
 We set this up both for our documentation, i.e. this paper, and the server.
 To monitor if all builds and test were succeeding, we set up a monitor with a Raspberry Pi\footnote{\url{https://www.raspberrypi.org/}}, which displays the current build status.
 
@@ -98,10 +98,12 @@ As such ensuring high quality through a rigid review structure would result in l
 \subsubsection{Test Focus}\fxnote{This is very short, not quite sure what else to write, also i don't know about the name for this, suggestions?}
 %May require some input - Eftersom vi har et dedicated test afsnit ved jeg ikke helt hvad man skulle skrive her, vi har jo rimelig successfully gjort det som vi ville mht. test
 As documented in \cref{cha:testing} we managed to successfully thoroughly test the system in various ways, integration testing with JUnit and Hamcrest, load testing with Apache JMeter and system tests also trough Apache JMeter.
+The constructed system is testable, and has numerous tests, which run automatically on every commit, and after every build, which we found greatly lowered the amount of errors on the production server.
+To further our goal of proper testing, we placed a build monitor in the work space, which we also had a positive effect on stability and error rate.
 %Systematic Integration tests(JUnit) not interesting if no interaction with DB, thus Integration > Unit
 %Load testing, system test(testing all services) JMeter
 \subsubsection{Build Automation}
-We followed the plan, and setup build automation and continuous integration right when starting the project. 
+We followed the plan, and setup build automation and continuous integration right when starting the project.
 Additionally we realized that the process of deploying code could get automated as it was a bothersome process.
 Therefore we also setup continuous deployment if all tests ran successfully.
 This reduced the turnaround time of development, which is an improvement in an agile environment.
