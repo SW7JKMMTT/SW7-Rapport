@@ -1,0 +1,15 @@
+@MISC{buildwith,
+  author = {BuiltWith Pty Ltd},
+  publisher = {builtwith.com},
+  title = {jQuery Usage Statistics},
+  lastchecked = {20-12-2016},
+  howpublished = {\url{https://trends.builtwith.com/JavaScript/jQuery}}
+}
+
+@MISC{angular_1_2,
+  author = {BuiltWith Pty Ltd},
+  publisher = {builtwith.com},
+  title = {jQuery Usage Statistics},
+  lastchecked = {20-12-2016},
+  howpublished = {\url{https://angular.io/docs/ts/latest/cookbook/a1-a2-quick-reference.html}}
+}
