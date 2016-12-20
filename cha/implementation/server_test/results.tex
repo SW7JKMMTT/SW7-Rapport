@@ -56,13 +56,17 @@ This is also reflected in the response time distribution seen in \cref{fig:submi
 \end{figure}
 
 \bigskip
-\cref{fig:fetch_test_results_normal} and \cref{fig:fetch_test_results_heavy} shows the results of the \textit{Fetching Data} test plan under \textit{Normal load} and \textit{Heavy load} respectively.
+\cref{fig:fetch_test_results} shows the results of the \textit{Fetching Data} test plan under \textit{Normal load} and \textit{Heavy load} respectively.
 This test is run after cleaning the database and then running the \textit{Submitting Data} test plan under \textit{Normal load}.
-However, the coordinates of waypoints are limited to between $-10$ and $10$ in latitude and $-20$ and $20$ in longitude, which is done to make sure the geospatial queries can find data.
+However, the coordinates of waypoints are limited to between $-50$ and $50$ in latitude and $-100$ and $100$ in longitude, which is done to make sure the geospatial queries can find data.
+In the figure we see five plotted lines, each line represents a point from the \textit{Fetching Data} test plan.
+Each point from the test plan is performed separately, but plotted on top of each other to better compare the different response times.
+Moreover, each plotted line is followed by information about how much date the fetching got in total.
+This is relevant because the fetching test is influenced heavily by the amount of data fetched.
 
 Identically to the \textit{Submitting Data} test, we run this test under \textit{Normal load} and \textit{Heavy load}.
 The amount of load is determined by how many threads we use to fetch data in parallel.
-Moreover each thread makes the same request for data to the server ten times sequentially, such that any caching can be caught in the test results.
+Moreover each thread makes the same request for data to the server 25 times sequentially, such that any caching can be caught in the test results, and response times can be averaged to better display performance.
 Under \textit{Normal load} we use 100 threads, or users, to request data simultaneously and under \textit{Heavy load} we quadruple that number --- giving us 400 users acting in parallel.
 
 Because the network interface is our bottleneck these numbers are significantly lower than in the \textit{Submitting Data} test, where we had 4000 users in parallel.
@@ -70,35 +74,19 @@ We deem it unnecessary to test with higher load, since solving such network limi
 However, it should be noted that the final system could be distributed to avoid bandwidth problems.
 
 \begin{figure}[!htb]
-    \centering
     \begin{subfigure}[b]{\textwidth}
         \footnotesize
         \centering
-        \subimport{graphs/}{fetch_resp_dist_normal.tex}
-        \caption{Response time distribution}\label{fig:fetch_resp_t_dist_normal}
+        \subimport{graphs/fetching/}{fetch_normal.tex}
+        \caption{Normal load}\label{fig:fetch_test_results_normal}
     \end{subfigure}\\
     \begin{subfigure}[b]{\textwidth}
         \footnotesize
         \centering
-        \subimport{graphs/}{fetch_reqs_normal.tex}
-        \caption{Requests per second}\label{fig:fetch_reqs_p_sec_normal}
+        \subimport{graphs/fetching/}{fetch_heavy.tex}
+        \caption{Heavy load}\label{fig:fetch_test_results_heavy}
     \end{subfigure}
-    \caption{fetchting test plan results --- Normal load}\label{fig:fetch_test_results_normal}
-\end{figure}
-\begin{figure}[!htb]
-    \begin{subfigure}[b]{\textwidth}
-        \footnotesize
-        \centering
-        \subimport{graphs/}{fetch_resp_dist_heavy.tex}
-        \caption{Response time distribution}\label{fig:fetch_resp_t_dist_heavy}
-    \end{subfigure}\\
-    \begin{subfigure}[b]{\textwidth}
-        \footnotesize
-        \centering
-        \subimport{graphs/}{fetch_reqs_heavy.tex}
-        \caption{Requests per second}\label{fig:fetch_reqs_p_sec_heavy}
-    \end{subfigure}
-    \caption{Fetching test plan results --- Heavy load}\label{fig:fetch_test_results_heavy}
+    \caption{Fetching response times}
 \end{figure}
 
 \subsubsection*{NoSQL vs. SQL}\label{subsec:nosql_vs._sql}
