@@ -4,42 +4,110 @@
 This chapter considers improvements that could be made to the existing system.
 These improvements covers both areas we have not developed, and areas where we could improve upon the current solution.
 %%%%%%%%%%%
-\section{Producer Client}\fxnote{Is this enough? I can add more details but as this point i feel like we covered producer client pretty well}
+\section{Producer--Client}
 %Data provider that handles data normalisation to replace sim
 The current implementation only emulates a producer client.
 This works for testing and demonstrating that the server works as intended, but the server also relies on the producer client.
 We emulate data in a JSON format, which is the only format the server supports.
 In \cref{sec:data_normalisation} we described that the ideal place for data normalisation would be on the producer client.
-If we were to release the server without a producer client, any potential client would have to develop their own producer client, able to produce the data in a JSON format and normalise it, as well as a consumer client.
+If we were to release the server without a producer client, any potential customer would have to develop their own producer client, able to produce the data in a JSON format and normalise it, as well as a consumer client.
 
 \bigskip
 We envision the producer client as a smartphone app which utilises the phone's GPS and uses Bluetooth to communicate with an \ac{OBD} device.
-The app then normalises the data from the two sources and uses the phone to transmit data to the server.
-This is the most simple solution, as is described later in \cref{sec:fw_server} the client may be expanded to also allow for manual input or request data from other sources, in case such data would be relevant.
-\section{Consumer Client}\fxnote{Same as producer, can expand on specific features but not sure if worthwhile}
+The app then normalises the data from the two sources and uses the data connection on the phone to transmit data to the server.
+This is what we consider the simplest solution, as is described later in \cref{sec:fw_server} the client may be expanded to also allow for manual input or request data from other sources, in case such data would be relevant.
+\section{Consumer--Client}
 %A baseline front--end client that allow for the simple functionality(fuel consumption, driving patterns, possible API extension to cooperation with fuel companies to determine price for a route, maintenance status.)
 The current consumer client is a proof of concepts and still lacks a lot of features for it to be usable in a commercial sense.
-While the development of a consumer client would be less important than that of a producer client, developing a baseline consumer client would not be unreasonable.
+While we consider the development of a consumer client to be be less important than that of a producer client, developing a baseline consumer client would not be unreasonable.
 As described in \cref{sec:constituents_of_the_system} developing a consumer client that fits the need of any arbitrary user is not feasible.
 Considering commercial use, smaller companies may not have the resources to develop their own consumer client, in that regard a baseline consumer client could suit some of their needs.
 A baseline consumer client supporting features beyond what our proof of concept does, e.g. various statistics, would make our system usable for a wider clientele.
 This requires that a producer client exists and as such the producer client would be the higher priority when it comes to future development.
 \section{Improving the Server}\label{sec:fw_server}
-Both the producer client and consumer client can be viewed as their own systems, and their development would as such not influence the server.
+Both the producer client and consumer client can be viewed as their own systems, and their development would as such not influence the server directly.
 While the development of those two systems would contribute to a complete vehicle fleet management system, improvements to several areas of the server can also be made, some of which might influence the capabilities of a potential consumer client and the requirements for a producer client.
 This section describes some of the possible improvements that could be made to the server, and also considers their influence on both producer and consumer clients.
-\subsection{Server/Technological Changes}\fxnote{Jesper/SassyPants/Truls Plz}
+
+There are primarily two kinds of improvements, new features, and performance improvements. 
+\subsection{Horizontal Scalability}
+During our tests of the first iteration of the system, where we used a NoSQL database, we found some critical issues which caused us to switch to an SQL database; PostgreSQL.
+The switch from NoSQL to SQL was relatively painless since we were only loosely coupled to the NoSQL database, since all database access was through the \ac{JPA}.
+One of the original reasons for choosing NoSQL was the ability to scale vertically across different machines, whereas with SQL it is only practically possible to scale horizontally.
+If performance becomes an issue in the future then switching back to NoSQL could be a consideration, and the switch should only involved a limited amount of changes to the \acp{DAO}, as we explained in \cref{subsubsec:dao}.
+
+Another way to improve our horizontal scalability would be to shard our Lucene index using Infinispan\footnote{\url{http://infinispan.org/}}.
+As we have mentioned previously we use Hibernate Search for spacial queries, it uses Lucene as a back--end for its searching, in \cref{subsubsec:spatialqueringtech}.
+It is possible to have more than one machine which can be used to search using Lucene, but still only have one which adds to the index, to avoid a wide variety of problems related to race conditions etc.
+This would allow an improve in concurrent spatial retrieval queries, but not the ability to add to the index faster.
+More information about this is given by Infinispan\footnote{\url{http://infinispan.org/docs/stable/faqs/faqs.html\#can_i_use_infinispan_with_hibernate}}.
+
+It is also possible to have multiple instances of Wildfly and put them behind a load--balancer.
+This is possible as the back--end is stateless, and does not store any data locally. 
+
+To identify which kind of scaling would be most appropriate, one should profile the system under load, to identity the bottlenecks and improve those parts of the system. 
+
+\subsection{Performance Improvements}
+We have spent some time considering the performance aspects of various parts of the system, some could still be improved.
+For example we believe that our spatial querying can be improved, however we have not had enough time to rigorous testing.
+For example sometimes unnecessary data is fetched from the database, this is unwanted as it causes overhead, in \cref{lst:withinradiusfail} we have an example of this.
+This method is used to get the routes which are within a radius of a coordinate.
+First we get the ids of all the routes within the radius of the coordinate, then we use a \ac{JPQL} query to fetch the full information about the routes.
+In it on line 8 we have \code{JOIN FETCH r.points} however this information is never used after this method is called, but the database still fetches it.
+This could be improved in this method and other, our integration tests will help identify the correctness after changing the queries.
+\begin{listing}
+    \begin{java2}
+        Set<Long> routes = routeIdsWithinRadius(waypointDao, coordinate, radius);
+        if (routes.isEmpty())
+            return new ArrayList<>();
+
+        TypedQuery<Route> query = em.createQuery(
+            "SELECT DISTINCT r " +
+                "FROM Route r " +
+                "JOIN FETCH r.points " +
+                "JOIN FETCH r.vehicle v " +
+                "JOIN FETCH r.driver d " +
+                "WHERE r.id IN :routes",
+            Route.class);
+
+        query.setParameter("routes", routes);
+        return query.getResultList();
+    }
+    \end{java2}
+    \caption{An example of a query where unnecessary data is fetched.}
+    \label{lst:withinradiusfail}
+\end{listing}
+These issue are not always easy to identify, and finding a solution which is an improvement without sacrificing something else, i.e. readability, flexibility etc, is not always easy.
+One should first identify which queries are taking up the most CPU--time, then they should be scrutinized.  
 % Improve performance by profiling
 % Consider diffirent databases etc by testing them
-Horizontal scale?
-Back to NoSQL?
-\subsection{More Endpoints}\fxnote{More endpoints is a very simple thing, not quite sure what to expand on here}
-Delete Features
-%More services??
-\fxnote{enunciate liste} shows all the currently implemented endpoints.
-The data obtainable through \ac{OBD} allows for the development of more endpoints as there are more details to be utilised, e.g. engine RPM.
-The usefulness of this data varies from such things as engine RPM to accelerator pedal position.
-A complete system would implement all the data available from \ac{OBD} however, this is a time--consuming process; ideally a prioritised list of all the data available would be made and used for continuous development on this.
+\subsection{Data deletion}
+Currently there is no ability to delete information from the system, as we deemed it as essential as other features, in \cref{subsec:implementingservices}.
+This would be a good addition since there are many real world scenarios where this would be useful. 
+The biggest problem with doing this is, permissions and cascading.
+Permissions being, who is allowed to delete what, a set of policies should be set up for this.
+By cascading we mean, that we need to handle every case of what happens to related elements when an element is deleted to avoid orphans in the system.
+For example when deleting a driver, all the routes which are related to said driver should be deleted too, and therefor also elements which are dependent on the route etc.
+Implementing this feature also requires a solid amount of testing to ensure that no unintended data loss occurs. 
+
+\subsection{More flexibility for the Clients} 
+There could be made some improvement to the information we provide through the API.
+Moreover the consumer client currently does some processing which would be more suited for the server:
+\begin{description}
+    \item[Vehicle Icon] \hfill \\ 
+    To figure out if a given vehicle has an icon, the consumer client sends a request for the potential icon, and displays a default if it gets back a \textit{404 File Not Found}. 
+    This could be improved by indicating in the vehicle endpoint whether an icon exists for the given vehicle, as it does for the user. 
+    \item[Driver Status] \hfill \\
+    Ind order to know if a user/driver is currently operating a vehicle, the consumer client currently has to iterate though the list of active routes, this could be provided with the list of users, and greatly decrease the amount of processing for the consumer client, while not adding any significant workload for the server.
+    \item[Limiting the number of waypoints sent] \hfill \\
+    Currently the consumer clients map, only displays a subset of the available waypoints at any given time depending on the zoom level of the view, this is to improve the performance.
+    However it still fetches all the waypoint on the routes it display, and then filter them before displaying them.
+    This could be done on the server more efficiently without reducing other functionality.
+    \item[Auto-positioning the Map] \hfill \\
+    In order for the consumer client to automatically adjust the map view to fit all the routes etc. it currently has to fetch all waypoint on all routes and find the extremities, i.e. northmost, southmost, eastmost and westmost points. 
+    This is very inefficient and could be done by the server, for example by adding another endpoint.
+\end{description}
+
 \subsection{Stakeholder Specifics}
 %In order to truly derive what future work can be done getting a stakeholder would be step one (i.e. some company that would use the system)
 %Expand support to more vehicles, what does this truly mean, do we even have vehicle specific things at this moment? would it be to produce more services?
@@ -79,5 +147,16 @@ support long polling, or what they call ``asynchronous responses'', with the
 a bug with the implementation which we have reported
 upstream\footnote{\url{https://issues.jboss.org/browse/RESTEASY-1225?_sscc=t}}.
 
+\subsection{Abstraction Leaks}
+Currently the server leaks the abstraction of the \code{Driver} class to the clients, 
+this leak of abstraction has no purpose and should be eliminated.
+Leaking abstractions can be a problem since it disallows internal changes without having external changes too. 
 
-\fxnote{ProtoBuffs og eller GZIP}
+\subsection{Data Interchange Format}
+In order to improve the performance one could consider changing the data interchange format used. 
+Currently we use JSON, as we choose in \cref{subsec:serialization_tech}, however there are reasons to change this decision.
+One could simply use a compression on--top of JSON to minimize the amount of traffic to and from the server.
+This comes at the cost of additional CPU--time, as such tests should be performed to see if switching to GZIP or a similar format would improve the total performance.
+
+Another way to improve this could be switching to a binary format such as Google's Protocol Buffers\footnote{\url{https://developers.google.com/protocol-buffers/}}.
+This would however require a predefined format for all endpoints such that the clients can deserialze the data, however it has a much lower file--size and deserialzation overhead. 
