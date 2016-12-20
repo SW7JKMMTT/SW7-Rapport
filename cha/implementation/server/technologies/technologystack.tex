@@ -228,7 +228,7 @@ When interfacing with Spring specifically, the \code{entity manager} is injected
 The transactions can be managed manually, but letting Spring do it allows the container \fxnote{Write about the Spring IoC container} to figure out when the outermost transaction ends, and therefore minimize the amount of transactions.
 We use the \ac{JPA}, since it provides all the features we need, while also being portable between different persistence providers.
 
-\subsubsection{Spatial Querying}
+\subsubsection{Spatial Querying}\label{subsubsec:spatialqueringtech}
 Since we, as described in \cref{sec:requirements}, want to keep track of vehicle positions, we will be storing vehicle location, which is geospatial data.
 To use the data, we need some way of querying the data, and using it in processing or returning it to the client.
 Spatial data is different from regular data, in that the way you want to query often has to do with distance in a 2--D space, 3--D globe, or points in relation to a polygon.

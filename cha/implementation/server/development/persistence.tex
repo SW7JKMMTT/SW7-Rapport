@@ -104,7 +104,7 @@ Flyway will only apply the migrations which have not already been applied to the
 This makes it much simpler as a developer, compared to having to manage this manually.
 
 \subsubsection*{Spatial queries}\label{subsubsec:spatial}
-It is possible to perform spatial queries using Hibernate Search which we mentioned in \fxnote{ref når det er klar}.
+It is possible to perform spatial queries using Hibernate Search which we mentioned in \cref{subsubsec:spatialqueringtech}.
 We only have one class which directly contains spatial data, that is the \code{Waypoint}--class.
 Therefore we have a spatial query called, \code{withinRadius}, which is shown in \cref{lst:withinRadius}.
 The parameters to this query is a coordinate and a radius.
