@@ -67,8 +67,8 @@ The Spring \ac{IoC} container takes the concept a step further.
 Instead of the caller retaining control, the \ac{IoC} container controls all dependencies.
 It instantiates and configures them according to metadata specified with either XML, code, or annotations.
 Spring heavily relies on the concept of Beans described above, but also includes support for managing \acp{POJO} as if they were Beans.
-Although the main configuration in Spring is done with XML, allowing the programmer to instantiate object into the \code{ApplicationContext}, it is also possible to get dependencies injected by using the \code{Autowired} annotation.
-When Spring instantiates a Bean it first looks through it and injects dependencies into all the fields having the \code{Autowired} annotation, by resolving the dependency class/interface.
+Although the main configuration in Spring is done with XML, allowing the programmer to instantiate object into the \code{ApplicationContext}, it is also possible to get dependencies injected by using the \code{@Autowired} annotation.
+When Spring instantiates a Bean it first looks through it and injects dependencies into all the fields having the \code{@Autowired} annotation, by resolving the dependency class/interface.
 If the application includes advanced Beans, that need some form of lifetime management, Spring supports factory Beans, which are factories that create a specific type of Bean.
 
 By inverting control to the container, instead of the objects, Spring makes it possible to switch out a large part of an application, by only changing XML.
