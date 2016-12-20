@@ -175,13 +175,16 @@ Most notably we introduced indices to the SQL database, and avoided fetching the
 While testing is a time consuming endeavor, the time we spend testing is at least equal to that we have spend developing, it is also a tool required in order to prove some measure of quality for the system.
 Collectively all the tests have enabled us to attain a high internal quality within the code with use of good code practice methods like smoke tests, a test framework and extensive regression tests, while also having a high external quality to potential users of the API with a thoroughly tested API.
 
+Our use of Jenkins CI to achieve our goal of test focus, and build automation, was successful.
+We wrote a lot of unit tests, since we felt the impact of running them for every build, and change.
+Our tests found some errors, which would have otherwise made it into production, and might have disrupted the production server.
+
 %1/3 test writing found a logical error.
 %test makes u think also revealing errors
 %Regression test the most helpful part
 %Integration test didnt find JSON errors.(Testing doenst find all tests obviously) Manual sanity test(Smoke Test)
 %System test finds bottlenecks // revealed, not acted upon - improvements ---
 
-\subsection{Jenkins/CI}
 \subsection{Project Focus}
 In \cref{cha:requirements_elicitation} we made the choice to focus on the server component.
 While choosing to focus on the server, we still made a proof of concept version of a consumer client and emulated a producer client.
