@@ -13,12 +13,12 @@ This pattern uses the single responsibility principle, meaning that the only way
 Having this isolation will help avoid errors and bugs related to data persistence.
 It also collects all accessing methods to the database in one location.
 We define our \acp{DAO} as an interface, and implement them in a class.
-This is such that we can replace the implementation if required. \fxnote{Er det noget med at der også er nogle spring ting her?}
+This is such that we can replace the implementation if required, and that allows the spring container to inject a proxy instead of the Bean.
 
 There are four basic operations related to persistence of data, they are: \ac{CRUD}.
 Three of these: create, update, and delete, are simple to implement using Hibernate, and loosely tied to what classes they access, we therefore construct a \code{BaseDao<T>} interface, and implement it in an abstract class \code{BaseDaoImpl<T>}.
 Here we use generics since the code are type safe but the types are unknown at this point.
-Implementing these operations is done using the methods from the \ac{JPA}\fxnote{Tjek lige at vi har forklaret JPA sufficiently} which Hibernate in turn implement.
+Implementing these operations is done using the methods from the \ac{JPA} which Hibernate in turn implement.
 The remaining operation in \ac{CRUD} is the read operation.
 This has to be done individually for each \ac{DAO}.
 
@@ -38,7 +38,7 @@ This is a \code{TypedQuery} generic given the type \code{User} on line 5 and 10,
 \code{u.driver} is a nullable field, which is the reason we use a \code{LEFT JOIN} on line 7.
 \code{u.permissions} is a list which can have zero or more members, again we use a \code{LEFT JOIN} on line 8.
 On both line 7 and 8, we use the \code{FETCH} primitive with our joins,
-this is to eagerly load lazy elements, such that they do not have to be loaded in a separate query.
+this is to eagerly load lazy relations, which means that the data only is loaded when needed, such that they do not have to be loaded in a separate query.
 We use the \code{DISTINCT} primitive in our select, on line 5,
 otherwise we would get multiple copies of users which has more than one permission.
 Lastly on line 10, we use the \code{.getResultList()}--method to get Hibernate to fetch the result from the database system, and return it.
@@ -69,7 +69,7 @@ therefore we write a \ac{HQL}--query for each of these situations.
 For example in our model, \cref{subsec:model} the \code{Route}--class, has two lists,
 one with \code{Waypoint}s, and one with \code{VehicleDataPoint}s.
 However, there is currently not a piece of code which needs both of these lists at the same time, but there is code which use one of the two.
-Therefore we make a method which fetches each list eagerly (fetches before first use) when it fetches the route.
+Therefore we make a method which fetches each list eagerly, fetches before first use, when it fetches the route.
 
 \section{Overview of created \acp{DAO}}
 In total we have made eight \acp{DAO} and the \code{BaseDao} mentioned earlier:

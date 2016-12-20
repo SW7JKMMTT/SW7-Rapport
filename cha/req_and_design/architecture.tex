@@ -45,12 +45,16 @@ As for denial--of--service attacks there is no way to completely secure oneself 
 A key point for the client--server architecture is its inherintly distributed structure, a structure we also require if we are to be able to have multiple front--end clients and data providers.
 The client--server is also a well defined and broadly used architecture by large--scale web services such as Netflix who have adapted it to suit their specific needs and work with their tenchnology stack which can be seen on their techblog \cite{netflix}.
 For our particular system we have two types of distinct clients communicating with the server, as represented on \cref{fig:client_server_architecture}.
+
 \begin{description}
     \item [Producer] which are the clients providing data, these are located in the vehicle and transmit both \ac{OBD} and GPS data to the server.
     \item [Consumer] which are the clients making use of the data provided by the producer, this is the system that a company would use, these request data from the server.
 \end{description}
 \subimport{}{interwebz_architecture.tex}
-\fxnote{figure needs fixing}
+
+In \cref{fig:client_server_architecture} the arrows are representing the direction of the data flow between the different clients.
+The data provider are only sending data to the back--end, and the front--end are reading data from the back--end, which is why the data direction are only oneway.
+The arrow which is going to and from the back--end are going both ways, this is because that the back--end both sends and receive data. 
 
 \section{Internal Architecture}\label{sec:internal_architecture}
 While the client--server pattern is used for the system as a whole; producer, server, and consumer; each of these three components may have their own internal architecture.
@@ -62,7 +66,7 @@ Choosing to emulate does remove some options for load scalability, these are cov
 \subsection{Server}
 For the server component we use a layered architecture consisting of three layers.
 \begin{description}
-    \item [Core] This layer contains both data model and business logic, an UML diagram for this layer is shown in \cref{fig:model_class_diagram}.
+    \item [Domain model] This layer contains both data model and business logic, an UML diagram for this layer is shown in \cref{fig:model_class_diagram}.
     \item [Persistence] This layer contains \aclp{DAO}.
     \acsp{DAO} determine how an object may be accessed and what data operations are allowed on the data, protecting the database details.
     They are further explained in \cref{subsubsec:dao}.
@@ -71,16 +75,16 @@ For the server component we use a layered architecture consisting of three layer
     It contains endpoints for each available request, if the request from a client is legitimate, the endpoint makes use of the \acsp{DAO} to manipulate or retrieve data.
 \end{description}
 As mentioned this helps hide server details that neither client needs to know about.
-The only layer that clients interact with directly is the service layer, having the layers be separate also helps in case the model needs altering for some reason, as only the core would have to be refined.
+The only layer that clients interact with directly is the service layer, having the layers be separate also helps in case the model needs altering for some reason, as only the domain model would have to be refined.
 The layered architecture also brings in the concept of functional scalability, as all data is present, only the service layer would be altered in order to provide the clients with new functionalities, given that the data is available in the system.
-How this further helps scalability is described in more detail in the implementation section \fxnote{opdater når denne section eksistere}.
+How this further helps scalability is described in more detail in the implementation section\cref{subsec:model}.
 
 %\subsubsection{Client--Producer}
 %Depends on user interaction wished for/wanted --- if low to none then pipe and filter layer is sensible
 %If high wished, then a layered/MVC Pattern may be wanted
 \subsection{Consumer--Client}
 The data provided by the system we are developing makes it such that any company can have a system built that suits their exact needs; this also means that the architecture for said system will be whatever they need.
-As an example a consumer client could use a layered architecture as shown on \cref{fig:consumer_client}.\fxnote{Kasper:Design figure to you implementation and rewrite this accordingly}
+As an example a consumer client could use a layered architecture as shown on \cref{fig:consumer_client}.
 A generic layered architecure might have the four following layers, as described by Ian Sommerville in \cite{software_engineering}:
 \begin{itemize}
     \item User Interface.

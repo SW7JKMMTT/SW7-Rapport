@@ -8,6 +8,7 @@
             sharp/.style={rectangle, minimum width=9.0cm, minimum height=1cm,text centered, fill=diagramLight, draw, align=center},
             server/.style={rectangle, rounded corners, minimum width=1.5cm, minimum height=1cm,text centered, fill=diagramLight, rectangle split, rectangle split parts=2, draw},
             flow/.style={draw, ->},
+            reverse_flow/.style={draw, <-},
             double_flow/.style={draw, <->},
             create/.style={draw, ->},
             use/.style={draw, dotted, ->}
@@ -82,9 +83,9 @@
         \draw [flow] (prod_n.south) -- (interwebs_edge3.center);
 
         %draw consumer
-        \draw [double_flow] (cons_1.south) -- (interwebs_edge4.center);
-        \draw [double_flow] (cons_n.south) -- (ghost5.center) -| (interwebs_edge6.center);
-        \draw [double_flow] (cons_dot.south) -- (ghost4.center) -| (interwebs_edge5.center);
+        \draw [reverse_flow] (cons_1.south) -- (interwebs_edge4.center);
+        \draw [reverse_flow] (cons_n.south) -- (ghost5.center) -| (interwebs_edge6.center);
+        \draw [reverse_flow] (cons_dot.south) -- (ghost4.center) -| (interwebs_edge5.center);
 
         %draw server
         \draw [double_flow] (server_dot) -- (web);
