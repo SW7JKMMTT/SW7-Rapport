@@ -37,7 +37,7 @@ On line 6, we use the \code{UserDao}, explained in \cref{subsec:persistingtodb},
 The method is named \code{byId\_ForDisplay} since it initializes the fields which are lazily loaded, such that they can be sent to the user.
 On line 8, we check if a user with the given id is found, if not, then we return an error.
 Finally on line 11 we return the user object we fetched from the database.
-Then, as explained in \fxnote{Serialization}, it will be serialized into JSON.
+Then, as explained in \cref{subsec:serialization_tech}, it will be serialized into JSON.
 \begin{listing}
     \begin{java2}
 @GET
