@@ -68,7 +68,7 @@ therefore we write a \ac{HQL}--query for each of these situations.
 
 For example in our model, \cref{subsec:model} the \code{Route}--class, has two lists,
 one with \code{Waypoint}s, and one with \code{VehicleDataPoint}s.
-However, there is currently not a piece of code which needs both of theses lists at the same time, but there is code which use one of the two.
+However, there is currently not a piece of code which needs both of these lists at the same time, but there is code which use one of the two.
 Therefore we make a method which fetches each list eagerly (fetches before first use) when it fetches the route.
 
 \subsubsection*{Overview of created \acp{DAO}}
@@ -99,7 +99,7 @@ and can therefore cause data--loss\cite[p.~64]{javapersistence}.
 When writing a database schema by hand, and subsequently writing migrations, it is possible to preserve the data.
 Additionally writing the database schema by hand also allows us to fine--tune some features more than Hibernate allows us.
 For example we can freely include secondary indices for performance improvements.
-As previously mentioned in \fxnote{Techstack ref}, we use the tool Flyway to handle our database migrations.
+As previously mentioned in \cref{subsubsec:flyway}, we use the tool Flyway to handle our database migrations.
 Flyway will only apply the migrations which have not already been applied to the database system.
 This makes it much simpler as a developer, compared to having to manage this manually.
 
