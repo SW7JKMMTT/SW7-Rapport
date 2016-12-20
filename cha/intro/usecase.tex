@@ -2,6 +2,16 @@
 \acl{VFM} has a wide variety of potential use cases all with both unique aspects, as well as some shared ones.
 In order to work more focused on the problem, a single use case is chosen as the primary focus.
 
+But first we will explore a shared aspect; how we can collect data from vehicles.
+On every modern road vehicle there is computer which provides information about the engine,
+this system is called \ac{OBD}.
+It was first called Assembly Line Diagnostic Link, when it was started by General Motors in the early 1980's.
+It has since been expanded and standardized, and provides a wide range of information, both simpler measures such as total kilometers driven,
+as well as real time information about the vehicle, such as RPM, speed, airflow rate etc.
+The standard specifies the connector used, its pin--out, the signaling protocols, and the messaging format etc.
+Supporting \ac{OBD} has been mandatory for all cars manufactured in the US since 1996, and a bit later in the EU. 
+
+\bigskip
 The following list presents some of the use cases discussed, as well the aspects that were not shared between all the cases:
 
 \begin{description}
@@ -10,17 +20,19 @@ The following list presents some of the use cases discussed, as well the aspects
     Another aspect here is customer service, through \ac{OBD} the drivers can be evaluated in regard to breaking patterns, speed etc.
     \item [Military (Logistics division)] \hfill \\
     In the military a variety of vehicles are used, each with unique aspects to them as most of the vehicles differ from civil vehicles in some fashion.
-    Furthermore vehicles in the military are often away from the base days at a time\footnote{Citation needed; information gathered from personal experience}, at which point having information about the vehicles status and position becomes convenient in monitoring situations.
+    Furthermore, the military have a large amount of people in logistics, which could possibly see a productivity increase from having positional and vehicle information from an automated system.
 
     When training there are also regulations, for instance driving and resting times requirements, depending on what type of vehicle that must be followed, the information from \ac{OBD} would help to reveal if the regulations are upheld.
 
-    Working with military vehicles would impose an additional requirement to consider the security of \ac{OBD}, both in order to encrypt the data, but also security measures in order to avoid the potential hijacking of a vehicle through \ac{OBD}.
+    It is worth noting that \ac{OBD} have had security issues; researchers at the University of Washington and the University of California have shown that it is possible to gain control of a vehicle by uploading a new \ac{ECU} firmware\cite{OBDSecurity}.
+    This can especially be a problem in the military since there are strict security regulations, for a wide variety of reason, such as hijacking and intelligence. 
     \item [Lorry Drivers] \hfill \\
     Similar to the military trucks, lorry drivers are often on the road for days at a time when driving a cargo truck.
     Lorry drivers also have regulations about sleep, cargo weight etc. which \ac{OBD} could provide data for, in order for the truck company to check whether their drivers uphold those regulations.
+    In Denmark a lorry driver is required to follow special regulations concerning driving and resting times\cite{haulierSleepLaw}.
     \item [Postal Company (Post Nord)] \hfill \\
     For the postal company the primary goal is to optimise the route their vehicles take, and to use all vehicles efficiently to cover the area where packages must be delivered.
-    \fxnote{Jeg har fuldstændig glemt hvad det unikke aspect var her}
+    One can also imagine using such a system to give its customers, i.e. receivers of packages, a more precise estimate of the delivery time, down to the hour it will be delivered in.
     \item [City Buses (Nordjysk Transport)] \hfill \\
     City buses run on a time schedule and those who use public transit expect the buses to be on time, information retrieved from the \ac{OBD} could help reveal potential delays, as well as where the delays occur such that a solution can be found.
     Similar to taxi and Uber drivers, customer service in regards to the performance of the driver is also an important aspect for bus drivers.
@@ -37,7 +49,3 @@ We make this choice since information about regular cargo trucks are easier to g
 Furthermore the military is a single client, if they change their requirements or don't want a system in the end, it could deem the whole system useless.
 Decisions made henceforth will be made accordingly to the focus being on cargo trucks; this should lead to an architecture with a shared basis expanded to consider cargo truck specific aspects.
 It should be easy to extend the system to in order to target other types of vehicles and their unique attributes.
-
-The driver of a truck is called a \textit{hauler} and is often employed by a haulage contractor, which is a company that administer the trips by the hauler and owns the trucks.
-In Denmark a hauler is required to follow special regulations concerning driving and resting times\cite{haulierSleepLaw}.
-Henceforth in this paper, when the word \textit{hauler} or \textit{haulage contractor} is used, it refers to a truck hauler and a truck haulage contractor.
