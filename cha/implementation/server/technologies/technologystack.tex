@@ -49,7 +49,7 @@ Because of the restrictions, a framework like Spring can instantiate the class a
 Requiring a no--arg constructor does impose an issue.
 Namely, it means that the object can be instantiated in an invalid state, which requires the programmer to knows which properties he must set to configure the object.
 Strictly speaking a Bean is not a \ac{POJO}, since it has to implement the serializable interface, but since the interface has no methods, the Bean is still said to be a \ac{POJO}.
-Spring allows for the no--arg constructor of a Bean to have an access level stricter than public.
+Spring allows for the no--arg constructor of a Bean to have an access level stricter than \code{public}.
 We will use that to hide the constructor when its use would result in a wrongly configured object.
 
 \subsubsection{Spring IoC Container}
@@ -75,7 +75,7 @@ We will be relying heavily on the Spring \ac{IoC} container in the server.
 
 \subsubsection{Communication}
 \label{subsec:tech_communication}
-As the server in our system needs to communicate with other parts of the system over the internet, we need a unified way of passing information around.
+As the server in our system needs to communicate with other parts of the system over the Internet, we need a unified way of passing information around.
 The two de facto standards for this type of communication are SOAP and REST.
 
 We present a short summary of the two technologies:
@@ -83,7 +83,7 @@ We present a short summary of the two technologies:
     \item[SOAP] (Simple Object Access Protocol)\cite{SOAP_spec}\hfill\\
         By passing XML data over HTTP (and in some cases HTTPS or SMTP), SOAP enables computers to communicate.
         SOAP requires a specific packaging of data in a so called \textit{SOAP Envelope} which contains a header and a body.
-        Mainly SOAP focusses on making procedures available to other systems via the internet.
+        Mainly SOAP focusses on making procedures available to other systems via the Internet.
     \item[REST] (Representational State Transfer)\cite{RESTful_best_practices}\hfill\\
         Services implementing a REST interface are often described as RESTful services.
         Instead of enforcing a predefined data structure as SOAP does, REST utilises the HTTP methods, e.g.~GET, POST, PUT, and DELETE.
@@ -116,14 +116,14 @@ Although we have picked JSON, it would be possible to have an XML representation
 To serialize our object into JSON from \acp{POJO} we have decided to use Jackson\footnote{\url{https://github.com/FasterXML/jackson}}, which is a library for serializing \acp{POJO} to JSON or XML, with JAX-RS support.
 Jackson is, like a lot of the other \ac{Java EE} libraries, configured using annotations.
 Among the most important annotations are \code{@JsonIgnore}, which causes a property to be ignored, and \code{@JsonSetter/Getter}, which can be used in conjunction with \code{@JsonIgnore} to create write or read only properties.
-Another feature that integrates with the rest of the technology stack is the integration with JAX-RS, which means that the various endpoint handlers, or methods, can return a Java object, and let the JAX-RS framework handle the serialization.
+Another feature that integrates with the rest of the technology stack is the integration with JAX-RS, which means that the various end--point handlers, or methods, can return a Java object, and let the JAX-RS framework handle the serialization.
 
 \subsection{Deployment}
 To be able to deliver our service we need what is called an application server, i.e.~something which can run our code and serve it to the outside world in a production environment.
 
 Due to our earlier choice of RESTEasy, we will be using the WildFly\footnote{\url{http://wildfly.org/}} application server, because it is also developed by JBoss.
 This ensures that our different technologies can work in conjunction right from the start;
-which in turn means that we can implement a working prototype, and focus on our business logic instead of tedious configuration of the systems underlying technologies.
+which in turn means that we can implement a working prototype, and focus on our business logic instead of tedious configuration of the system's underlying technologies.
 
 \subsection{Data Persistence}\label{subsec:datapersistence}
 Lastly we need to decide on a way of persisting data, i.e.~storing the data we gather.
@@ -160,7 +160,7 @@ Common for the majority of NoSQL database systems is that they value simplicity 
 This means that one significant shortcoming of NoSQL database systems is that they do not use ACID--compliant transactions.
 However many NoSQL database systems are ACID--like, i.e.~read and write operations can be configured to show consistency.
 
-Document stores are an expansion to Key--Value based stores, where the value is replaced by a document of some sorts, e.g.~XML or JSON formatted documents.
+Document stores are an expansion to key--value based stores, where the value is replaced by a document of some sorts, e.g.~XML or JSON formatted documents.
 An advantage of document stores is that any two documents do not need to follow the same ``schema'', i.e.~documents can have a different amount and kind of properties.
 This makes expanding the system significantly easier, since adding a new property, e.g.~fuel consumption, is as easy as introducing it into the server application.
 
@@ -193,25 +193,22 @@ The top four popular SQL database systems are\cite{DB_RANKINGS}:
 \end{enumerate}
 
 Oracle and Microsoft SQL Server will not be considered since Oracle is not free to use\cite{oracle_pricing}, 
-and Microsoft SQL Server on Linux will first be available mid-2017\cite{ms_sql_linux}.
+and Microsoft SQL Server on Linux will first be available mid--2017\cite{ms_sql_linux}.
 
 MySQL and PostgreSQL both have support for geospatial queries and both supports Hibernate ORM\cite{hibernate_support}, so to choose we look at their performance.
 Regarding performance PostgreSQL have a slight advantage in simple database reads and a big advantage in more complex read queries.
 MySQL has a slight advantage in database writes, 
 so in all PostgreSQL is better in read queries and MySQL is only slightly better in writing.\cite{post_vs_mysql}
 
-From the fact that PostgreSQL is a popular SQL database system, it supports geospatial queries and is well--performing,
-is it chosen to use as the database system for our data persistence.
-
 PostgreSQL is a popular SQL database system which is well--performing.
 It has support for Hibernate ORM and geospatial queries.
-Therefore we choose to is for our data persistence.
+Therefore we choose it for our data persistence.
 
 \subsubsection{Data Persistence Provider}
 Hibernate is another project operated by Red Hat.
 It was originally just an \ac{ORM}, but has since expanded into Hibernate \ac{OGM}, which brings the power of Hibernate to NoSQL databases, and other projects.
-Hibernate ORM has been around for a long time and is according to themselves popular and used by ``tens of thousands of Java developers''.\cite{hibernate_pop}
-This means that the Hibernate interface, and engine, is much more mature and stable than the OGM implementation.
+Hibernate \ac{ORM} has been around for a long time and is according to themselves popular and used by ``tens of thousands of Java developers''.\cite{hibernate_pop}
+This means that the Hibernate interface, and engine, is much more mature and stable than the \ac{OGM} implementation.
 Hibernate \ac{ORM} also allows us to change the underlying database easily, which becomes important when we want to run integration tests, without configuring a full database on every development machine.
 Since \ac{OGM} aims to be a drop in replacement, Hibernate allows developers to switch between SQL and NoSQL databases with relative ease.
 
@@ -227,7 +224,7 @@ An additional nicety of using the \ac{JPA} is that Spring has support for config
 The \ac{JPA} works with \code{entity managers}.
 It is through the \code{entity manager} that an application interfaces with the database, whether that be through a query to get data or, or a persist call to persist an entity.
 The update of entities is done transparently by using Java proxies, which injects information about entity changes into the persistence providers, which persists them on transaction close.
-When interfacing with Spring specifically, the \code{entity manager} is injected into a transactional bean, where Spring will manage the transactions.
+When interfacing with Spring specifically, the \code{entity manager} is injected into a transactional Bean, where Spring will manage the transactions.
 The transactions can be managed manually, but letting Spring do it allows the container \fxnote{Write about the Spring IoC container} to figure out when the outermost transaction ends, and therefore minimize the amount of transactions.
 We use the \ac{JPA}, since it provides all the features we need, while also being portable between different persistence providers.
 
