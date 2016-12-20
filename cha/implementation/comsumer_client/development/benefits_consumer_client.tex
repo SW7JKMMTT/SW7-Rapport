@@ -1,32 +1,32 @@
-\subsection{Benefits of the consumer client}\label{ssec:benefits_consumer_client}
-Some of the benefits which came from developing the consumer client was not only the ability to show the different aspects and capabilities of the REST API, but also the ability to get a feeling for some of the missing functionalities, and in the process help to discover any logical errors or inconsistencies.
+\subsection{Benefits of the Consumer--Client}\label{ssec:benefits_consumer_client}
+Some of the benefits which came from developing the consumer--client was not only the ability to show the different aspects and capabilities of the REST API, but also the ability to get a feeling for some of the missing functionalities, and in the process, help to discover any logical errors or inconsistencies.
 
 \bigskip
-During the development it was discovered that loading all the currently active routes into the consumer client would have a devastating effect upon the performance of the consumer client.
+During the development it was discovered that loading all the currently active routes into the consumer--client would have a devastating effect upon the performance of the consumer--client.
 In order to comply with this, a limitation to the amount of active routes which is shown at once needed to be implemented on the REST API.
 This functionality would make it possible to only get the active routes within a given area of a given vehicle from the REST API.
-With the functionality implemented an immediately improvement could be felt throughout the consumer client.
+With the functionality implemented an immediately improvement could be felt throughout the consumer--client.
 
 \bigskip
-Throughout the development of the consumer client, it was also discovered that an attribute directly on the employee, which would indicate if the employee had an image or not, would greatly reduce the data sent between the consumer client and the REST API.
+Throughout the development of the consumer--client, it was also discovered that an attribute directly on the employee, which would indicate if the employee had an image or not, would greatly reduce the data sent between the consumer--client and the REST API.
 This is caused by the fact that the endpoint where employee images are requested from, \code{/user/icon}, is not the same endpoint where employees are requested from, \code{/user}.
 Therefore without the attribute, first the employee is fetched and thereafter the image.
-With the attribute, when the employee is fetch, if it do not have an image, the image do not have to be fetched, thus saving the fetch image request for all users without an image, thereby decreasing the load on both the REST API and the consumer client.
+With the attribute, when the employee is fetch, if it do not have an image, the image do not have to be fetched, thus saving the fetch image request for all users without an image, thereby decreasing the load on both the REST API and the consumer--client.
 
 \bigskip
 When the list of the vehicles is loaded, it was needed to check if a specific vehicle was active on a route at the current time.
 In the beginning this was done by loading all active routes, then comparing the current vehicle id with the vehicle id on all active routes.
 If the current vehicle was found, then the vehicle was currently driving, else it was parked.
-By putting an attribute on the vehicle itself, the consumer client is able to determine whether the vehicle is active or not without having to iterate over all the active routes for each of the vehicles.
+By putting an attribute on the vehicle itself, the consumer--client is able to determine whether the vehicle is active or not without having to iterate over all the active routes for each of the vehicles.
 Doing this would lead to an increase in performance and a decrease in the load on the REST API.
 
 \bigskip
-By developing a consumer client not only did it help on discovering some functionality which could help other developers develop an consumer client for the REST API, it also helped discover some not fully functional areas of the REST API.
+By developing a consumer--client not only did it help on discovering some functionality which could help other developers develop an consumer--client for the REST API, it also helped discover some not fully functional areas of the REST API.
 During the first time of displaying active routes on the map, it was discovered that only the latest route would show, even though there were more active routes.
-This error was due to a lazy load error from the database in the REST API and therefore the development of the consumer client helped with discovery of this error in the REST API.
+This error was due to a lazy load error from the database in the REST API and therefore the development of the consumer--client helped with discovery of this error in the REST API.
 
 Later on, also during the display of active routes on the map, an edge case of the geospatial data was found, this error was only detectable when the database was freshly installed and no routes has been created at the given point.
 
 \bigskip
-The result of developing the consumer client was not only displaying the information provided by the REST API, but it improved the REST API.
+The result of developing the consumer--client was not only displaying the information provided by the REST API, but it improved the REST API.
 These improvements helped make a more complete and robust REST API.
