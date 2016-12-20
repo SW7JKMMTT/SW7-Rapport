@@ -8,7 +8,7 @@ The purpose of this implementation is to:
 As stated in \cref{sec:constituents_of_the_system}, we focus on the server in this project,
 which means that the following implementation is relatively simple and not tested beyond inspection of its effects on the system.
 
-\section{Workflow: User --- Producer Client --- Server}
+\section{Communicating with the Server}
 Because we use a standard REST interface for communicating with our server, the implementation details of the producers are not required to be unified across all devices.
 E.g.~one producer client may be a dedicated embedded device located in a given vehicle, while another is an app on the driver's generic smartphone of choice.
 
@@ -56,7 +56,7 @@ It is also possible to manipulate the duration of the simulation, such that the 
 E.g.~the driving can be sped up to double the speed making a 10 minute route only take 5 minutes, thereby doubling the \textit{current speed} reported to the server.
 Time manipulation is used primarily for demonstration purposes.
 
-\section{Validation of Output}
+\subsection{Validation}
 Because the mock producer client is an emulation, and only serves the aforementioned purposes of illustrating an example of communications, and providing data to a proof of concept consumer client,
 we do not deem it necessary to systematically test it.
 

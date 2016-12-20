@@ -1,4 +1,4 @@
-\subsection{Persisting to the Database System}\label{subsec:persistingtodb}
+\chapter{Persisting the Model}\label{subsec:persistingtodb}
 
 After having established a data model in the previous section, we will now focus on persisting these elements.
 We have previously mentioned why to persist data in \cref{sec:requirements}.
@@ -6,7 +6,7 @@ We have also chosen to use PostgreSQL as our database system, and the \ac{JPA}, 
 
 This section will explain the abstraction we have employed in order to make the persistence and access of data easy in later parts of our system.
 
-\subsubsection*{\acl{DAO}}\label{subsubsec:dao}
+\section{\acl{DAO}}\label{subsubsec:dao}
 In order to access the database system we construct a series of \acp{DAO}.
 A \ac{DAO}, is an architectural design pattern which provides an interface to the database or other data stores\cite{oracle_dao}.
 This pattern uses the single responsibility principle, meaning that the only way to access the database is though these \acp{DAO}.
@@ -22,7 +22,7 @@ Implementing these operations is done using the methods from the \ac{JPA}\fxnote
 The remaining operation in \ac{CRUD} is the read operation.
 This has to be done individually for each \ac{DAO}.
 
-\subsubsection*{Fetching from the Database System}\label{subsec:fetchfromdb}
+\section{Fetching from the Database System}\label{subsec:fetchfromdb}
 In the \ac{JPA} there are two main ways of querying it: using the \ac{JPQL} or Criteria Queries.
 The \ac{JPQL} has a \ac{SQL} like syntax, which makes it easy for programmers familiar to \ac{SQL} to adapt to.
 Whereas criteria queries uses the \code{Criteria}--class, to specify what data you want to retrieve.
@@ -71,7 +71,7 @@ one with \code{Waypoint}s, and one with \code{VehicleDataPoint}s.
 However, there is currently not a piece of code which needs both of these lists at the same time, but there is code which use one of the two.
 Therefore we make a method which fetches each list eagerly (fetches before first use) when it fetches the route.
 
-\subsubsection*{Overview of created \acp{DAO}}
+\section{Overview of created \acp{DAO}}
 In total we have made eight \acp{DAO} and the \code{BaseDao} mentioned earlier:
 \begin{multicols}{2}
 \begin{itemize}
@@ -90,7 +90,7 @@ Each of these interfaces inherit from the \code{BaseDao}, and their implementati
 Most of these have some variation of a \code{byId}--method and a \code{getAll}.
 The \code{byId}--methods are for the services where the ids are used by the user of the API instead of sending the entire object.
 
-\subsubsection*{Database migrations}
+\section{Database migrations}
 Hibernate has support for creating a database schema automatically based on the model provided, and the annotations,
 this is called ``Hibernate Mapping to Data Definition Language'' or ``hbm2ddl'' for short.
 However using this in production can be dangerous when the schema changes due to new feature or changes to the mode,
@@ -103,7 +103,7 @@ As previously mentioned in \cref{subsubsec:flyway}, we use the tool Flyway to ha
 Flyway will only apply the migrations which have not already been applied to the database system.
 This makes it much simpler as a developer, compared to having to manage this manually.
 
-\subsubsection*{Spatial queries}\label{subsubsec:spatial}
+\section{Spatial queries}\label{subsubsec:spatial}
 It is possible to perform spatial queries using Hibernate Search which we mentioned in \cref{subsubsec:spatialqueringtech}.
 We only have one class which directly contains spatial data, that is the \code{Waypoint}--class.
 Therefore we have a spatial query called, \code{withinRadius}, which is shown in \cref{lst:withinRadius}.

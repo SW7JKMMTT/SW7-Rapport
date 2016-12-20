@@ -1,0 +1,83 @@
+\begin{figure}[h]
+    \pgfdeclarelayer{background}
+    \pgfsetlayers{background,main}
+    \tikzstyle{bgbox}=[fill=green!30, rounded corners, draw=GoogleGreen, dashed]
+    \tikzstyle{backlayer}=[fill=blue!40, rounded corners, draw=GoogleGreen, dashed, opacity=0.2]
+    \center
+    \begin{tikzpicture}[auto, node distance=1.5cm,
+            stage/.style={rectangle, rounded corners, minimum width=1.5cm, minimum height=1cm,text centered, fill=diagramLight, draw, align=center},
+            sharp/.style={rectangle, minimum width=9.0cm, minimum height=1cm,text centered, fill=diagramLight, draw, align=center},
+            server/.style={rectangle, rounded corners, minimum width=1.5cm, minimum height=1cm,text centered, fill=diagramLight, rectangle split, rectangle split parts=2, draw},
+            flow/.style={draw, ->},
+            double_flow/.style={draw, <->},
+            double_dashed/.style={draw, dashed, <->},
+            create/.style={draw, ->},
+            use/.style={draw, dotted, ->}
+        ]
+
+        \node (rest_api) at (0,0) [stage] {REST API};
+        \node (web) [draw, below=0.5cm of rest_api, cloud, cloud puffs=18, cloud ignores aspect, minimum width=8em, minimum height=4em,fill=blue!20] {Internet};
+
+        \node (api_services) [stage, below=1.2cm of web] {API Services};
+        \node (login) [stage, left=1.5cm of api_services] {Login};
+        \node (map) [stage, below=2cm of api_services] {Map};
+        \node (profile) [stage, left=1cm of map] {Profile};
+        \node (vehicle) [stage, right=1cm of map] {Vehicle};
+        \node (listservices) [stage, right=1cm of vehicle] {ListServices};
+        \node (router) [stage, below=1cm of profile] {Router};
+        \node (staff) [stage, below=1cm of listservices] {Staff};
+        \node (polylines) [stage, below=1cm of router] {PolyLines};
+
+        \draw [double_flow] (rest_api) -- (web);
+        \draw [double_flow] (web) -- (api_services);
+        \draw [flow] (login) -- (api_services);
+
+        \draw [double_flow] (api_services) -- (map);
+        \draw [double_flow] (api_services) -| (listservices);
+
+        \node (ghost_1) [draw=none, above right=0.6cm and 0.97cm of profile] {};
+        \node (ghost_2) [draw=none, above=0.6cm of profile] {};
+        \draw [double_flow] ($(api_services.south west)!.2!(api_services.south east)$) -- (ghost_1.center) -- (ghost_2.center) -- (profile);
+
+        \node (ghost_3) [draw=none, above right=0.4cm and 1.30cm of profile] {};
+        \node (ghost_4) [draw=none, above right=0.4cm and 0.35cm of profile] {};
+        \node (ghost_5) [draw=none, below right=0.4cm and 0.35cm of profile] {};
+        \draw [double_flow] ($(api_services.south west)!.35!(api_services.south east)$) -- (ghost_3.center) -- (ghost_4.center) -- (ghost_5.center) -| (router.north);
+
+        \draw [double_flow] ($(map.south west)!.3!(map.south east)$) |- (router.east);
+
+        \draw [double_flow] (router) -- (polylines);
+
+        \draw [double_flow] (vehicle) -- (listservices);
+
+        \draw [double_flow] (map) -- (vehicle);
+        \draw [double_flow] ($(map.south west)!.7!(map.south east)$) |- (staff);
+        \draw [double_flow] (listservices) -- (staff);
+
+        \begin{pgfonlayer}{background}
+            % Compute a few helper coordinates
+            \path (polylines.west |- listservices.north)+(-0.3,+0.9) node (what_a) {};
+            \path (listservices.east |- polylines.south)+(+0.3,-0.3) node (what_b) {};
+            \path [bgbox] (what_a) rectangle (what_b);
+            \node [above = 0.5em of what_b, anchor = east, inner sep = 0.5em]{Dashboard};
+        \end{pgfonlayer}
+
+        \begin{pgfonlayer}{background}
+            % Compute a few helper coordinates
+            \path (login.west |- login.north)+(-0.3,+0.6) node (what_a) {};
+            \path (login.east |- login.south)+(+0.3,-0.6) node (what_b) {};
+            \path [bgbox] (what_a) rectangle (what_b);
+            \node [above = 0.5em of what_b, anchor = east, inner sep = 0.5em]{Login};
+        \end{pgfonlayer}
+
+        \begin{pgfonlayer}{background}
+            % Compute a few helper coordinates
+            \path (login.west |- login.north)+(-0.5,+0.8) node (what_a) {};
+            \path (listservices.east |- polylines.south)+(+0.5,-0.9) node (what_b) {};
+            \path [backlayer] (what_a) rectangle (what_b);
+            \node [above = 0.5em of what_b, anchor = east, inner sep = 0.5em]{Front--end};
+        \end{pgfonlayer}
+    \end{tikzpicture}
+    \caption{A diagram of the flow, and different models throughout the consumer client.}
+    \label{fig:consumer_client}
+\end{figure}

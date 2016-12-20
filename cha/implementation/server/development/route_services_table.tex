@@ -4,7 +4,7 @@
     %\rowcolors{2}{white}{GoogleGrey!20}
     \setlength\extrarowheight{1pt}
     \begin{tabularx}{0.9\textwidth}{l p{13em} l l}
-        \textbf{HTTP Methods} & \textbf{End--Point}               & \textbf{Service}             & \textbf{Method--name}  \\ \hline
+        \textbf{HTTP Methods} & \textbf{Endpoint}               & \textbf{Service}             & \textbf{Method--name}  \\ \hline
         \texttt{GET}          & \texttt{/route}                   & \multirow{4}{*}{\texttt{RouteService}}        & \code{getAllRoutes} \\
         \texttt{POST}         & \texttt{/route}                   & & \code{createRoute} \\
         \texttt{GET}          & \texttt{/route/\{rid\}}           & & \code{getRouteById} \\
@@ -14,5 +14,5 @@
         \texttt{GET}          & \texttt{/route/\{rid\}/datapoint} & \multirow{2}{*}{\texttt{VehicleDataService}}  & \code{getVehicleData} \\ 
         \texttt{POST}         & \texttt{/route/\{rid\}/datapoint} & & \code{addVehicleData} \\ 
     \end{tabularx}
-    \caption{A table of the end--points in the \code{RouteService}, \code{WaypointService}, and \code{VehicleDataService}.}\label{table:endpointrouteservice}
+    \caption{A table of the endpoints in the \code{RouteService}, \code{WaypointService}, and \code{VehicleDataService}.}\label{table:endpointrouteservice}
 \end{table}
