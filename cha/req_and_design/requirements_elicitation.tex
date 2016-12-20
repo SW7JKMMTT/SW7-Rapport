@@ -1,4 +1,4 @@
-\chapter{Requirements Elicitation}\label{cha:requirements_elicitation}
+\chapter{Components of a Vehicle Management System}\label{cha:requirements_elicitation}
 As mentioned in \cref{sec:problem_statement} we wish to develop a back--end service capable of providing vehicle relevant information to a possible user, for all the vehicles they own, in whatever format they wish.\fxnote{The problem statement really should not be making this choice}
 Before starting the design of the actual system we derive some requirements for the system.
 
@@ -30,7 +30,7 @@ In this example the $n$ represents the data providers, the $1$ the back--end and
 Not only can we have an arbitrary number of data providers and front--end clients, but they may also be different systems, as long as they adhere to the communication protocol of the back--end.
 Keeping in mind the aforementioned system interactions we deem the back--end the most influential part of the system, as such we choose to focus on developing the back--end.
 
-\section{Choosing the Back--End}
+\section{System Focus}
 By choosing to focus on the back--end this also means that our users would be developers themselves, using our system as a data source to develop a front--end.
 As such the system will need sufficient documentation such that a developer could develop a front--end by requesting data from our back--end.
 This documentation would be what the developers working with the front--end should interact with, the documentation would fill the role of a user interface of sorts for the back--end.

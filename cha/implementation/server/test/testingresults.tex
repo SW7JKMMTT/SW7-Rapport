@@ -1,5 +1,5 @@
-\section{Testing Success Stories} % Kan ikke finde på en bedre titel.
-In this section we will give some examples of where testing have proved useful,
+\subsection{Outcome of Internal Tests} % Kan ikke finde på en bedre titel.
+In this subsection we will give some examples of where testing have proved useful,
 i.e. concrete examples of tests which have revealed a bug or prevented a regression.
 
 We have previously talked about the types of testing we have performed.
@@ -7,7 +7,7 @@ For the server the most essential are the integration tests,
 during development they have caught a great number of mistakes and faults before deploying code.
 
 % Waypoints sorteret i forkert rækkefølge
-\subsection{Ordering of Waypoints}
+\subsubsection*{Ordering of Waypoints}
 One of the mistakes we discovered by testing during development was bug which would order the waypoint in the wrong order when returning them in the \code{WaypointService}.
 
 This bug was caused by a logical inconsistency in our code.
@@ -23,7 +23,7 @@ private List<Waypoint> points;
     \label{lst:routewaypoint}
 \end{listing}
 
-However our method to fetch waypoints by route, shown in \cref{lst:waypointdaobyroute}, with a maximum number of waypoints to return,
+However, our method to fetch waypoints by route, shown in \cref{lst:waypointdaobyroute}, with a maximum number of waypoints to return,
 we had ordered it by timestamps descending.
 This inconsistency was caught by an integration test, which tested that the waypoints on the route had the exact same content and ordering, as the waypoints returned by the \ac{DAO}. 
 \begin{listing}
@@ -44,7 +44,7 @@ public List<Waypoint> byRoute(Route route, int count) {
 \end{listing}
 
 % Join fetch giver duplicates.
-\subsection{Duplicates When Using Join Fetch}
+\subsubsection*{Duplicates When Using Join Fetch}
 We have previously described how we write \ac{HQL} queries to fetch from the database, in our \acp{DAO} in \cref{subsec:fetchfromdb}.
 For example, if a \code{Vehicle} had two \code{Route}s, then fetching all \code{Vehicle}s, would yield said \code{Vehicle} twice.
 When the \ac{DAO} fetched objects with collections, where the collections contained more than one element, the \ac{DAO} would return more than one of the objects.

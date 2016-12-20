@@ -1,4 +1,4 @@
-\section{Results}
+\subsection{Results}
 All system and load tests were performed on our server application running on an Intel i7 2600 CPU, with 16 GB RAM and an SSD for storage.
 Running our tests produce test result summaries, which contains statistics such as error rate and average response time about the given test, and various graphs;
 the most interesting graphs being the response time distribution and requests per second graphs.
@@ -101,7 +101,7 @@ However, it should be noted that the final system could be distributed to avoid 
     \caption{Fetching test plan results --- Heavy load}\label{fig:fetch_test_results_heavy}
 \end{figure}
 
-\subsection{NoSQL vs. SQL}\label{subsec:nosql_vs._sql}
+\subsubsection*{NoSQL vs. SQL}\label{subsec:nosql_vs._sql}
 During the early development of the server we had chosen a NoSQL database, which was switched out for an SQL database.
 This switch was done partially due to early test runs of the \textit{Submitting Data} test plan, where a shortcoming of the NoSQL implementation was found.
 We found that \enquote{duplicate id errors} occurred when the server was under load, because new unique ids not could be generated fast enough.
@@ -119,7 +119,7 @@ This was done to accommodate for missing features in the NoSQL version of our se
     \caption{Average response times over time (granularity 1 sec.)}\label{fig:nosql_vs_sql}
 \end{figure}
 
-\subsection{General Performance}
+\subsubsection*{General Performance}
 Although it is interesting to measure our servers performance under heavy load, this is not a realistic use case for the system to be in.
 In day--to--day operation the server may see periods of heavy load, which it can handle, as seen in \cref{fig:submit_reqs_p_sec_heavy}. % chktex 08
 Here we see that the server still responds to requests albeit at a slower rate.

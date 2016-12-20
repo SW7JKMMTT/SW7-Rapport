@@ -1,4 +1,4 @@
-\section{Used Test Methods}
+\section{Internal Tests}
 It is not possible to achieve an adequate level of testing of the server, using only one type of test.
 This is caused by the fact that the server is made up of different components,
 as mentioned in \cref{sec:internal_architecture},
@@ -141,7 +141,7 @@ and therefore this is an integration test instead of a unit test.
     \label{lst:integration_test_example}
 \end{listing}
 
-\subsection{The \code{@Before} annotation}
+\subsubsection*{The \code{@Before} annotation}
 To make sure the state of the program is the same before each test and all resources needed are available,
 the JUnit annotation \code{@Before} is used.
 \code{@Before} is used to run methods before each test is executed,
