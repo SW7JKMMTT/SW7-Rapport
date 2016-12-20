@@ -1,25 +1,30 @@
 \subsection{Test Plans}
-When doing system testing we focus on testing the interaction between components in the system.
+When doing system testing we focus on testing the interaction between components, i.e. the producer client, server and consumer client, in the system.
 For us, this means using the server through its REST API and trying to cover all, or at least the most significant, endpoints.
 Because of this, two test plans are made; one for submitting data to the server, and one for fetching data from the server.
 We deem it unnecessary to include features such as uploading profile images, since these endpoints are insignificant for the business logic.
 
+We do not test submitting and fetching data at the same time, since we expect that fetching and submitting at the same time would, 
+with the amount of test data we use, cause a bottleneck.
+On the other hand this information could be relevant to show how much fetching and submitting is possible, but we did not perform this test due to time constraints.
+
 \subsubsection*{Submitting Data}
 Our first test plan aims to reach all functional behaviour which is involved in a producer clients typical workflow.
-The test plan can be summarized by the following points, note that $x$, $y$, and $n$ are integers, and will be expanded when we present the results of the test plan:
+The test plan can be summarized by the following points, note that \code{$x$}, \code{$y$}, and \code{$n$} are integers, and will be expanded when we present the results of the test plan:
 \begin{enumberate}
-    \item Setup $x$ new test users.
+    \item Setup \code{$x$} new test users.
     \begin{enumberate}
         \item Get authorization token for existing super user.
-        \item Create $x$ new users and get authorization token for each.
+        \item Create \code{$x$} new users and get authorization token for each.
         \item Change the given name of each user.
     \end{enumberate}
-    \item Create $n$ vehicles and save their ids.
-    \item Create $x$ routes each with a random vehicle, a unique user, and a randomly selected center point.
+    \item Create \code{$n$} vehicles and save their ids.
+    \item Create \code{$x$} routes each with a random vehicle, a unique user, and a randomly selected center point.
     \item For each route:
     \begin{enumberate}
         \item Mark route as \code{ACTIVE}
-        \item In a loop, create $y$ waypoint and datapoint pairs in random order, with a minimum delay of 1 second between each pair.
+        \item In a loop, create \code{$y$} waypoint and datapoint pairs in random order, with a minimum delay of 1 second between each pair.
+              The fact that its in pairs should not have an effect on the load of the server.
               All waypoints are placed within a given radius of the route's center point, and the datapoints consists of \textit{current speed} and \textit{fuel level}.
         \item Mark route as \code{COMPLETE}
     \end{enumberate}
@@ -33,7 +38,7 @@ It should be noted that this test plan only submits data to the server, and adva
 This means that the result only represents the server's ability to receive data.
 
 \subsubsection*{Fetching Data}
-To analyse the performance of the server while executing queries, both simple and complex, and fetching data, we set up a second test plan which does this.
+To analyse the performance of the server while executing the server, both simple and complex, and fetching data, we set up a second test plan which does this.
 In the test we want to gauge the performance of:
 \begin{enumberate*}
     \item regular fetching of data, e.g.~getting all users;
@@ -52,6 +57,6 @@ The following points summarize test plan, where each fetching will be done by se
 \end{enumberate}
 
 The results of this test will not be weighted high when concluding upon the general performance of the server.
-This is because the act of fetching data is significantly dependent on the size and amount of the data returned, since the network interface on the physical server will be a bottleneck in the current setup.
+This is because the act of fetching data is significantly dependent on the size and amount of the data returned, since it is expected that the network interface on the physical server will be a bottleneck in the current setup.
 Moreover the performance of geospatial queries is determined by a myriad of factors, such as radius of the search, number of found waypoints in search, and amount of unique routes those waypoints belong to.
 However, the results of this test will be presented and described in the next section.
