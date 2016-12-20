@@ -41,7 +41,7 @@ Thus we limit the functional scalability of the system by using an is--a relatio
 Since we want to enable functional scalability, we do not want to limit the development of new system roles by artificially tying them to inheritance.
 
 In addition to the \code{Driver}--class the \code{User}--class also has relations to the \code{Permission}--class, the \code{AuthToken}--class, and the \code{UserIcon}--class.
-The \code{Permission}--class is used to grant permissions to which end--points in the REST API a given user can use. \fxnote{Det er ikke klart at det er instancen der er limited, jeg læser user som værende consumer client, altså at hele consumer cliented bliver limited i dens API calls}
+The \code{Permission}--class is used to grant permissions to which endpoints in the REST API a given user can use. \fxnote{Det er ikke klart at det er instancen der er limited, jeg læser user som værende consumer client, altså at hele consumer cliented bliver limited i dens API calls}
 The \code{AuthToken}--class is a session token which is sent with each request to identify which user sent the request. 
 Lastly the \code{UserIcon}--class which inherits from the abstract class \code{PersistFileHandle}--class is used to optionally give a profile picture to each user, for the use in a consumer. 
 

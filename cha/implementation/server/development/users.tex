@@ -1,5 +1,5 @@
 % vim: spell;tw=80
-\section{User end--points}
+\section{User endpoints}
 
 In \cref{sec:requirements} we identified the need of access management in the
 both the consumer and provider client. To facilitate the features in the
@@ -9,20 +9,20 @@ developed in \cref{sec:authentication}. The prototype consumer, developed in
 \fxnote{front--end chapter}, also required icons for users.
 
 
-From these requirements we derived the end--points shown in \cref{tab:rest_user}.
-All the user end--points require at least \code{User} permission, except the
-end--point to create and modify a user, which requires \code{SuperUser}
-permission. The create and modify end--points both use the builders discussed in
-\cref{par:builders}. The \code{list all} end--point gets a list of users,
+From these requirements we derived the endpoints shown in \cref{tab:rest_user}.
+All the user endpoints require at least \code{User} permission, except the
+endpoint to create and modify a user, which requires \code{SuperUser}
+permission. The create and modify endpoints both use the builders discussed in
+\cref{par:builders}. The \code{list all} endpoint gets a list of users,
 but is not guaranteed to include all details about them, in the current version
 they do, but more details could be shown only in the detailed \code{Get user}
-end--point, to conserve bandwidth and database joins. To enable the storage of
+endpoint, to conserve bandwidth and database joins. To enable the storage of
 user icons we use the \code{FileDao} from \fxnote{ref til faildao database},
 which allows for easy storage of binary files in the database. We are currently
 only allowing files in the \code{image/png} \ac{MIME} format, but any binary
 file can be uploaded.  If the system was to be deployed in production, a limit
 on the size or file type would have to be placed in the user icons. For the
-end--point to upload a user icon, we chose to use the HTTP method \code{PUT},
+endpoint to upload a user icon, we chose to use the HTTP method \code{PUT},
 since the request is idempotent, in other words, doing the operation, uploading
 the same image, twice does not change the state of the object. We have allowed
 the user icon be downloaded as \code{BASE64}, to help consumer developers
@@ -41,6 +41,6 @@ displaying the resulting image in a browser.
         \rendpoint{user/<uid>/icon}      & \code{GET}         & Get user icon                            \\
         \rendpoint{user/<uid>/icon}      & \code{PUT}         & Set user icon                            \\
     \end{tabu}
-    \caption{User end--points.}
+    \caption{User endpoints.}
     \label{tab:rest_user}
 \end{table}

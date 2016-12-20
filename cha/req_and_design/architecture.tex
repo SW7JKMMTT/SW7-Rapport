@@ -68,7 +68,7 @@ For the server component we use a layered architecture consisting of three layer
     They are further explained in \cref{subsubsec:dao}.
     \item [Service] This layer contains the code which handles requests.
     The service layer is the layer which the clients communicate with when they wish to make requests to the application.
-    It contains end--points for each available request, if the request from a client is legitimate, the endpoint makes use of the \acsp{DAO} to manipulate or retrieve data.
+    It contains endpoints for each available request, if the request from a client is legitimate, the endpoint makes use of the \acsp{DAO} to manipulate or retrieve data.
 \end{description}
 As mentioned this helps hide server details that neither client needs to know about.
 The only layer that clients interact with directly is the service layer, having the layers be separate also helps in case the model needs altering for some reason, as only the core would have to be refined.
