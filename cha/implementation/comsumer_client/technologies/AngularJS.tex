@@ -6,12 +6,12 @@ It is open--source and uses components written in JavaScript to generate its con
 There are currently two different major versions of AngularJS available, version 1 and version 2, also called Angular2\cite{angular_1_2}.
 Some of the major differences between these two versions is that Angular2 was build towards mobile support, and with modularity in mind.
 This meaning that in Angular 1 the different modules are relying on controllers and \code{\$scope} in order to get the current context of the page.
-In Angular 2 the different modules are divided into different modules called components, these components allow access to the context of the current module only, while still allowing for communication through two--way bindings with parent components.
-One of the goals of AngularJS is to ease the development and testing of a web application, this is done by producing a JavaScript framework which assists the MVC and MVVM design patterns.
+In Angular 2 the different modules are divided into different packages called components, these components allow access to the context of the current module only, while still allowing for communication through two--way bindings with parent components.
+One of the goals of AngularJS is to ease the development and testing of a web application, this is done by producing a JavaScript framework which assists the MVC and the MVVM design patterns.
 
 \bigskip
 When compiling the AngularJS project, the compiler first reads through the HTML page looking for embedded tags with custom attributes, which are interpreted.
-Then these attributes are used to directly bind data from the defined components into HTML tags, thereby representing the defined variables in the HTML view.
+Then these attributes are used to directly bind data from the defined components into HTML tags, thereby representing the bound variables in the HTML view.
 
 The framework itself extends the HTML in order for it to present the bound data through two--way data--bindings which allows it to make automatic synchronization between the models and views.
 This makes it possible for AngularJS to decrease the amount of explicit \ac{DOM} manipulation which allows for improved performance.

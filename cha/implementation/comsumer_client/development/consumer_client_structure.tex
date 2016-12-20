@@ -23,7 +23,7 @@ When a user is logged in he is firstly presented for an overview of the dashboar
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.35]{img/ConsumerClientExample.png}
+    \includegraphics[scale=0.35]{img/consumerClientExample.png}
     \caption{The consumer client dash board.}
     \label{fig:ConsumerClientExample}
 \end{figure}
@@ -31,10 +31,10 @@ When a user is logged in he is firstly presented for an overview of the dashboar
 On \cref{fig:ConsumerClientLayout} the layout of the consumer client can be seen.
 The consumer client dash board, which implements the layout from \cref{fig:ConsumerClientLayout}, can be seen on \cref{fig:ConsumerClientExample}.
 The user can see his profile information in the top left corner of \cref{fig:ConsumerClientExample}, this information is fetched through the REST API.
-More precisely the user's name, username and status is fetched, the stats can either be a user or a super user.
+More precisely the user's name, username and status is fetched, where the status can either be a user or a super user.
 The user's image is also fetched through the REST API, the image is Base64 encoded and represented as a background image, however if the user has no image, a default image will be shown.
 
-Beneath the profile information, a small menu can be seen where the user can choose between employees or vehicles, which toggles between two lists.
+Below the profile information, a small menu can be seen where the user can choose between employees or vehicles, which toggles between two lists.
 If employees are chosen, all employees are shown, where if vehicles are chosen all the vehicles are shown. 
 On \cref{fig:ConsumerClientExample} the dash board with vehicles chosen, is shown.
 
@@ -50,7 +50,7 @@ An example of the employees list an be seen on \cref{fig:ConsumerClientMenus}.
 This status is not like the status shown in the profile information, this status is whether the users are currently driving or parked.
 If a user is currently driving, an image of the vehicle will be shown next to the user's image.
 
-In the vehicles list the make and model, an image of the vehicle and whether the vehicle is currently driving or parked can be seen.
+In the vehicles list the make and model, and image of the vehicle and whether the vehicle is currently driving or parked can be seen.
 If the vehicle is currently driving, a small image of the driver will be shown next to the image of the vehicle.
 
 If the user of the dashboard clicks on either a vehicle or a driver, which is currently driving, the map will automatically be centered around the currently active route the vehicle is driving.
@@ -67,10 +67,10 @@ A polypath is a line drawn on the interactive map, between an ordered list of GP
 Since it is the producer client, which sends the position data from the vehicle and it is this data which the consumer client displays,
 a producer client is required.
 
-When a vehicle is clicked, a menu in the right side will be shown, this menu currently contains nothing, but could be used to show more advanced vehicle information, for instance live vehicle data, and previous routes the vehicle has driven.
+When a vehicle is clicked, its vehicle information will be shown to the right, as shown in \cref{fig:ConsumerClientLayout}. 
+This menu currently contains nothing, but could be used to show more advanced vehicle information, for instance live vehicle data, and previous routes the vehicle has driven.
 
 \bigskip
 The consumer client allows for a fast overview of the entire fleet, while also granting the company an opportunity to track its vehicles in real--time on the map and show the current information at the same time.
-
-Since the company is able to track the vehicles in real--time, the consumer client could be used to help prevent future damages to the vehicles.
-This can be done by analysing either the real--time data, or by looking for anomalies or deviations in the data from previous routes.
+It shows some of the data the REST API can provide.
+Since the data to be shown in the consumer client comes from vehicles, a producer client is required to give the REST API some to provide for the consumer client.
