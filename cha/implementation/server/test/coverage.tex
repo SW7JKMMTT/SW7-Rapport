@@ -31,15 +31,9 @@ it is stated that the components, which makes the software fulfil its requiremen
 Therefore when testing the server, the functionality,
 which directly fulfil the requirements stated in \cref{cha:requirements_elicitation}, will be tested.
 
-We do not deem it sufficient to only test the functionality which directly fulfil the requirements of the server.
-Therefore selected parts of the server, which indirectly fulfil the requirements,
-will also be tested to make sure they behave correctly.
-The selected parts will be chosen from their importance in the functionality of the server,
-for instance testing database connections,
-which is not directly a part of the requirements from \cref{cha:requirements_elicitation}.
-
-\fxnote{Dette skal revideres når de endelige krav kommer, f.eks. ryger det med databasen nok.
-Alternativt kan det med indirekte krav slettes hvis det ``indirekte krav'' ikke anses som passende og så testen tilpasses så der kun testes for kravene.}
+The tests will also work as a form of documentation of the internal \acp{API} of the server. 
+This documentation shows how the internal \acp{API} work and how they are supposed to work.
+Furthermore it works as an informal contract between the various components of the server.
 
 Thorough testing of the server will also help avoid regression during development.
 Regression bugs can be hard to debug, since the system initially worked correctly and suddenly it does not.
@@ -54,6 +48,4 @@ the tests will be useless.
 \bigskip
 To summarize, we will test that the server satisfies the requirements,
 and functions as intended.
-Furthermore we will test other functionality which indirectly fulfil the requirements,
-to avoid bugs and regression during development.
 Finally the tests will be run automatically to make sure that regression bugs and other bugs are caught.
