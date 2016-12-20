@@ -24,9 +24,9 @@ This has to be done individually for each \ac{DAO}.
 
 \section{Fetching from the Database System}\label{subsec:fetchfromdb}
 In the \ac{JPA} there are two main ways of querying it: using the \ac{JPQL} or Criteria Queries.
-The \ac{JPQL} has a \ac{SQL} like syntax, which makes it easy for programmers familiar to \ac{SQL} to adapt to.
+The \ac{JPQL} has an \ac{SQL} like syntax, which makes it easy for programmers familiar to \ac{SQL} to adapt to.
 Whereas criteria queries uses the \code{Criteria}--class, to specify what data you want to retrieve.
-There is some performance difference, with an advantage to \ac{JPQL}, since criteria queries has to generate a \ac{SQL} query before each execution\cite{jboss_fetchingstrategies}.
+There is some performance difference, with an advantage to \ac{JPQL}, since criteria queries has to generate an \ac{SQL} query before each execution\cite{jboss_fetchingstrategies}.
 Since we are already familiar with \ac{SQL}, and we would like the better performance, we choose \ac{JPQL} as our querying language.
 More specifically we use \ac{HQL}\footnote{\url{https://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html\#hql}}, which is the Hibernate version of \ac{JPQL}.
 \ac{HQL} is a superset of \ac{JPQL}, meaning that \ac{HQL} implements all of \ac{JPQL} and a bit more.

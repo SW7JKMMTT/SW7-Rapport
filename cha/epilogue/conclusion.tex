@@ -1,18 +1,18 @@
 \chapter{Conclusion}
-\fxnote{This is not completed https://review.slashwin.dk/D69}
 %Summary
-    %DB Choice, Back--end Focus, Front--end PoC, Data provider Emulated,
+    %DB Choice, Back--end Focus, consumer--client PoC, producer--client Emulated,
     %Architecture Choice
     %Test Heavy
 %Meta introduction to choice of project focus
 The goal for this project was to construct a scalable system that could receive geospatial and vehicle relevant data from a disjoint vehicle fleet and present this data to an arbitrary user.
 Through our analysis of existing systems we found that current systems on the market revealed very little information to potential users before buying their software.
-The subsequent analysis of how a system may be constructed we knew that constructing a complete system with data provider, server and front--end client was not feasible.
-With our newfound information about the market focusing on developing a server which could receive data from a data provider and present this data to a front--end client through an API, would allow a company to develop their own front--end client to suit their exact needs rather than invest in a system with insufficient or redundant features.
-With our newfound focus we created the list of requirements detailed in \cref{sec:requirements}.
-The server we have developed uses a client--server architecture with the server providing a REST API for clients, both data providers and front--end, to communicate with.
-With developers being the users of said REST API, an appropriate UI is established in the form of API documentation.
-This documentation enables developers of an arbitrary client to utilise our server even with no insight as to how our server is constructed, by providing a description of what requests are available, what parameters they require, and what response can be expected. 
+The subsequent analysis of how a system may be constructed we knew that constructing a full--fledged system with producer--client, server and consumer--client was not feasible within the time--frame of this project.
+With our newfound information about the market, focusing on developing a server which could receive data from a producer--client and present this data to a consumer--client through an API, would allow a company to develop their own consumer--client to suit their exact needs rather than invest in a system with insufficient or redundant features.
+We created the list of requirements detailed in \cref{sec:requirements} using this information. % newfags cant triforce
+
+The system we have developed, uses a client--server architecture with the server providing a REST API for clients, both producer-- and consumer--clients, to communicate with.
+With developers being the users of our REST API, an appropriate UI is established in the form of API documentation.
+This documentation enables developers of an arbitrary client to utilise our server even with no insight into our internal server structure, by providing a description of which requests are available, what parameters they require, and what response can be expected. 
 The API documentation is provided through Enunciate, as described in \cref{documenting_services}.
 
 \bigskip
@@ -20,20 +20,19 @@ The API documentation is provided through Enunciate, as described in \cref{docum
     %NoSQL for scalability?open
     %Less restrictions for more performance
     %nosql less rigid so maintenance is easier
-    %NoSQL vs. MySQL
+    %NoSQL vs. SQL
     %Hibernate OGM less mature than Hibernate ORM
     %Test Focus, twas it value?
     %No stakeholder?
     %Truck focus? have this given us anything? at all???
-    %Would another focus have changed anything? Mili - security // All theoretical as we have no Stakeholder -- No coz we dont have anything specific, would mostly have been front--end changes, but the front--end is PoC anyway so no big deal
+    %Would another focus have changed anything? Mili - security // All theoretical as we have no Stakeholder -- No coz we dont have anything specific, would mostly have been consumer--client changes, but the consumer--client is PoC anyway so no big deal
     %Could have had stakeholder how would this have affected? would that have been the better choice?
-The client--server architecture in combination with a REST API was chosen such that the server only relies on the clients using the endpoints correctly, this way the implementation of any client is completely irrelevant for the server.\fxnote{Kunne eventuelt stille op imod andre arkitekturer her, kan bare ikke lige komme paa nogle arkitekture som ville vaere relevante at stille op imod.}
-With the project revolving around receiving, storing and provding data; scalability became an important measure for us.
+The client--server architecture, in combination with a REST API, was chosen such that the server only relies on the clients using the endpoints correctly, this way the implementation of a client is completely irrelevant for the server.
+With the project revolving around receiving, storing and providing data; scalability became an important measure for us.
 As a result scalability influenced our choice of database system.
-Originally we chose the NoSQL database system MongoDB.
-The choice fell on NoSQL as NoSQL imposes less restrictions which leads to greater performance and easier maintenance.
-Furthermore MongoDB provides auto--sharding which would provide us with horizontal load scalability.
-Halfway through the project we decided to change to a MySQL database system. \fxnote{Some1 DB oriented should expand on why we went back yo MySQL(Jesper/Truls)}
+The choice fell on NoSQL as it imposes fewer restrictions which leads to greater performance and easier maintenance.
+Furthermore some of the most popular NoSQL database systems provide auto--sharding which would provide horizontal scalability.
+Halfway through the project we decided to change to an SQL database system, as described in \cref{subsec:testeffects}.
 This took no more than a couple of days which also attests to our other scalability measures in that they closely relate to low coupling which is why the change could be made so quickly.
 
 At the beginning of the project we chose to focus on lorry drivers over other types of businesses that rely on vehicles.
@@ -41,19 +40,19 @@ The thought behind this was that by focusing on only a single business area we c
 Doing so in combination with the scalability measures the system should have been easily expandable to accept other types of vehicles, however the reality is that this choice meant nothing at all as we never implemented any lorry driver specific services.
 The reality is that most use case specific features would be developed on for the consumer client as we do not perform business logic for the consumer client on the server.
 A few specific endpoints may have been requested by the different use cases.
-These endpoints, if any exist, could be revealed by having a stakeholder and through that perhaps the choice of use case would have had an influence in that case.
-The focus we chose to put on testing and maintaining good code conduct alongside our focus on the scalability measures we described in \cref{sec:scalability} does mean that the implementation of additional endpoints is a simple matter.
-As such it is merely the information of what endpoints are required we would need to expand the system.
+These endpoints, if any exist, could have been revealed by having a stakeholder and through that perhaps the choice of use case would have had an influence.
+We decided to focus on testing and maintaining good code conduct, alongside our focus on the scalability measures we described in \cref{sec:scalability} means that the implementation of additional endpoints should be a straightforward.%anti gay
+This means that a developer should only need information about new functionality to implement the required endpoints.
 
 \bigskip \noindent
 %Conclusion
     %Problem statement fulfillment?
     %Test outcome? was it worth?
     %Scalability is our source of complexity and should be an intergral part of the conclusion
-The system we have developed is able to through a REST API receive geospatial and vehicle relevant data from a number of producer client, store this and subsequently send this to a consumer client whenever a request for data is received.
-Our system uses a MySQL database to do so, but due to our low coupling this can be replaced with a NoSQL database in a short amount of time.
-Furthermore the low coupling and focus on regression testing also makes it easy for us to develop new endpoints for producer and consumer clients to interact with adhering to our requirements of functional and version scalability.
-Furthermore the database API is platform neutral thus any device can interact with it as long as the requests match our endpoints adhering to our requirement of device scalability.
+The system we have developed is able to receive, through a REST API, geospatial and vehicle relevant data from a number of producer--clients; store this and subsequently send it to a consumer--client whenever a request for data is received.
+Our system uses an SQL database to achieve this, but due to our low coupling can be replaced with a NoSQL database in a relatively short amount of time.
+The low coupling and focus on regression testing also makes it easy for us to develop new endpoints for producer-- and consumer--clients to interact with; adhering to our requirements of functional and version scalability.
+Furthermore the database integration is platform neutral thus any device can interact with it as long as the requests match our endpoints, conforming to our requirement of device scalability.
 
 The following problem statement is what this project has tried to solve:
 
@@ -69,4 +68,4 @@ while maintaining arbitrary possibilities of presenting the data to a given user
 
 }
 
-We deem that the system solves this problem while also adhering to the requirements established in \cref{sec:requirements}.
+We deem that our system solves this problem while also acting in accordance with the requirements established in \cref{sec:requirements}.
