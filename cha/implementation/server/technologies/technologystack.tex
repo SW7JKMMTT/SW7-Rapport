@@ -1,12 +1,11 @@
 % chktex-file 08 chktex-file 13 chktex-file 17
 \chapter{Technologies on the Server}
 \fxnote{TODO: META}
-\section{Technology Stack}
 To start with a good foundation for our server, it is important that we choose an appropriate stack of technologies, such that we take advantage of well tested and supported frameworks and libraries.
 This approach enables us, as developers, to focus on parts unique to the system we are developing, i.e.~business logic.
 Moreover since the server is what connects to both ends of the system, i.e.~the producer clients, and the front--end clients, it is paramount that the outwards facing interfaces on the server are stable, thoroughly tested, and well documented.
 
-\subsection{The Programming Language}
+\section{The Programming Language}
 It is important for us to choose a programming language, in which we all are comfortable, and which will not be a hindrance for the system.
 This means that the programming language and the environment around it must allow for; scalability, reliable and good performance, as well as the ability to utilise libraries for web related tasks, e.g.~running a server and routing/handling incoming requests.
 
@@ -75,7 +74,7 @@ If the application includes advanced Beans, that need some form of lifetime mana
 By inverting control to the container, instead of the objects, Spring makes it possible to switch out a large part of an application, by only changing XML.
 We will be relying heavily on the Spring \ac{IoC} container in the server.
 
-\subsubsection{Communication}
+\subsection{Communication}
 \label{subsec:tech_communication}
 As the server in our system needs to communicate with other parts of the system over the Internet, we need a unified way of passing information around.
 The two de facto standards for this type of communication are SOAP and REST.
@@ -109,7 +108,7 @@ It allows us to easily develop a RESTful service while being closely integrated 
 Moreover RESTEasy handles the HTTP communication, and does it asynchronously, which can greatly improve performance and scalability,
 since multiple inbound requests can be handled simultaneously.
 
-\subsection{Serialization}\label{subsec:serialization_tech}
+\section{Serialization}\label{subsec:serialization_tech}
 As can be read in \cref{subsec:tech_communication} we decided to use REST as a general design guideline for the server.
 Since the REST standard permits any form of representation of the data, we have to pick a format to carry our data.
 We choose JSON, since it has a lower size overhead than XML, and is a newer standard which has gained massive traction in later years, but XML would be suitable as well.
@@ -120,14 +119,14 @@ Jackson is, like a lot of the other \ac{Java EE} libraries, configured using ann
 Among the most important annotations are \code{@JsonIgnore}, which causes a property to be ignored, and \code{@JsonSetter/Getter}, which can be used in conjunction with \code{@JsonIgnore} to create write or read only properties.
 Another feature that integrates with the rest of the technology stack is the integration with JAX-RS, which means that the various end--point handlers, or methods, can return a Java object, and let the JAX-RS framework handle the serialization.
 
-\subsection{Deployment}
+\section{Deployment}
 To be able to deliver our service we need what is called an application server, i.e.~something which can run our code and serve it to the outside world in a production environment.
 
 Due to our earlier choice of RESTEasy, we will be using the WildFly\footnote{\url{http://wildfly.org/}} application server, because it is also developed by JBoss.
 This ensures that our different technologies can work in conjunction right from the start;
 which in turn means that we can implement a working prototype, and focus on our business logic instead of tedious configuration of the system's underlying technologies.
 
-\subsection{Data Persistence}\label{subsec:datapersistence}
+\section{Data Persistence}\label{subsec:datapersistence}
 Lastly we need to decide on a way of persisting data, i.e.~storing the data we gather.
 In choosing the data persistence technologies these three criteria are the most significant for a database system:
 \begin{eletterate}
@@ -142,7 +141,7 @@ There exists numerous categories of database systems or paradigms, but the most 
 Furthermore there exists NewSQL database systems, which are relational but with the scalability of NoSQL;
 however, as this is a relatively new concept the support and integration into our Java environment is lackluster, so we ignore these specific NewSQL database systems.
 
-\subsubsection*{SQL}
+\subsection{SQL}
 
 SQL database systems are relational and data is stored in a number of tables, some examples of popular SQL database systems are MySQL\footnote{\url{https://www.mysql.com/}}, PostgreSQL\footnote{\url{https://www.postgresql.org/}}, and IBM DB2\footnote{\url{http://www.ibm.com/analytics/us/en/technology/db2/}}.\cite{DB_RANKINGS}
 
@@ -155,7 +154,7 @@ Popularity is an important factor when discussing database systems, since it sho
 A widely used database system gives a indicator of that it is reliable and have good integration options,
 since unreliable systems with bad integration options will not be very popular. 
 
-\subsubsection*{NoSQL}
+\subsection{NoSQL}
 NoSQL database systems is a term used to describe a myriad of different database back--ends.
 Some of these are; key--value stores, document stores, and graph based systems.
 Common for the majority of NoSQL database systems is that they value simplicity of design, scalability and speed over consistency.
@@ -169,7 +168,7 @@ This makes expanding the system significantly easier, since adding a new propert
 \bigskip
 As mentioned earlier, we want to use a solid and widely used database system, and therefore we choose to use a SQL database.
 
-\subsubsection*{Interfacing With the Database System} % AKA Data Persistence Provider
+\subsection{Interfacing With the Database System} % AKA Data Persistence Provider
 
 The database system we choose must be compilable with Java.
 There are several systems which can act as an interface between the program and the database system.
@@ -184,7 +183,7 @@ Hibernate ORM is also a mature and stable system which is well supported.
 
 We therefore choose Hibernate ORM to act as a Data Persistence Provider. 
 
-\subsubsection*{Selecting a Database System}
+\subsection{Selecting a Database System}
 
 The top four popular SQL database systems are\cite{DB_RANKINGS}: 
 \begin{enumerate}
@@ -206,7 +205,7 @@ PostgreSQL is a popular SQL database system which is well--performing.
 It has support for Hibernate ORM and geospatial queries.
 Therefore we choose it for our data persistence.
 
-\subsubsection{Data Persistence Provider}
+\subsection{Data Persistence Provider}
 Hibernate is another project operated by Red Hat.
 It was originally just an \ac{ORM}, but has since expanded into Hibernate \ac{OGM}, which brings the power of Hibernate to NoSQL databases, and other projects.
 Hibernate \ac{ORM} has been around for a long time and is according to themselves popular and used by ``tens of thousands of Java developers''.\cite{hibernate_pop}
@@ -230,7 +229,7 @@ When interfacing with Spring specifically, the \code{entity manager} is injected
 The transactions can be managed manually, but letting Spring do it allows the container \fxnote{Write about the Spring IoC container} to figure out when the outermost transaction ends, and therefore minimize the amount of transactions.
 We use the \ac{JPA}, since it provides all the features we need, while also being portable between different persistence providers.
 
-\subsubsection{Spatial Querying}\label{subsubsec:spatialqueringtech}
+\subsection{Spatial Querying}\label{subsubsec:spatialqueringtech}
 Since we, as described in \cref{sec:requirements}, want to keep track of vehicle positions, we will be storing vehicle location, which is geospatial data.
 To use the data, we need some way of querying the data, and using it in processing or returning it to the client.
 Spatial data is different from regular data, in that the way you want to query often has to do with distance in a 2--D space, 3--D globe, or points in relation to a polygon.
@@ -252,7 +251,7 @@ We have chosen Hibernate Search as it is practically transparent, but also has t
 The ability to scale out as well as up was also an important factor.
 
 
-\subsubsection{Flyway}\label{subsubsec:flyway}
+\subsection{Flyway}\label{subsubsec:flyway}
 Flyway is a lightweight database migration tool.
 Meaning that it applies database migration scripts in sequence, remembering the current point in the sequence between runs.
 That relatively simple functionality is hugely useful for incrementally keeping a database up to date with a changing codebase.
