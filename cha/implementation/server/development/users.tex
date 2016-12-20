@@ -17,7 +17,7 @@ permission. The create and modify endpoints both use the builders discussed in
 but is not guaranteed to include all details about them, in the current version
 they do, but more details could be shown only in the detailed \code{Get user}
 endpoint, to conserve bandwidth and database joins. To enable the storage of
-user icons we use the \code{FileDao} from \fxnote{ref til faildao database},
+user icons we use the \code{FileDao} described in \cref{subsec:filedao},
 which allows for easy storage of binary files in the database. We are currently
 only allowing files in the \code{image/png} \ac{MIME} format, but any binary
 file can be uploaded.  If the system was to be deployed in production, a limit
