@@ -130,3 +130,4 @@ bibtex.bib
 
 # Minted
 _minted*/
+*.lox

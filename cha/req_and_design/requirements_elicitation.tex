@@ -1,9 +1,9 @@
 \chapter{Requirements Elicitation}\label{cha:requirements_elicitation}
-As mentioned in \cref{sec:problem_statement} we wish to develop a back--end service capable of providing vehicle relevant information to a possible user, for all the vehicles they own, in whatever format they wish.\fxnote{The problem statement really should not be making this choice}
+As mentioned in \cref{sec:problem_statement} we wish to develop a system capable of providing vehicle relevant information to a possible user, for all the vehicles they own, in whatever format they wish.
 Before starting the design of the actual system we derive some requirements for the system.
 
 \section{Components of a Vehicle Management System}\label{sec:constituents_of_the_system}
-First let us look at what makes up the system as a whole.\fxnote{supervisor would like some graphics}
+First let us look at what makes up the system as a whole.
 The system consists of three components: a data provider, a front--end, and a back--end.
 \begin{description}
     \item [Data Providers] are the data collectors for the system. Their purpose is to collect data about the vehicle and its location and then forward that data to the back--end.
@@ -14,8 +14,8 @@ The system consists of three components: a data provider, a front--end, and a ba
     This component facilitates requests for the front--end such that it can use the stored data.
 \end{description}
 
-The aforementioned data analysis performed by the front--end may be different depending on the company's requirements, as such without a company as stakeholder it would be a lot of guesswork to develop and we therefore choose not to focus on the development of the front--end.
-The front--end will still be considered in regard to the other constituents of the system and a prototype or proof of concept system may still be developed in order to show the interaction between the back--end and front--end.
+The aforementioned data analysis performed by the front--end may be different depending on the company's requirements, as such without a company as stakeholder it would be a lot of guesswork to develop and we therefore choose not to focus on the development of the front--end component.
+The front--end will still be considered in regard to the other components of the system and a proof of concept solution will still be developed in order to show the interaction between the back--end and front--end.
 Both the back--end and data provider also depend on the user, however this is to a lesser degree than the front--end.
 For the data provider the user dependency is in obtaining data that is only available through manual input, or cooperation with other companies, e.g. fuel prices.
 As for the back--end the dependency relies on what data should be available to the front--end.
@@ -27,24 +27,25 @@ We have several data providers sending data to the back--end, the front--end cli
 This means we have an arbitrary number of data providers and front--end clients all communicating with the same back--end.
 A way to represent this would be $n..1..m$.
 In this example the $n$ represents the data providers, the $1$ the back--end and the $m$ the front--end clients.
-Not only can we have an arbitrary number of data providers and front--end clients, but they may also be different systems, as long as they adhere to the communication protocol of the back--end.
+Not only can we have an arbitrary number of data providers and front--end clients, but they may also be different implementations, as long as they adhere to the communication protocol of the back--end.
 Keeping in mind the aforementioned system interactions we deem the back--end the most influential part of the system, as such we choose to focus on developing the back--end.
 
 \section{System Focus}
-By choosing to focus on the back--end this also means that our users would be developers themselves, using our system as a data source to develop a front--end.
-As such the system will need sufficient documentation such that a developer could develop a front--end by requesting data from our back--end.
-This documentation would be what the developers working with the front--end should interact with, the documentation would fill the role of a user interface of sorts for the back--end.
+By choosing to focus on the back--end this also means that our users would be developers themselves, using our system as a data source to develop a front--end or data provider.
+As such the system will need sufficient documentation such that a developer could develop such a system without knowledge of the internal specification and implementation of the back--end.
+This documentation would be what the developers working with the clients should interact with, the documentation would fill the role of a user interface of sorts for the back--end.
 The data provider may be developed by the same company as the front--end in order to achieve company specific specifications, or a generic data provider that forwards all available \ac{OBD} and GPS data could be created.
-Whatever the choice may be it would use the same documentation for development as the front--end.
+Whatever the choice may be the documentation should be the same for development of all types of clients.
 
-It is important to keep in mind that all three constituents of the system can be isolated and considered as their own individual systems.
+It is important to keep in mind that all three components of the system can be isolated and considered as their own individual systems.
 The data provider may be an app collecting and forwarding GPS and \ac{OBD} data to the back--end.
-The front--end could be a system which requests data from the back--end.
-The back--end could be a system that receives data from the data provider, normalises and stores the data, and forwards data when it is requested by the front--end.
-Also note that data providers are linked to a front--end as they represent vehicles in the fleet and fleet owner, however no direct communication between the two occur.
+The front--end could be a system which requests data from the back--end, and visualises it through a browser.
+The back--end could be a system that receives data from the data provider, potentially normalises and then stores the data, to be forwarded when it is requested by a front--end client.
+Note that data providers are indirectly linked to a front--end as they represent vehicles in the fleet and fleet owner, however no direct communication between the two occur.
+Furthermore it is paramount that the system acts on normalised data, such that misinterpretations can be avoided.
 
 \bigskip
-The objective for the back--end is simply put to normalise, store and forward data to the front--end.
+The objective for the back--end is simply put to store and forward data to the front--end.
 Vehicle relevant information can be acquired from \ac{OBD}, however this does not include geospatial data, as such an alternate way to provide geospatial data must be used.
 All data must be collected and subsequently stored, such that it can be utilised by the front--end in whatever way the user desires.
 Furthermore since vehicle and geospatial data will be retrieved from different sources, there must also be a method in place which links together information pertaining to the same vehicle.
@@ -60,39 +61,13 @@ This leads to the following functional requirements for the back--end:
 \begin{eletterate}
     \item Receive and store \ac{OBD} and GPS data from some data provider, such as a smartphone app.
     \item Access management for front--end requests.
-    \item Normalise incoming data and offer the data in a platform neutral format. %Device scalability.
+    \item Offer normalised data in a platform neutral format. %Device scalability.
     \item Allow the front--end to request any data obtained from data providers.
 \end{eletterate}
 As well as the following non-functional requirements:
 \begin{eletterate}[resume]
-    \item Support load scalability.%Be load scalable such that an arbitrary number of vehicles and clients can make use of the service without new clients negatively impacting performance.
+    \item Support load scalability.
     \item Support both functional and generational scalability.
+    \item Be well--tested such that behaviour and performance is predictable.
     \item Be documented in regard to how data can be accessed and uploaded.
 \end{eletterate}
-
-
-%    \item Be able to read data from OBD and GPS off a mobile device.
-%    \item Have a design which allows for easy scalability of the incoming data(OBD/HDOBD) and other possible extensions or future generations of OBD.
-%    \item Normalize incoming data from their various format to a single format, this includes possible extension data from EOBD.
-%    \item Provide data in various sensible formats such that a possible client isn't forced to use our idea of a ``proper'' format.
-%    \item Provide any obtainable data to a possible client.
-%    \item Acquire useful data from sources beyond OBD?? Fuel cost based on geolocation maybe?
-%    \item Have scalability in regard to those measures defined earlier
-%    \item next gen support, HDOBD most recent change to the OBD, more may come
-
-
-%No outside stakeholders so we use SOTA and problemstatement, we are technically the stakeholders.
-%We want to add new stuff so we provide data - data provided
-%We want scalability - this is required to provide our services to a larger amount of clients ant to expand in the future
-%Scalability is our key notion as our theoretical income is from clients using the system, for this to occur we want to support as many clients as possible
-
-%Meta
-    %what is req elicit, specify func reqs
-%Core
-    %System purpose?
-    %Data reqs and purpose
-    %Who is the user?
-    %How does it help the user? -- tbh this should be evident in the intro as it should tell us why fleet management is a thing and what its use is?
-    %So what it our job?
-%Ending
-    %The resulting requirements
