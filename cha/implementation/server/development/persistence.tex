@@ -90,6 +90,17 @@ Each of these interfaces inherit from the \code{BaseDao}, and their implementati
 Most of these have some variation of a \code{byId}--method and a \code{getAll}.
 The \code{byId}--methods are for the services where the ids are used by the user of the API instead of sending the entire object.
 
+\subsection{FileDao}\label{subsec:filedao}
+In addition to the \acp{DAO} above, we also implemented two \code{FileDao}s. 
+Specifically we implemented a generic \code{FileDao} for storing files.
+This was expanded into two concrete \acp{DAO}, one for storing the user icons, and one for storing vehicle icons as files instead of in the database.
+The locations of the icons stored by the \acp{DAO} is specified in our configuration file, and does not need to be located on the same server as the database.
+
+Doing this means that we only have to store the path of each of these files in the database, 
+instead of the entire files, which would increase the workload of the database system, which is unwanted.
+
+Expanding this to a third implementation requires a very small amount of effort, since all the behavior was constructed in the generic \code{FileDao}.
+
 \section{Database migrations}
 Hibernate has support for creating a database schema automatically based on the model provided, and the annotations,
 this is called ``Hibernate Mapping to Data Definition Language'' or ``hbm2ddl'' for short.
