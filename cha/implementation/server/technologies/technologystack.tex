@@ -148,7 +148,7 @@ A key property of SQL database systems is that they use transactions which are A
 A critical transaction is a transaction which must not go wrong and leave the database in an inconsistent state, for instance the transfer of money.
 
 SQL database systems are the primary choice for commercial use\cite{dbs_concepts}.
-This is supported with the fact that 7 out of the top 10 most popular database systems in December 2016 are SQL database systems\cite{DB_RANKINGS}.
+This is supported with the fact that seven out of the top 10 most popular database systems in December 2016 are SQL database systems\cite{DB_RANKINGS}.
 Popularity is an important factor when discussing database systems, since it shows how much the systems are used, their maturity, and how tested in production the systems are.
 A widely used database system gives a indicator of that it is reliable and have good integration options,
 since unreliable systems with bad integration options will not be very popular. 
@@ -192,7 +192,7 @@ The top four popular SQL database systems are\cite{DB_RANKINGS}:
 \item PostgreSQL\footnote{\url{https://www.postgresql.org/}}
 \end{enumerate}
 
-Oracle and Microsoft SQL Server will not be considered since Oracle is not free to use\cite{oracle_pricing}, 
+Oracle and Microsoft SQL Server are not considered since Oracle is not free to use\cite{oracle_pricing}, 
 and Microsoft SQL Server on Linux will first be available mid--2017\cite{ms_sql_linux}.
 
 MySQL and PostgreSQL both have support for geospatial queries and both supports Hibernate ORM\cite{hibernate_support}, so to choose we look at their performance.
@@ -256,13 +256,13 @@ Meaning that it applies database migration scripts in sequence, remembering the 
 That relatively simple functionality is hugely useful for incrementally keeping a database up to date with a changing codebase.
 Since a bare bones migration tool only keeps track of where it currently is, it is crucial that the old scripts do not change, as that would give an inconsistent version of the database if the scripts were reapplied.
 Flyway helps guard against such problem by storing a checksum for the script, which it checks for every deployment, that way it is immediately obvious if an already deployed script has been changed.
-Should a migration script fail Flyway will stop the migration and fail the deployment, prompting the developer to fix the problem manually.
+Should a migration script fail Flyway stops the migration and fail the deployment, prompting the developer to fix the problem manually.
 Such a problem should be avoided, since it takes the production server down until the problem is fixed.
 
 The migration scripts are found at preconfigured paths in the classpath of the Java archive.
-Upon deployment Flyway will scan the directories for files in the format \code{V(version)\_\_(description).sql}, which it will apply to the database.
-The version in front determines in what order the scripts will be applied.
+Upon deployment Flyway scans the directories for files in the format \code{V(version)\_\_(description).sql}, which it will apply to the database.
+The version in front determines in what order the scripts are applied.
 Once again it is of utmost importance that the list of scripts is only appended to, if a script is inserted anywhere but the end, Flyway will fail the deployment, since the state of the database can not be guaranteed.
 
-A migration script, for us, is an SQL script, which will migrate the \ac{DDL} and the data forwards, to a new schema.
+A migration script, for us, is an SQL script, which migrates the \ac{DDL} and the data forwards, to a new schema.
 It is important that the data inside the database is migrated correctly to the new \ac{DDL}, since otherwise customers might lose their data.
