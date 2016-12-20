@@ -10,7 +10,7 @@
 %\end{itemize}
 
 %%% This part is adapted from D56, where Jesper writes about the model.
-In the model layer we implement all the business logic and data, which is independent from the persistence and presentation of that data. 
+In the domain model layer we implement all the business logic and data, which is independent from the persistence and presentation of that data. 
 Therefore we will only provide access to properties which make sense from a business perspective.
 This includes using getters and setters to provide and protect access to our private parts. % <- Innuendo
 Additionally we do not want other classes to access mutable objects, such as collections, in our class, as they could violate constraints in the business model, therefore we employ the ``TellDontAsk'' principle\cite{Fowler_TellDontAsk}.
@@ -18,10 +18,9 @@ TellDontAsk in short means that if another class wants to add an object to a lis
 If another class wants access to a list in another class then it can get a \code{ReadOnlyCollection} of it, which does not allow mutation of the collection, this is all to decrease the coupling.
 %%%
 
-\section{The Constituents of the Model}
-The classes we have implemented as part of the Model are shown on \cref{fig:model_class_diagram}.
+\section{The Constituents of the domain model}
+The classes we have implemented as part of the domain model are shown on \cref{fig:model_class_diagram}.
 We have excluded some parts for the purposes of simplicity and readability here, these are the aforementioned getters and setters, and the \code{id}--field on each class which are stored in the database. 
-\fxnote{Hvis vi laver en anden model i design så skal der stå her at de 2 ikke nødvendigvis er 1-til-1 og hvorfor.}
 
 \begin{figure}[p]
     \begin{center}
@@ -31,17 +30,17 @@ We have excluded some parts for the purposes of simplicity and readability here,
 \end{figure}
 
 % Note om hvorfor vi har Driver <-> User som has a, og ikke is a.
-In the class diagram there are two central classes; \code{User} and \code{Route}, which are connected via the \code{Driver}--class.\fxnote{Vi skal skrive senere hvorfor at Driver--classen ikke skulle ``leakes'' til api brugeren.}
+In the class diagram there are two central classes; \code{User} and \code{Route}, which are connected via the \code{Driver}--class.
 \subsection{User}
 The relationship between the \code{User}-- and \code{Driver}--class is modeled using a has--a, in contrast to is--a, for the purposes of functional scalability, which we defined in \cref{sec:scalability}.
-Say for the sake of argument that we wanted to have an Administrator, and we have modeled the \code{User}--\code{Driver} relationship as is--a (i.e. using inheritance), 
+Say for the sake of argument that we wanted to have an Administrator, and we have modeled the \code{User}--\code{Driver} relationship as is--a, i.e. using inheritance, 
 then logically an Administrator would also inherit from the \code{User}--class.
-However then there cannot exist an instance which is both a driver and an administrator, which might not represent the reality we are trying to model. 
+However, then there cannot exist an instance which is both a driver and an administrator, which might not represent the reality we are trying to model. 
 Thus we limit the functional scalability of the system by using an is--a relationship. 
 Since we want to enable functional scalability, we do not want to limit the development of new system roles by artificially tying them to inheritance.
 
 In addition to the \code{Driver}--class the \code{User}--class also has relations to the \code{Permission}--class, the \code{AuthToken}--class, and the \code{UserIcon}--class.
-The \code{Permission}--class is used to grant permissions to which endpoints in the REST API a given user can use. \fxnote{Det er ikke klart at det er instancen der er limited, jeg læser user som værende consumer client, altså at hele consumer cliented bliver limited i dens API calls}
+The \code{Permission}--class is used to grant permissions to which endpoints in the REST API a given user of the consumer client can use.
 The \code{AuthToken}--class is a session token which is sent with each request to identify which user sent the request. 
 Lastly the \code{UserIcon}--class which inherits from the abstract class \code{PersistFileHandle}--class is used to optionally give a profile picture to each user, for the use in a consumer. 
 
@@ -54,34 +53,33 @@ Lastly the \code{UserIcon}--class which inherits from the abstract class \code{P
 
 \subsection{Route}
 The \code{Route}--class is used to combine the \code{Driver}--class, the \code{MiscData}--class, and the \code{Vehicle}--class.
-Furthermore the \code{Route}--class have \code{Waypoint}s.
-The \code{Route}--class do not contain much information directly, only the \code{routestate}, but it collects information.
+Furthermore the \code{Route}--class has \code{Waypoint}s.
+The \code{Route}--class does not contain much information directly, only the \code{routestate}, but it collects information.
 
-The \code{Waypoint}--class is the spatial part of the model, it contains latitude, longitude, and a timestamp.
+The \code{Waypoint}--class is the spatial part of the domain model, it contains latitude, longitude, and a timestamp.
 The \code{Vehicle}--class is our abstraction of a vehicle, on it we have the simple data which is general for all vehicles, and optionally an icon via the \code{VehicleIcon}--class.
 
 A \code{Route} is a class which depends on a \code{Driver} and a \code{Vehicle} and contains collections of \code{MiscData} and \code{Waypoint}s.
 The \code{Route} depends on the \code{Driver} and \code{Vehicle}, since a \code{Route} must have a \code{Driver} and \code{Vehicle}.
 The \code{Waypoint}s and \code{MiscData} depend on the \code{Route} since the \code{Waypoint}s and \code{MiscData} cannot exist without a \code{Route}.
 
-A use case, which is not supported by the model as it is now, is the collection of data via the \code{MiscData}--class when the vehicle is not on a route.
+A use case, which is not supported by the domain model as it is now, is the collection of data via the \code{MiscData}--class when the vehicle is not on a route.
 An example of this could be the collection of maintenance data during maintenance.
-For the model to be able to support this use case a new class could be made, for instance \code{Maintenance}.
+For the domain model to be able to support this use case a new class could be made, for instance \code{Maintenance}.
 Then \code{MiscData} would be an aggregate of the \code{Maintenance}--class, just like \code{Route}.
 This would allow \code{MiscData} to be used in other contexts than a \code{Route}.
 
 The \code{Route}--class is used to bind the classes together, since \code{Vehicle}s can have different \code{Driver}s and vice versa.
-That is the reason why \code{Driver} and \code{Vehicle} is not directly related. 
 
 If we wanted to support different kind of vehicles, which has additional attributes, they should inherit from the \code{Vehicle}--class.
 For example a bus could contain information about how many people it could carry, while for a truck the amount of load it can take would be useful. 
 
-\subsection{MiscData}
+\subsection{MiscData}\label{ssec:miscdata}
 The last part of the \code{Route}--class is the \code{MiscData}--class. 
 The \code{MiscData}--class is used to store the information gathered by the DataProvider which is not spatial, i.e. \ac{OBD}--data.
 We placed this as a part of the \code{Route}--class since the data in the \code{MiscData}--class is not directly related to the \code{Vehicle} or \code{Driver}. 
 We could have made this a constituent of the \code{Vehicle}--class instead, or placed a relation between them.
-However they already have an indirect relationship via the \code{Route}--class, 
+However, they already have an indirect relationship via the \code{Route}--class, 
 thus we can find all \code{MiscData}--instances which are related to a given \code{Vehicle}--instance, even though they do not have a direct relation. 
 We do not attach the \code{MiscData}--class to the \code{Waypoint}--class, 
 since we want to give the flexibility to the DataProvider that it can send those two pieces of information separately, as they may not be wanted at the same frequency. 

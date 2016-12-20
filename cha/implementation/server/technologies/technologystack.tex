@@ -1,18 +1,19 @@
 % chktex-file 08 chktex-file 13 chktex-file 17
-\chapter{Technologies on the Server}
-\fxnote{TODO: META}
-To start with a good foundation for our server, it is important that we choose an appropriate stack of technologies, such that we take advantage of well tested and supported frameworks and libraries.
-This approach enables us, as developers, to focus on parts unique to the system we are developing, i.e.~business logic.
-Moreover since the server is what connects to both ends of the system, i.e.~the producer clients, and the front--end clients, it is paramount that the outwards facing interfaces on the server are stable, thoroughly tested, and well documented.
+\chapter{Technologies on the Server}\label{cha:techstack}
+In order to develop a server there are infinite combinations of technologies, tools and languages to do so.
+To develop a solid, reliable and well tested server it is paramount that we choose an appropriate stack of technologies, such that we can take advantage of the already well tested and supported libraries and frameworks.
+This enables us, as developers, to focus on parts unique to the system we are developing.
+Moreover since the server is what connects to both ends of the system, i.e.~the producer clients, and the consumer clients, it is crucial that the outwards facing interfaces on the server are stable, thoroughly tested, and well documented.
+In this chapter we introduce a variety of the technologies we have considered throughout development, and argue for the choices we have made.
 
 \section{The Programming Language}
 It is important for us to choose a programming language, in which we all are comfortable, and which will not be a hindrance for the system.
-This means that the programming language and the environment around it must allow for; scalability, reliable and good performance, as well as the ability to utilise libraries for web related tasks, e.g.~running a server and routing/handling incoming requests.
+This means that the programming language and the environment around it must allow for; scalability, reliable and good performance, and have the ability to utilise libraries for web related tasks, e.g.~running a server and handle requests.
 
 Furthermore it is important that the development environment is available for multiple platforms, such that all group members can participate equally, since we use both macOS, Linux, and Windows.
 
 \bigskip
-To decide which language to use, we look at popular languages fitting the above mentioned requirement;
+To decide which language to use, we look at popular languages fitting the aforementioned requirements;
 these are Node.js\footnote{\url{https://nodejs.org/en/}} and Python with Django\footnote{\url{https://www.djangoproject.com/}} or Flask\footnote{\url{http://flask.pocoo.org/}}, which are both popular for developing web services.
 However both of these are dynamically typed languages, which can be good for rapid development but bad for the maintainability of a system\cite{kleinschmager2012static}.
 Moreover especially Node.js is not as mature and lack the same enterprise libraries and safeties which come with yet another language --- Java\footnote{\url{https://www.java.com/}}.
@@ -20,9 +21,9 @@ Moreover especially Node.js is not as mature and lack the same enterprise librar
 Java is a mature and well documented language that have been tried and tested in numerous enterprise systems; and since 2001 Java has resided in the top two, but mostly top one, languages on the TIOBE index\cite{TiobeIndex}.
 It also enables us to develop a web service, by using a combination of the many high quality third party libraries built for such tasks.
 Moreover, Java is platform independent both in development and in production, so we are ensured that all group members can get involved in the development.
-Because of this, and because it also fits the above mentioned requirements, we choose to develop the server of our system in Java.
+Because of this, and because it also fits the aforementioned requirements, we choose to develop the server of our system in Java.
 
-\subsection{Java 8}
+\subsection{Java 8}\label{java8}
 After having chosen Java as the programming language we use to develop our server, the next step is to ensure that we use the concepts and libraries necessary to develop efficiently.
 In our case, this means that we can develop individual components which can be reused and replaced if new or other functionality is needed --- in other words, we want to build a system with low coupling and high cohesion.
 
@@ -37,9 +38,9 @@ Because of this, and because of some added features and overall improvements to 
 Spring is a framework on top of Java, which enables the use of features similar to those in JavaEE.
 Moreover many other third party frameworks and libraries have great integration with Spring, which will ease the initial setup of the different technologies.
 
-\subsubsection{POJOs \& Beans}
+\subsection{POJOs \& Beans}\label{beans}
 A concept which is familiar to any enterprise Java programmer is that of \ac{POJO}.
-A \acp{POJO} is a Java object that follows no framework convention, such as implementing a specific interface, or extending framework classes.
+A \ac{POJO} is a Java object that follows no framework convention, such as implementing a specific interface, or extending framework classes.
 Objects that are not \acp{POJO} are said to be \acp{SJO}.
 \acp{POJO} lower coupling, by lowering the dependency on the underlying framework, and moving the responsibility of wiring the services from the usercode to the framework.
 Typically implementing a \ac{POJO} means annotating the various methods, fields, and classes with certain Java annotations, which the framework interprets to figure out what it is supposed to wire up to the class.\cite{spring_pojo}
@@ -53,7 +54,7 @@ Strictly speaking a Bean is not a \ac{POJO}, since it has to implement the seria
 Spring allows for the no--arg constructor of a Bean to have an access level stricter than \code{public}.
 We will use that to hide the constructor when its use would result in a wrongly configured object.
 
-\subsubsection{Spring IoC Container}
+\section{Spring IoC Container}\label{ioc_container}
 Large projects, in object oriented languages, often have dependencies between objects.
 The naive approach to resolve dependencies is to let an object instantiate, or find, its own dependencies.
 Often called \textit{hardcoded dependencies}, they have a significant issue.
@@ -66,7 +67,7 @@ By doing so, the calling object, instead of the callee, retains control over the
 The Spring \ac{IoC} container takes the concept a step further.
 Instead of the caller retaining control, the \ac{IoC} container controls all dependencies.
 It instantiates and configures them according to metadata specified with either XML, code, or annotations.
-Spring heavily relies on the concept of Beans described above, but also includes support for managing \acp{POJO} as if they were Beans.
+Spring heavily relies on the concept of Beans, described in \cref{beans}, but also includes support for managing \acp{POJO} as if they were Beans.
 Although the main configuration in Spring is done with XML, allowing the programmer to instantiate object into the \code{ApplicationContext}, it is also possible to get dependencies injected by using the \code{@Autowired} annotation.
 When Spring instantiates a Bean it first looks through it and injects dependencies into all the fields having the \code{@Autowired} annotation, by resolving the dependency class/interface.
 If the application includes advanced Beans, that need some form of lifetime management, Spring supports factory Beans, which are factories that create a specific type of Bean.
@@ -74,7 +75,7 @@ If the application includes advanced Beans, that need some form of lifetime mana
 By inverting control to the container, instead of the objects, Spring makes it possible to switch out a large part of an application, by only changing XML.
 We will be relying heavily on the Spring \ac{IoC} container in the server.
 
-\subsection{Communication}
+\section{Communication}\label{communication}
 \label{subsec:tech_communication}
 As the server in our system needs to communicate with other parts of the system over the Internet, we need a unified way of passing information around.
 The two de facto standards for this type of communication are SOAP and REST.
@@ -103,7 +104,7 @@ In the Java world there exists a concept called Javax which embodies various ext
 One component of Javax is the JAX--RS specification\footnote{\url{https://jax-rs-spec.java.net/}}, which describes a RESTful service in Java.
 Our RESTful server will be based upon the RESTEasy\footnote{\url{http://resteasy.jboss.org/}} implementation of version 2.0 of the aforementioned JAX--RS specification.
 
-RESTEasy is developed by JBoss, owned by Red Hat, and is a well documented set of frameworks for integrating REST into a Java server application or service.\fxnote{Måske tilføj noget med hvordan vi bruger det, dog i et senere afsnit!}
+RESTEasy is developed by JBoss, owned by Red Hat, and is a well documented set of frameworks for integrating REST into a Java server application or service.
 It allows us to easily develop a RESTful service while being closely integrated into Spring.
 Moreover RESTEasy handles the HTTP communication, and does it asynchronously, which can greatly improve performance and scalability,
 since multiple inbound requests can be handled simultaneously.
@@ -121,8 +122,7 @@ Another feature that integrates with the rest of the technology stack is the int
 
 \section{Deployment}
 To be able to deliver our service we need what is called an application server, i.e.~something which can run our code and serve it to the outside world in a production environment.
-
-Due to our earlier choice of RESTEasy, we use the WildFly\footnote{\url{http://wildfly.org/}} application server, because it is also developed by JBoss.
+Due to our earlier choice of RESTEasy, we choose to use the WildFly\footnote{\url{http://wildfly.org/}} application server, because it is also developed by JBoss.
 This ensures that our different technologies can work in conjunction right from the start;
 which in turn means that we can implement a working prototype, and focus on our business logic instead of tedious configuration of the system's underlying technologies.
 
@@ -159,7 +159,7 @@ NoSQL database systems is a term used to describe a myriad of different database
 Some of these are; key--value stores, document stores, and graph based systems.
 Common for the majority of NoSQL database systems is that they value simplicity of design, scalability and speed over consistency.
 This means that one significant shortcoming of NoSQL database systems is that they do not use ACID--compliant transactions.
-However many NoSQL database systems are ACID--like, i.e.~read and write operations can be configured to show consistency.
+However, many NoSQL database systems are ACID--like, i.e.~read and write operations can be configured to show consistency.
 
 Document stores are an expansion to key--value based stores, where the value is replaced by a document of some sorts, e.g.~XML or JSON formatted documents.
 An advantage of document stores is that any two documents do not need to follow the same ``schema'', i.e.~documents can have a different amount and kind of properties.
@@ -167,21 +167,6 @@ This makes expanding the system significantly easier, since adding a new propert
 
 \bigskip
 As mentioned earlier, we want to use a solid and widely used database system, and therefore we choose to use a SQL database.
-
-\subsection{Interfacing With the Database System} % AKA Data Persistence Provider
-
-The database system we choose must be compilable with Java.
-There are several systems which can act as an interface between the program and the database system.
-We would prefer a mature and well tested system, which is also relatively easy to operate, while having full control for performance and customization.
-We looked at Spring Data JPA\footnote{\url{https://spring.io/}}, jOOQ\footnote{\url{http://www.jOOQ.org/}}, and Hibernate ORM\footnote{\url{http://hibernate.org/orm/}}.
-All three of them implement the \ac{JPA}--standard\cite{JavaPersistenceAPI}, which is an \ac{API} that describes the management of data. 
-
-Spring Data JPA is a layer on top of Hibernate ORM which provides some abstraction, and can auto--generate some queries, however we would have less control over how the persistence would occur, and this can be to our disadvantage.
-jOOQ is an attempt to simplify persistence in Java, it has most of the same features as Hibernate ORM.
-jOOQ points to Hibernate ORM as the de--facto standard in the Java ecosystem\cite{JOOQvsHIBERNATE},
-Hibernate ORM is also a mature and stable system which is well supported. 
-
-We therefore choose Hibernate ORM to act as a Data Persistence Provider. 
 
 \subsection{Selecting a Database System}
 
@@ -199,11 +184,27 @@ and Microsoft SQL Server on Linux will first be available mid--2017\cite{ms_sql_
 MySQL and PostgreSQL both have support for geospatial queries and both supports Hibernate ORM\cite{hibernate_support}, so to choose we look at their performance.
 Regarding performance PostgreSQL have a slight advantage in simple database reads and a big advantage in more complex read queries.
 MySQL has a slight advantage in database writes, 
-so in all PostgreSQL is better in read queries and MySQL is only slightly better in writing.\cite{post_vs_mysql}
+so in all PostgreSQL is better in read queries and MySQL is only slightly better in writing\cite{post_vs_mysql}.
+Both database systems fulfill a the requirements for database system and thus the choice comes down to personal preference.
+With every group member having prior experience using PostgreSQL, that is the logical choice and thus we continue with PostgreSQL.
+%PostgreSQL is a popular SQL database system which is well--performing.
+%It has support for Hibernate ORM and geospatial queries.
+%Therefore we choose it for our data persistence.
 
-PostgreSQL is a popular SQL database system which is well--performing.
-It has support for Hibernate ORM and geospatial queries.
-Therefore we choose it for our data persistence.
+\subsection{Interfacing With the Database System} % AKA Data Persistence Provider
+
+The database system we choose must be compilable with Java.
+There are several systems which can act as an interface between the program and the database system.
+We would prefer a mature and well tested system, which is also relatively easy to operate, while having full control for performance and customization.
+We looked at Spring Data JPA\footnote{\url{https://spring.io/}}, jOOQ\footnote{\url{http://www.jOOQ.org/}}, and Hibernate\footnote{\url{http://hibernate.org/}}.
+Spring Data JPA and Hibernate both implement the \ac{JPA}--standard\cite{JavaPersistenceAPI}, an \ac{API} that describes the management of data, whereas jOOQ merely uses some \ac{JPA} compatible annotations but does not fully implement it. 
+
+Spring Data JPA is a layer on top of Hibernate  which provides some abstraction, and can auto--generate some queries, however we would have less control over how the persistence would occur, and this can be to our disadvantage.
+jOOQ is an attempt to simplify persistence in Java, it has most of the same features as Hibernate.
+jOOQ points to Hibernate as the de--facto standard in the Java ecosystem\cite{JOOQvsHIBERNATE},
+Hibernate is also a mature and stable system which is supported by PostgreSQL. 
+
+We therefore choose Hibernate to act as a Data Persistence Provider.
 
 \subsection{Data Persistence Provider}
 Hibernate is another project operated by Red Hat.
@@ -226,30 +227,28 @@ The \ac{JPA} works with \code{entity managers}.
 It is through the \code{entity manager} that an application interfaces with the database, whether that be through a query to get data or, or a persist call to persist an entity.
 The update of entities is done transparently by using Java proxies, which injects information about entity changes into the persistence providers, which persists them on transaction close.
 When interfacing with Spring specifically, the \code{entity manager} is injected into a transactional Bean, where Spring will manage the transactions.
-The transactions can be managed manually, but letting Spring do it allows the container \fxnote{Write about the Spring IoC container} to figure out when the outermost transaction ends, and therefore minimize the amount of transactions.
+The transactions can be managed manually, but letting Spring do it allows the container to figure out when the outermost transaction ends, and therefore minimize the amount of transactions.
 We use the \ac{JPA}, since it provides all the features we need, while also being portable between different persistence providers.
 
 \subsection{Spatial Querying}\label{subsubsec:spatialqueringtech}
-Since we, as described in \cref{sec:requirements}, want to keep track of vehicle positions, we will be storing vehicle location, which is geospatial data.
+As described in \cref{sec:requirements} we want to keep track of vehicle positions, as such we store the location of vehicles, which is geospatial data.
 To use the data, we need some way of querying the data, and using it in processing or returning it to the client.
 Spatial data is different from regular data, in that the way you want to query often has to do with distance in a 2--D space, 3--D globe, or points in relation to a polygon.
 
-PostgreSQL, our chosen database system, has an available extension, called PostGIS\footnote{\url{http://www.postgis.net/}}, which adds support for spatial objects/queries.
+PostgreSQL, our chosen database system, has an available extension, called PostGIS\footnote{\url{http://www.postgis.net/}}, which adds support for spatial objects and queries.
 PostGIS is a powerful extension, but Hibernate has no support for it.
-The \ac{JPA} does allow for native \ac{SQL} queries to be executed in the underlying databases native dialect, which we could use to run native spatial queries on the PostgreSQL/PostGIS database.
-Since we have to write the \ac{DDL} for the database in hand, we could trivially add the required constraints for PostGIS to function.
-An issue with such a solution however is that it would tie us to PostgreSQL as our database, and negate a lot of the modularity that Hibernate affords us.
+The \ac{JPA} does allow for native \ac{SQL} queries to be executed in the underlying databases native dialect, which we could use to run native spatial queries on the PostgreSQL database while using PostGIS.
+Since we would have to to write the \ac{DDL} for the database in hand, we could trivially add the required constraints for PostGIS to function.
+An issue with such a solution however, is that it would tie us to PostgreSQL as our database, and negate a lot of the modularity that Hibernate affords us.
 
-An alternative, that does have support in Hibernate, is Hibernate Search, another Hibernate project, specifically for full text search and geospatial querying.
-Hibernate Search uses Lucene\footnote{\url{https://lucene.apache.org/}} to index entites with Hibernate Search specific annotations, and allows you to query for them using either Hibernate Search, or Lucene queries.
+An alternative, that does have support in Hibernate, is Hibernate Search; specifically designed for full text search and geospatial querying.
+Hibernate Search uses Lucene\footnote{\url{https://lucene.apache.org/}} to index entites with Hibernate Search specific annotations, and allows you to query them using either Hibernate Search, or Lucene queries.
 To make integration easy, Hibernate Search allows the developer to get a Hibernate Search Enhanced \code{full text entity manager} from a regular \code{entity manager}.
 Since Hibernate Search requires almost no extra configuration to get going, it is easy to integrate into a project which already uses Hibernate and the \ac{JPA}.
-When querying for data Hibernate Search returns Hibernate managed entites, making a switch from Hibernate Search to Hibernate querying practically transparent.
-By using Lucene, Hibernate Search is practically database agnostic, meaning that it maintains the modularity that Hibernate provides to a project.
+When querying for data, Hibernate Search returns Hibernate managed entites, making a switch from Hibernate Search to Hibernate querying  transparent.
+By using Lucene, Hibernate Search is database agnostic, meaning that it maintains the modularity that Hibernate provides to a project.
 To scale the server in the future, Hibernate Search also allows us to cluster the indexing.
-We have chosen Hibernate Search as it is practically transparent, but also has the power we need.
-The ability to scale out as well as up was also an important factor.
-
+We have chosen Hibernate Search as it is transparent, but also has the power we need, such as the ability to scale out as well as up.
 
 \subsection{Flyway}\label{subsubsec:flyway}
 Flyway is a lightweight database migration tool.
