@@ -1,18 +1,15 @@
-\begin{table}[ht]
+\begin{table}[htpb]
     \centering
-    \small
-    %\rowcolors{2}{white}{GoogleGrey!20}
-    \setlength\extrarowheight{1pt}
-    \begin{tabularx}{0.9\textwidth}{l p{13em} l l}
-        \textbf{HTTP Methods} & \textbf{Endpoint}               & \textbf{Service}             & \textbf{Method--name}  \\ \hline
-        \texttt{GET}          & \texttt{/route}                   & \multirow{4}{*}{\texttt{RouteService}}        & \code{getAllRoutes} \\
-        \texttt{POST}         & \texttt{/route}                   & & \code{createRoute} \\
-        \texttt{GET}          & \texttt{/route/\{rid\}}           & & \code{getRouteById} \\
-        \texttt{PUT}          & \texttt{/route/\{rid\}}           & & \code{modifyRoute} \\ \tblgrpsep
-        \texttt{GET}          & \texttt{/route/\{rid\}/waypoint}  & \multirow{2}{*}{\texttt{WaypointService}}     & \code{getWaypoints} \\
-        \texttt{POST}         & \texttt{/route/\{rid\}/waypoint}  & & \code{addWaypoint} \\ \tblgrpsep
-        \texttt{GET}          & \texttt{/route/\{rid\}/datapoint} & \multirow{2}{*}{\texttt{VehicleDataService}}  & \code{getVehicleData} \\ 
-        \texttt{POST}         & \texttt{/route/\{rid\}/datapoint} & & \code{addVehicleData} \\ 
-    \end{tabularx}
+    \begin{tabu} to \textwidth {lX[c]l}
+        Endpoint                 & HTTP Method        & Description   \\ \midrule
+        /route                   & \code{GET}         & List all routes \\
+        /route                   & \code{POST}        & Create new route \\
+        /route/\{rid\}           & \code{GET}         & Get route \\
+        /route/\{rid\}           & \code{PUT}         & Modify route \\ \tblgrpsep
+        /route/\{rid\}/waypoint  & \code{GET}         & List all waypoints in route \\
+        /route/\{rid\}/waypoint  & \code{POST}        & Create waypoint on route \\ \tblgrpsep
+        /route/\{rid\}/datapoint & \code{GET}         & List all misc. data on route \\
+        /route/\{rid\}/datapoint & \code{POST}        & Create misc. data point on route \\
+    \end{tabu}
     \caption{A table of the endpoints in the \code{RouteService}, \code{WaypointService}, and \code{VehicleDataService}.}\label{table:endpointrouteservice}
 \end{table}

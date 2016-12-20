@@ -1,16 +1,13 @@
 \begin{table}[ht]
     \centering
-    \small
-    %\rowcolors{2}{white}{GoogleGrey!20}
-    \setlength\extrarowheight{1pt}
-    \begin{tabularx}{0.9\textwidth}{l l l l}
-        \textbf{HTTP Methods} & \textbf{Endpoint}                 & \textbf{Service}                              & \textbf{Method--name}  \\ \hline
-        \texttt{GET}          & \texttt{/vehicle}                   & \multirow{6}{*}{\texttt{VehicleService}}      & \code{getAllVehicles} \\
-        \texttt{POST}         & \texttt{/vehicle}                   &                                               & \code{addVehicle} \\
-        \texttt{GET}          & \texttt{/vehicle/\{vid\}}           &                                               & \code{getVehicleById} \\
-        \texttt{PUT}          & \texttt{/vehicle/\{vid\}}           &                                               & \code{modifyVehicle} \\
-        \texttt{GET}          & \texttt{/vehicle/\{vid\}/icon}      &                                               & \code{getVehicleIcon} \\ 
-        \texttt{PUT}          & \texttt{/vehicle/\{vid\}/icon}      &                                               & \code{setVehicleIcon} \\ 
-    \end{tabularx}
+    \begin{tabu} to \textwidth{lX[c]l}
+        Endpoint              & HTTP Method  & Description \\ \midrule
+        /vehicle              & \code{GET}   & List all vehicles \\
+        /vehicle              & \code{POST}  & Create new vehicle \\
+        /vehicle/\{vid\}      & \code{GET}   & Get vehicle \\
+        /vehicle/\{vid\}      & \code{PUT}   & Modify vehicle \\
+        /vehicle/\{vid\}/icon & \code{GET}   & Get icon of vehicle \\
+        /vehicle/\{vid\}/icon & \code{PUT}   & Modify icon of vehicle \\
+    \end{tabu}
     \caption{A table of the endpoints in the \code{VehicleService}.}\label{table:endpointvehicleservice}
 \end{table}

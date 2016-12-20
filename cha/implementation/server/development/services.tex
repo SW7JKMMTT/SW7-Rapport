@@ -1,18 +1,22 @@
-\chapter{Services Our Server Serves}
-\fxnote{TODO: Meta}
+\chapter{External Interface of the Server}
+In this chapter we present the external interface of our server, i.e. the API which developers of producer--clients and consumer--clients will use.
+This API consists of a number of services which are served at specific endpoints.
+We include an overview of how we use JAX--RS to implement the various services.
+Furtermore we describe security in the context of our system, and how requests to the server are autheticated.
+
 \section{Services Overview}\label{sec:services_overview}
 This section provides an introduction and overview of the services we have created for the server.
 
 A service delivers one or more resources which in turn contains endpoints.
 These endpoints are the interface to the server which is used by the developer of the producer and/or consumer clients.
 
-Each service is a Spring Bean, and is injected with the correct context when required. \fxnote{Er ikke 100\% på termonologien når det kommer til spring mumbo jumbo.}
+Each service is a Spring Bean, and is injected with the correct context when required.
 
 \subsection{Overview of API Endpoints}
 We have 11 endpoints split over four services and two sub--services.
 A sub--service is a service which is a constituent of another service, i.e. it is served by it.
 An overview of these are shown in \cref{table:endpointservice}.
-The four services are \code{AuthService}, \code{UserService}, \code{VehicleService}, and \code{RouteService}, 
+The four services are \code{AuthService}, \code{UserService}, \code{VehicleService}, and \code{RouteService},
 which all serve endpoints relative to the root of the API.
 There are also two sub--services, they are \code{WaypointService}, and \code{VehicleDataService}.
 They are served as sub--services of the \code{RouteService}, since they are reliant on a \code{Route}.
@@ -20,15 +24,15 @@ Each of the services and sub--services are explained later in further detail.
 The ``More Info''--column of the table lists the page of each.
 
 We decided not to implement any deletions in the REST API.
-Implementing this would have taken development time away from what we have considered more important features. \fxnote{Tilføj dette til future work.}
-\subimport{dankmemes}{services_overview_table.tex}
+Implementing this would have taken development time away from what we have considered more important features.
+\subimport{}{services_overview_table.tex}
 
 \subsection{Implementing Services}
 Each HTTP method for each endpoint needs to be implemented as a method in Java.
 For this we use JAX--RS, as introduced in \cref{subsec:tech_communication}, which provides annotations, such that the application server can handle incoming requests.
 We use the annotations in \cref{table:serviceannotations} most often in our services.
 
-\subimport{dankmemes}{services_annotation_table.tex}
+\subimport{}{services_annotation_table.tex}
 
 \bigskip
 To illustrate this we provide an example in \cref{lst:userServiceGetById}.
@@ -58,40 +62,39 @@ public User getUserById(@PathParam("uid") Long id) {
     \caption{A sample method from the \code{UserService}, which fetches a single user by id.}\label{lst:userServiceGetById}
 \end{listing}
 
-After any creation, we return the created object. 
+After any creation, we return the created object.
 Otherwise the client would not have an id to refer to the object.
-We do the same when a client updates an object, 
-since another client might have changed some other fields since the object was last fetched. 
+We do the same when a client updates an object,
+since another client might have changed some other fields since the object was last fetched.
 
-\bigskip
 \subsubsection{Error messages}
 In order to ease debugging for the users of our API, we want to provide as precise and detailed error messages as possible,
 we provide these messages as a JSON object.
 We also return an appropriate HTTP status code, the most common ones we use for reporting errors are:
 \begin{multicols}{3}
 \begin{itemize}
-    \item 400 Bad Request,
-    \item 401 Unauthorized,
-    \item 403 Forbidden,
-    \item 404 Not Found,
-    \item 409 Conflict.
+    \item \code{400 Bad Request}
+    \item \code{401 Unauthorized}
+    \item \code{403 Forbidden}
+    \item \code{404 Not Found}
+    \item \code{409 Conflict}
 \end{itemize}
 \end{multicols}
 
-For example, if insufficient arguments were given, a ``400 Bad Request'' would be the response,
+For example, if insufficient arguments were given, a \code{400 Bad Request} would be the response,
 but additionally the missing argument(s) are listed.
-For ``409 Conflict'', it is also important to provide information about what conflicted,
+For \code{409 Conflict}, it is also important to provide information about what conflicted,
 for example when trying to create two vehicles with the same VIN.
 
 \subsubsection{Builders}\label{par:builders}
-When a client makes a POST or PUT request for a given object, 
-the server also requires some additional information about the relation the object has to other classes, 
+When a client makes a POST or PUT request for a given object,
+the server also requires some additional information about the relation the object has to other classes,
 e.g. a route would require driver and vehicle information.
 
 Providing entire objects of each relation would be impractical for the client as they might be outdated and it would increase the size of each request.
 Ideally the client would send the minimal amount of information, i.e. just the ids of the objects.
 
-To facilitate this we create builders, following the Builder pattern from ``Effective Java''\cite{Bloch:2008:EJ:1377533}. % http://www.javaworld.com/article/2074938/core-java/too-many-parameters-in-java-methods-part-3-builder-pattern.html
+To facilitate this we create builders, following the Builder pattern from \textit{Effective Java}\cite{Bloch:2008:EJ:1377533}. % http://www.javaworld.com/article/2074938/core-java/too-many-parameters-in-java-methods-part-3-builder-pattern.html
 
 \bigskip
 A builder is a class which is similar to the class it builds, has the same properties, with the following changes:
@@ -104,7 +107,7 @@ A builder is a class which is similar to the class it builds, has the same prope
 Additionally all builders must have a build method, which build the object of the actual class, and returns it.
 If any fields are ids then building the objects will require accessing the database,
 therefore the build methods do in certain cases take \acp{DAO} as parameters.
-The \acp{DAO} are used to fetch the full elements from the database, 
+The \acp{DAO} are used to fetch the full elements from the database,
 such that the appropriate relations can be set.
 
 We also use builders to modify existing objects,

@@ -40,11 +40,11 @@ convention, start with the name of your scheme, followed by a whitespace and
 then data of the schemes choice\cite{http_basic}. Since we want a token based
 authentication, to avoid the client having to store the password, we decide that
 our authorization header will look like the following: \code{Sleepy
-token=<tkn>}. Where token is the unique token for the current session of
+token=\{tkn\}}. Where token is the unique token for the current session of
 a specific user, it is notable that a user can have multiple sessions open at
 once.
 
-\subsection{Filter}
+\subsection{Request Filtering}
 \label{subsec:auth_filter}
 
 JAX-RS, and RESTEasy, has support for roles and authorization via the
@@ -86,17 +86,16 @@ allow for easier implementation in the future, without breaking database, and
 client, compatibility. The \code{GET} request lists the other tokens for the
 user currently logged in. In the table the unimplemented \code{DELETE} method is
 also shown, this endpoint would immediatly expire the token with the id
-\code{<aid>}.
+\code{\{aid\}}.
 
 \begin{table}[htpb]
     \centering
     \begin{tabu} to \textwidth {lX[c]l}
-        Endpoint                         & HTTP Method & Description                                     \\
+        Endpoint                         & HTTP Method & Description                         \\
         \midrule
-        \rendpoint{auth/}                & \code{GET}         & List the tokens                          \\
-        \rendpoint{auth/}                & \code{POST}        & Create new token                         \\
-        \rendpoint{auth/<aid>}           & \code{DELETE}      & Expire a token (not implemented)         \\
+        /auth/                & \code{GET}         & List the tokens                          \\
+        /auth/                & \code{POST}        & Create new token                         \\
+        /auth/\{aid\}         & \code{DELETE}      & Expire a token (not implemented)         \\
     \end{tabu}
-    \caption{Authentication endpoints.}
-    \label{tab:rest_auth}
+    \caption{Authentication endpoints.}\label{tab:rest_auth}
 \end{table}
