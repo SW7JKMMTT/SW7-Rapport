@@ -56,7 +56,7 @@ We will use that to hide the constructor when its use would result in a wrongly 
 Large projects, in object oriented languages, often have dependencies between objects.
 The naive approach to resolve dependencies is to let an object instantiate, or find, its own dependencies.
 Often called \textit{hardcoded dependencies}, they have a significant issue.
-The class which declares the dependency has also decided what object will fulfil the dependency.
+The class which declares the dependency also decides what object will fulfil the dependency.
 With the rise of mock based unit testing, where an instance of an object is swapped out for a mock object, hardcoding those dependencies is not possible, since it prevents mocking.
 
 The solution often employed is the dependency injection pattern, which relies on letting the object doing the instantiation, resolve the dependencies.
