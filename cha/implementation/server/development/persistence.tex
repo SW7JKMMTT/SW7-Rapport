@@ -67,7 +67,7 @@ Additionally we will often know which information is used at the caller side of 
 therefore we write a \ac{HQL}--query for each of these situations.
 
 For example in our model, \cref{subsec:model} the \code{Route}--class, has two lists,
-one with \code{Waypoint}s, and one with \code{VehicleDataPoint}s.
+one with \code{Waypoint}s, and one with \code{MiscDataPoint}s.
 However, there is currently not a piece of code which needs both of these lists at the same time, but there is code which use one of the two.
 Therefore we make a method which fetches each list eagerly, fetches before first use, when it fetches the route.
 
@@ -81,7 +81,7 @@ In total we have made eight \acp{DAO} and the \code{BaseDao} mentioned earlier:
     \item \code{RouteDao}
     \item \code{UserDao}
     \item \code{VehicleDao}
-    \item \code{VehicleDataDao}
+    \item \code{MiscDataDao}
     \item \code{WaypointDao}
 \end{itemize}
 \end{multicols}

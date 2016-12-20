@@ -171,7 +171,7 @@ In order to find as many errors as possible we also used smoke testing for the A
 For example, once the framework used for deserializing was configured wrongly, and would not deserialize correctly. 
 However no integration test is able to test the server from outside, since they are internal.  
 With scalability being of importance to our project we decided to test this as well through load testing, the load test helped us identify bottlenecks in the server, which we in turn could act upon.
-Most notably we introduced indices to the SQL database, and avoided fetching the entire list of waypoint/vehicledata when adding one of them.  
+Most notably we introduced indices to the SQL database, and avoided fetching the entire list of waypoint/miscdata when adding one of them.  
 While testing is a time consuming endeavor, the time we spend testing is at least equal to that we have spend developing, it is also a tool required in order to prove some measure of quality for the system.
 Collectively all the tests have enabled us to attain a high internal quality within the code with use of good code practice methods like smoke tests, a test framework and extensive regression tests, while also having a high external quality to potential users of the API with a thoroughly tested API.
 
