@@ -18,5 +18,11 @@ The following points present our findings during system and load testing, and ho
 
         We then introduced indices in our SQL database system, which meant that fetching elements, something that Hibernate ORM does every time an existing object is changed, was significantly faster.
     \item[Persistence Errors]\hfill \\
-        Something something set route.
+        As previously mentioned our choice of a NoSQL database system resulted in some faults, which were discovered during system test.
+        Most of these faults were due to the Hibernate OGM implementation, which we found unstable.
+        One fault was that an object could not be fetched twice in the same entity manager context, meaning that we could now use an object found earlier in the same \enquote{transaction}.
+        Another fault proved even more severe, and resulted in the group submitting a bug report to the official Hibernate OGM codebase, which was later recognised by the Hibernate team.
+        The fault meant that objects inserted during a transaction could not be changed later in the transaction.
+
+        The discovering of these faults aided our decision to change to an SQL database system and thus Hibernate ORM.
 \end{description}
