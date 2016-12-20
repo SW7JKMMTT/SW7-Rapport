@@ -5,7 +5,7 @@ In \cref{sec:requirements} we identified the need of access management in the
 both the consumer and provider client. To facilitate the features in the
 front--end, the server will keep track of users, permissions, and passwords.
 Users and their permissions are also what is used in the authentication step
-developed in \fxnote{authentication}. The prototype consumer, developed in
+developed in \cref{sec:authentication}. The prototype consumer, developed in
 \fxnote{front--end chapter}, also required icons for users.
 
 
@@ -13,7 +13,7 @@ From these requirements we derived the end--points shown in \cref{tab:rest_user}
 All the user end--points require at least \code{User} permission, except the
 end--point to create and modify a user, which requires \code{SuperUser}
 permission. The create and modify end--points both use the builders discussed in
-\fxnote{ref til Builder}. The \code{list all} end--point gets a list of users,
+\cref{par:builders}. The \code{list all} end--point gets a list of users,
 but is not guaranteed to include all details about them, in the current version
 they do, but more details could be shown only in the detailed \code{Get user}
 end--point, to conserve bandwidth and database joins. To enable the storage of
