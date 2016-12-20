@@ -205,5 +205,64 @@ thus the code can be read as plain English.
 \end{listing}
 
 \subsection{Testing status}
-As mentioned in \cref{sec:code_coverage}, we choose to test the requirements and important parts of the code.
-%Måske en tabel som viser hvilke tests/classes som dækker hvilke requirements.
+To give an overview of the testing status of the software, we will look at the tests in Persistence and Services.
+We will not look at the testing of Core, because Core do not contain any business logic.
+
+In \cref{tab:test_cov} the method coverage of the methods in Persistence and Services can be seen.
+Method coverage measures that a method have been tested, e.g. a class with two methods, where one is tested would have a 50 \% method coverage.
+Furthermore the number of tests which tests the Persistence and Service can be seen.
+Since the relation between the classes in Persistence and Services and their test classes are not one--to--one, i.e. a test class do not only test a single class,
+the number of tests for each class is listed as N/A.
+
+
+\subsubsection{Persistence}
+Persistence contains the \acp{DAO}, as mentioned in \cref{sec:internal_architecture}.
+Each \ac{DAO} has a method coverage of 100 \%, as seen in \cref{tab:test_cov}.
+Not everything have a code coverage of 100 \% since not all methods are relevant to test, 
+but the method coverage is at 94.7 \%, as seen in \cref{tab:test_cov}.
+This only states a quantitative measure of the extend of the testing. 
+
+To make sure the tests are adequate, i.e. they tests a broad spectrum of use cases and verify the correctness,
+the \acp{DAO} are tested under different conditions.
+Among these conditions are having different data in the database and testing with different input parameters.
+
+\subsubsection{Services}
+In the Service component, the business logic is tested.
+More precisely is the public \ac{API} of the server tested, without testing the used frameworks.
+We do not test the frameworks, since we expect and trust that they work as expected.
+
+Not every method in Service is tested, since as with Persistence, since not all methods are relevant to test.
+Still Service have a method coverage on 95 \%, as seen in \cref{tab:test_cov}.
+
+As with Persistence, we test the Service component under different use cases, for instance with different input parameters,
+with the database containing different data, and also tests with malicious input, to see if the system handles it.
+
+\begin{table}
+    \center
+    \begin{tabular}{l|l|l}
+        \textbf{Component}      & \textbf{Method coverage \%} & \textbf{Number of tests} \\
+        \toprule
+        Persistence             & 94.7  & 54 \\
+        \toprule
+        AuthTokenDaoImpl        & 75    & \multirow{9}{*}{N/A} \\
+        BaseDaoImpl             & 80    & \\
+        DriverDaoImpl           & 100   & \\
+        PermissionDaoImpl       & 100   & \\
+        RouteDaoImpl            & 72.7  & \\
+        UserDaoImpl             & 85.7  & \\
+        VehicleDaoImpl          & 100   & \\
+        VehicleDataDaoImpl      & 100   & \\
+        WaypointDaoImpl         & 100   & \\
+        \midrule
+        Services                & 95    & 100 \\
+        \toprule
+        AuthenticationService   & 66.7  & \multirow{6}{*}{N/A} \\
+        RouteService            & 75    & \\
+        UserService             & 71.4  & \\
+        VehicleDataService      & 100   & \\
+        VehicleService          & 100   & \\
+        WaypointService         & 100   & \\
+        \bottomrule
+    \end{tabular}
+    \caption{Test coverage of Persistence and Services.}\label{tab:test_cov}
+\end{table}
