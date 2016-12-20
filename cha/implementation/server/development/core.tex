@@ -32,7 +32,7 @@ We have excluded some parts for the purposes of simplicity and readability here,
 
 % Note om hvorfor vi har Driver <-> User som has a, og ikke is a.
 In the class diagram there are two central classes; \code{User} and \code{Route}, which are connected via the \code{Driver}--class.\fxnote{Vi skal skrive senere hvorfor at Driver--classen ikke skulle ``leakes'' til api brugeren.}
-\paragraph*{User}
+\subsection{User}
 The relationship between the \code{User}-- and \code{Driver}--class is modeled using a has--a, in contrast to is--a, for the purposes of functional scalability, which we defined in \cref{sec:scalability}.
 Say for the sake of argument that we wanted to have an Administrator, and we have modeled the \code{User}--\code{Driver} relationship as is--a (i.e. using inheritance), 
 then logically an Administrator would also inherit from the \code{User}--class.
