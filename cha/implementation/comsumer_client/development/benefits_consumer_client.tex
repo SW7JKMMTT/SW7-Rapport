@@ -2,20 +2,17 @@
 Some of the benefits which came from developing the consumer client was not only the ability to show the different aspects and capabilities of the REST API, but also the ability to get a feeling for some of the missing functionalities, and in the proccess help to discover any logical errors or inconsistencies.
 
 \bigskip
-\fxnote{skal der indæsttes den request der blev skrevet på slack?}
 During the development it was discovered that loading all the currently active routes into the consumer client would have a devastating effect upon the performance of the consumer client.
 In order to comply with this, a limitation to the amount of active routes which is shown at once needed to be implemented.
 This functionality would make it possible to only get the active routes with a given area was requested from the REST API.
 With the functionality implemented an immediately improvement could be felt throughout the consumer client.
 
 \bigskip
-\fxnote{skal der indæsttes den request der blev skrevet på slack?}
 Throughout the development of the consumer client, it was also discovered that an attribute directly on the employee which would indicate if the employee had an image or not would greatly benefit the overall complexity and performance.
 As it was for each of the employees, the consumer client would have to request the image from the REST API, if the image was not found, it would use the default image, with the attribute on the employee, the request to the REST API would only be send if they had an image.
 This functionality would vastly decrease the amount of requests which would be send to the server, thereby decreasing the load on both the REST API and the consumer client.
 
 \bigskip
-\fxnote{skal der indæsttes den request der blev skrevet på slack?}
 When the list of the vehicles is loaded, it was needed to check if a specific vehicle was active on a route at the current time.
 In the beginning this was done by loading all active routes, then comparing the current vehicle id with the vehicle id on all active routes.
 If the current vehicle was found, then the vehicle was currently driving, else it was parked.

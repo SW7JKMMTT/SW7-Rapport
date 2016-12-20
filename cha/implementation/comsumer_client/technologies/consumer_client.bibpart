@@ -7,9 +7,9 @@
 }
 
 @MISC{angular_1_2,
-  author = {BuiltWith Pty Ltd},
-  publisher = {builtwith.com},
-  title = {jQuery Usage Statistics},
+  author = {angular.io},
+  publisher = {angular.io},
+  title = {ANGULAR 1 TO 2 QUICK REFERENCE},
   lastchecked = {20-12-2016},
   howpublished = {\url{https://angular.io/docs/ts/latest/cookbook/a1-a2-quick-reference.html}}
 }
